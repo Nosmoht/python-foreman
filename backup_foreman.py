@@ -53,12 +53,15 @@ def main(argv):
         
     backup(backup_root_dir=backup_root, resource='architectures', resource_function=f.get_architectures())
     backup(backup_root_dir=backup_root, resource='compute_resources', resource_function=f.get_compute_resources())
+    backup(backup_root_dir=backup_root, resource='compute_profiles', resource_function=f.get_compute_profiles())
     backup(backup_root_dir=backup_root, resource='domains', resource_function=f.get_domains())
     backup(backup_root_dir=backup_root, resource='environments', resource_function=f.get_environments())
     backup(backup_root_dir=backup_root, resource='hosts', resource_function=f.get_hosts())
+    backup(backup_root_dir=backup_root, resource='hostgroups', resource_function=f.get_hostgroups())
     backup(backup_root_dir=backup_root, resource='locations', resource_function=f.get_locations())
     backup(backup_root_dir=backup_root, resource='medias', resource_function=f.get_medias())
     backup(backup_root_dir=backup_root, resource='organizations', resource_function=f.get_organizations())
+    backup(backup_root_dir=backup_root, resource='operatingsystems', resource_function=f.get_operatingsystems())
     
 if __name__ == '__main__':
     main(sys.argv[1:])
