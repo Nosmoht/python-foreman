@@ -63,6 +63,7 @@ def main(argv):
     backup(backup_root_dir=backup_root, resource='organizations', resource_function=f.get_organizations())
     backup(backup_root_dir=backup_root, resource='operatingsystems', resource_function=f.get_operatingsystems())
     backup(backup_root_dir=backup_root, resource='smart_proxies', resource_function=f.get_smart_proxies())
+    backup(backup_root_dir=backup_root, resource='subnets', resource_function=f.get_subnets())
     
 if __name__ == '__main__':
     main(sys.argv[1:])
