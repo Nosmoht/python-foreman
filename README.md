@@ -10,9 +10,11 @@ Python-requests must be installed.
 # Supported Functions
 - Architectures: Get list of all existing and create a new one
 - Compute Resources: Get list of all existing and create a new one
+- Compute Profiles: Get list of all existing and create a new one
 - Domains: Get list of all existing and create a new one
 - Environments: Get list of all existing and create a new one
 - Hosts: Get list of all existing and create a new one
+- Hostsgroups: Get list of all existing and create a new one
 - Locations: Get list of all existing and create a new one
 - Media: Get list of all existing and create a new one
 - Operatingsystem: Get list of all existing and create a new one
