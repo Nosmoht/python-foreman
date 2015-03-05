@@ -174,15 +174,19 @@ class Foreman:
         return self.get_resource_by_name(name=name, list=self.get_hosts())
 
     def set_host(self, name, environment, domain, ip, mac, partition_table, medium, architecture, os, puppet_proxy, compute_resource, root_pass, location, organization):
-        architecture_id = self.get_architecture_by_name(name=architecture).get('id')
-        compute_resource_id = self.get_compute_resource_by_name(name=compute_resource).get('id')
-        domain_id = self.get_domain_by_name(name=domain).get('id')
-        environment_id = self.get_environment_by_name(name=environment).get('id')
-        media_id = self.get_media_by_name(name=medium).get('id')
-        partition_table_id = self.get_partition_table_by_name(name=partition_table).get('id')
-        operatingsystem_id = self.get_operatingsystem_by_name(name=os).get('id')        
-        puppet_proxy_id = self.get_smart_proxy_by_name(name=puppet_proxy).get('id')
-        location_id = self.get_location_by_name(name=location).get('id')
-        organization_id = self.get_organization_by_name(name=organization).get('id')
-        data_dict = {'host' : {'name': name, 'environment_id': environment_id, 'domain_id': domain_id, 'ip': ip, 'mac': mac, 'ptable_id': partition_table_id, 'medium_id': media_id, 'architecture_id': architecture_id, 'operatingsystem_id': operatingsystem_id, 'puppet_proxy_id': puppet_proxy_id, 'compute_resource_id': compute_resource_id, 'root_pass': root_pass, 'location_id': location_id, 'organization_id': organization_id}}
-        self.put_resource(resource='hosts', data=json.dumps(data_dict))
+        data = {}
+        data['architecture_id'] = self.get_architecture_by_name(name=architecture).get('id')
+        data['compute_resource_id'] = self.get_compute_resource_by_name(name=compute_resource).get('id')
+        data['domain_id'] = self.get_domain_by_name(name=domain).get('id')
+        data['environment_id'] = self.get_environment_by_name(name=environment).get('id')
+        data['ip'] = ip
+        data['location_id'] = self.get_location_by_name(name=location).get('id')
+        data['mac'] = mac
+        data['media_id'] = self.get_media_by_name(name=medium).get('id')
+        data['name'] = name
+        data['organization_id'] = self.get_organization_by_name(name=organization).get('id')
+        data['operatingsystem_id'] = self.get_operatingsystem_by_name(name=os).get('id')
+        data['partition_table_id'] = self.get_partition_table_by_name(name=partition_table).get('id')
+        data['puppet_proxy_id'] = self.get_smart_proxy_by_name(name=puppet_proxy).get('id')
+        data['root_pass'] = root_pass
+        self.put_resource(resource='hosts', data=data)
