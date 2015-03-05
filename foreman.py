@@ -48,7 +48,7 @@ class Foreman:
         return self.get_resource(resource='architectures')
 
     def get_architecture_by_id(self, id):
-        return self.get_resource(resource='architecture/' + id)
+        return self.get_resource(resource='architectures/' + id)
         
     def get_architecture_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_architectures())
@@ -72,7 +72,7 @@ class Foreman:
         return self.get_resource(resource='domains')
     
     def get_domain_by_id(self, id):
-        return self.get_resource(resouce='domain/' + id)
+        return self.get_resource(resouce='domains/' + id)
     
     def get_domain_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_domains())
@@ -84,7 +84,7 @@ class Foreman:
         return self.get_resource(resource='environments')
     
     def get_environment_by_id(self, id):
-        return self.get_resource(resouce='environment/' + id)
+        return self.get_resource(resouce='environments/' + id)
     
     def get_environment_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_environments())
@@ -144,7 +144,7 @@ class Foreman:
         return self.get_resource(resource='ptables')
     
     def get_partition_table_by_id(self, id):
-        return self.get_resource(resouce='ptable/' + id)
+        return self.get_resource(resouce='ptables/' + id)
     
     def get_partition_table_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_partition_tables())
@@ -168,7 +168,7 @@ class Foreman:
         return self.get_resource(resource='hosts')
     
     def get_host_by_id(self, id):
-        return self.get_resource(resouce='host/' + id)
+        return self.get_resource(resouce='hosts/' + id)
     
     def get_host_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_hosts())
