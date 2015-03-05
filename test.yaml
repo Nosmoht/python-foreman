@@ -1,0 +1,43 @@
+---
+architectures:
+- name: x86_64
+- name: i386
+compute_resources:
+- name: Compute01
+  datacenter: Cloud
+  description: null
+  provider: VMWare
+  server: vsphere.cloud.example.com
+  set_console_password: true
+  url: vsphere.cloud.example.com
+  user: cloud/admin
+domains:
+- name: cloud.example.com
+  fullname: Cloud Domain
+environments:
+- name: Development
+- name: Production
+locations:
+- name: Cloud
+  title: A location somewhere in the cloud
+medias:
+- name: CoreOS mirror
+  os_family: Coreos
+  path: http://$release.release.core-os.net 
+partition_tables:
+- name: CoreOS Partition Table
+organizations:
+- name: example
+  titel: Example Org
+operatingsystems:
+- name: CoreOS
+smart_proxies:
+- name: foreman.example.com
+  url: https://foreman.example.com:9090
+hosts:
+- name: coreos-01
+  architecture: x86_64
+  compute_resource: Compute01
+  domain: cloud.example.com
+  ip: 172.17.8.100
+  mac: 00:00:00:00:00:00
