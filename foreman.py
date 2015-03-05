@@ -199,3 +199,15 @@ class Foreman:
 
     def set_smart_proxy(self, data):
         self.put_resource(resource='smart_proxies', data=data)
+
+    def get_subnets(self):
+        return self.get_resource(resource='subnets')
+
+    def get_subnet_by_id(self, id):
+        return self.get_resource(resouce='subnets/' + id)
+
+    def get_subnet_by_name(self, name):
+        return self.get_resource_by_name(name=name, list=self.get_subnets())
+
+    def set_subnet(self, data):
+        self.put_resource(resource='subnets', data=data)
