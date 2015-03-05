@@ -42,7 +42,7 @@ class Foreman:
         for item in list:
             if item.get('name') == name:
                 return item
-        return None
+        return {}
 
     def get_architectures(self):
         return self.get_resource(resource='architectures')
@@ -68,36 +68,72 @@ class Foreman:
     def set_compute_resource(self, data):
         self.put_resource(resource='compute_resources', data=data)
 
+    def get_compute_profiles(self):
+        return self.get_resource(resource='compute_profiles')
+
+    def get_compute_profile_by_id(self, id):
+        return self.get_resource(resource='compute_profiles/' + id)
+
+    def get_compute_profile_by_name(self, name):
+        return self.get_resource_by_name(name=name, list=self.get_compute_profiles())
+
+    def set_compute_profile(self, data):
+        self.put_resource(name='compute_profiles', data=data)
+
     def get_domains(self):
         return self.get_resource(resource='domains')
-    
+
     def get_domain_by_id(self, id):
         return self.get_resource(resouce='domains/' + id)
-    
+
     def get_domain_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_domains())
 
     def set_domain(self, data):
         self.put_resource(resource='domains', data=data)
-    
+
     def get_environments(self):
         return self.get_resource(resource='environments')
-    
+
     def get_environment_by_id(self, id):
         return self.get_resource(resouce='environments/' + id)
-    
+
     def get_environment_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_environments())
 
     def set_environment(self, name):
         self.put_resource(resource='environments', data={'environment': {'name':name}})
 
+    def get_hosts(self):
+        return self.get_resource(resource='hosts')
+
+    def get_host_by_id(self, id):
+        return self.get_resource(resouce='hosts/' + id)
+
+    def get_host_by_name(self, name):
+        return self.get_resource_by_name(name=name, list=self.get_hosts())
+
+    def set_host(self, data):
+        self.put_resource(resource='hosts', data=data)
+
+    def get_hostgroups(self):
+        return self.get_resource(resource='hostgroups')
+
+    def get_hostgroup_by_id(self, id):
+        return self.get_resource(resouce='hostgroups/' + id)
+
+    def get_hostgroup_by_name(self, name):
+        return self.get_resource_by_name(name=name, list=self.get_hostgroups())
+
+    def set_hostgroup(self, data):
+        self.put_resource(resource='hostgroups', data=data)
+
     def get_locations(self):
         return self.get_resource(resource='locations')
-    
+
     def get_location_by_id(self, id):
         return self.get_resource(resouce='locations/' + id)
-    
+
     def get_location_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_locations())
 
@@ -106,87 +142,60 @@ class Foreman:
 
     def get_medias(self):
         return self.get_resource(resource='media')
-    
+
     def get_media_by_id(self, id):
         return self.get_resource(resouce='media/' + id)
-    
+
     def get_media_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_medias())
 
     def set_media(self, data):
         self.put_resource(resource='media', data=data)
-    
+
     def get_organizations(self):
         return self.get_resource(resource='organizations')
-    
+
     def get_organization_by_id(self, id):
         return self.get_resource(resouce='organizations/' + id)
-    
+
     def get_organization_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_organizations())
 
     def set_organization(self, data):
         self.put_resource(resource='organizations', data=data)
-    
+
     def get_operatingsystems(self):
         return self.get_resource(resource='operatingsystems')
-    
+
     def get_operatingsystem_by_id(self, id):
         return self.get_resource(resouce='operatingsystems/' + id)
-    
+
     def get_operatingsystem_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_operatingsystems())
 
     def set_operatingsystem(self, data):
         self.put_resource(resource='operatingsystems', data=data)
-    
+
     def get_partition_tables(self):
         return self.get_resource(resource='ptables')
-    
+
     def get_partition_table_by_id(self, id):
         return self.get_resource(resouce='ptables/' + id)
-    
+
     def get_partition_table_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_partition_tables())
 
     def set_partition_table(self, data):
         self.put_resource(resource='ptables', data=data)
-    
+
     def get_smart_proxies(self):
         return self.get_resource(resource='smart_proxies')
-    
+
     def get_smart_proxy_by_id(self, id):
         return self.get_resource(resouce='smart_proxies/' + id)
-    
+
     def get_smart_proxy_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_smart_proxies())
 
     def set_smart_proxy(self, data):
         self.put_resource(resource='smart_proxies', data=data)
-    
-    def get_hosts(self):
-        return self.get_resource(resource='hosts')
-    
-    def get_host_by_id(self, id):
-        return self.get_resource(resouce='hosts/' + id)
-    
-    def get_host_by_name(self, name):
-        return self.get_resource_by_name(name=name, list=self.get_hosts())
-
-    def set_host(self, name, environment, domain, ip, mac, partition_table, medium, architecture, os, puppet_proxy, compute_resource, root_pass, location, organization):
-        data = {}
-        data['architecture_id'] = self.get_architecture_by_name(name=architecture).get('id')
-        data['compute_resource_id'] = self.get_compute_resource_by_name(name=compute_resource).get('id')
-        data['domain_id'] = self.get_domain_by_name(name=domain).get('id')
-        data['environment_id'] = self.get_environment_by_name(name=environment).get('id')
-        data['ip'] = ip
-        data['location_id'] = self.get_location_by_name(name=location).get('id')
-        data['mac'] = mac
-        data['media_id'] = self.get_media_by_name(name=medium).get('id')
-        data['name'] = name
-        data['organization_id'] = self.get_organization_by_name(name=organization).get('id')
-        data['operatingsystem_id'] = self.get_operatingsystem_by_name(name=os).get('id')
-        data['partition_table_id'] = self.get_partition_table_by_name(name=partition_table).get('id')
-        data['puppet_proxy_id'] = self.get_smart_proxy_by_name(name=puppet_proxy).get('id')
-        data['root_pass'] = root_pass
-        self.put_resource(resource='hosts', data=data)
