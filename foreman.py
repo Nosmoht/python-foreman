@@ -42,11 +42,8 @@ class Foreman:
         raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request': r.json() })
 
     def post_resource(self, resource_type, resource, data):
-        payload = {}
-        payload[resource] = data
-
         r = requests.post(url=self.get_resource_url(resource_type=resource_type) ,
-                          data=json.dumps(payload),
+                          data=json.dumps({resource: data}),
                           headers=FOREMAN_REQUEST_HEADERS,
                           auth=(self.username, self.password),
                           verify=False)
