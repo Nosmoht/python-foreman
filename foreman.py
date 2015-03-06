@@ -164,8 +164,8 @@ class Foreman:
     def get_hosts(self):
         return self.get_resources(resource_type='hosts')
 
-    def get_host_by_id(self, id):
-        return self.get_resource(resource_type='hosts', resource_id=id)
+    def get_host_by_id(self, id, component=None):
+        return self.get_resource(resource_type='hosts', resource_id=id, component=component)
 
     def get_host_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_hosts())
