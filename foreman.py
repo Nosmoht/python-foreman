@@ -149,6 +149,15 @@ class Foreman:
     def get_host_power(self, host_id):
         return self.put_resource(resource_type='hosts', resource_id=host_id, action='power', data={'power_action': 'state', 'host': {}})
 
+    def poweron_host(self, host_id):
+        return self.set_host_power(host_id=host_id, action='start')
+
+    def poweroff_host(self, host_id):
+        return self.set_host_power(host_id=host_id, action='stop')
+
+    def reboot_host(self, host_id):
+        return self.set_host_power(host_id=host_id, action='reboot')
+
     def get_hostgroups(self):
         return self.get_resources(resource_type='hostgroups')
 
