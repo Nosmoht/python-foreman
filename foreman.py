@@ -149,6 +149,12 @@ class Foreman:
     def set_domain(self, data):
         return self.post_resource(resource_type='domains', resource='domain', data=data)
 
+    def create_domain(self, name):
+        return self.set_domain(data={'name': name})
+
+    def delete_domain(self, name):
+        return self.delete_resource(resource_type='domains', resource_id=name)
+
     def get_environments(self):
         return self.get_resources(resource_type='environments')
 
