@@ -31,13 +31,13 @@ class Foreman:
             url = url + '/' + action
         return url
 
-    def get_resource(self, resource_type, resource_id=None):
-        r = requests.get(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id),
+    def get_resource(self, resource_type, resource_id=None, component=None):
+        r = requests.get(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id, action=component),
                          auth=(self.username, self.password),
                          verify=False)
         if r.status_code == requests.codes.ok:
             return json.loads(r.text)
-        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
+        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request': r.json() })
 
     def post_resource(self, resource_type, resource, data):
         payload = {}
@@ -101,8 +101,8 @@ class Foreman:
     def get_compute_resources(self):
         return self.get_resources(resource_type='compute_resources')
 
-    def get_compute_resource_by_id(self, id):
-        return self.get_resource(resource_type='compute_resources', resource_id=id)
+    def get_compute_resource_by_id(self, id, component=None):
+        return self.get_resource(resource_type='compute_resources', resource_id=id, component=component)
         
     def get_compute_resource_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_compute_resources())
@@ -115,6 +115,9 @@ class Foreman:
 
     def delete_compute_resource(self, name):
         return self.delete_resource(resource_type='compute_resources', resource_id=name)
+
+    def get_compute_resource_images(self, compute_resource_id):
+        return self.get_compute_resource_by_id(id=compute_resource_id, component='images').get('results')
 
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
