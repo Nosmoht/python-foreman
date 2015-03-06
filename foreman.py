@@ -23,12 +23,14 @@ class Foreman:
         self.password = password
         self.url = 'https://' + self.hostname + ':' + self.port + '/api/' + FOREMAN_API_VERSION
 
-    def get_resource_url(self, resource_type, resource_id=None, component=None):
+    def get_resource_url(self, resource_type, resource_id=None, component=None, component_id=None):
         url = self.url + '/' + resource_type
         if resource_id:
             url = url + '/' + resource_id
-        if action:
+        if component:
             url = url + '/' + component
+        if component_id:
+            url = url + '/' + component_id
         return url
 
     def get_resource(self, resource_type, resource_id=None, component=None):
