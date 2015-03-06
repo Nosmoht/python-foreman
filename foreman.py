@@ -173,6 +173,9 @@ class Foreman:
     def set_host(self, data):
         return self.post_resource(resource_type='hosts', resource='host', data=data)
 
+    def get_host_interfaces(self, name):
+        return self.get_host_by_id(id=name, component='interfaces')
+
     def create_host(self, name, architecture, compute_profile, compute_resource, domain, environment, hostgroup, location, medium, operatingsystem, organization):
         data = {}
         data['architecture_id'] = self.get_architecture_by_name(name=architecture).get('id')
