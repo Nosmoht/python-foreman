@@ -28,8 +28,8 @@ class Foreman:
             url = url + '/' + action
         return url
 
-    def get_resource(self, resource_type, resource_id, action):
-        r = requests.get(url=self.get_resource_url(resource_type=resource_type),
+    def get_resource(self, resource_type, resource_id):
+        r = requests.get(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id),
                          auth=(self.username, self.password),
                          verify=False)
         if r.status_code == requests.codes.ok:
@@ -59,6 +59,9 @@ class Foreman:
             return json.loads(r.text)
         r.raise_for_status()
 
+    def get_resources(self, resource_type):
+        return self.get_resource(resource_type=resource_type).get('results')
+
     def get_resource_by_name(self, name, list):
         for item in list:
             if item.get('name') == name:
@@ -66,10 +69,10 @@ class Foreman:
         return {}
 
     def get_architectures(self):
-        return self.get_resource(resource_type='architectures').get('results')
+        return self.get_resources(resource_type='architectures')
 
     def get_architecture_by_id(self, id):
-        return self.get_resource(resource_type='architectures/' + id)
+        return self.get_resource(resource_type='architectures', resource_id=id)
         
     def get_architecture_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_architectures())
@@ -78,10 +81,10 @@ class Foreman:
         return self.post_resource(resource_type='architectures', resource='architecture', data=data)
 
     def get_compute_resources(self):
-        return self.get_resource(resource_type='compute_resources').get('results')
+        return self.get_resources(resource_type='compute_resources')
 
     def get_compute_resource_by_id(self, id):
-        return self.get_resource(resource_type='compute_resources/' + id)
+        return self.get_resource(resource_type='compute_resources', resource_id=id)
         
     def get_compute_resource_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_compute_resources())
@@ -90,10 +93,10 @@ class Foreman:
         return self.post_resource(resource_type='compute_resources', resource='compute_resource', data=data)
 
     def get_compute_profiles(self):
-        return self.get_resource(resource_type='compute_profiles').get('results')
+        return self.get_resources(resource_type='compute_profiles')
 
     def get_compute_profile_by_id(self, id):
-        return self.get_resource(resource_type='compute_profiles/' + id)
+        return self.get_resource(resource_type='compute_profiles', resource_id=id)
 
     def get_compute_profile_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_compute_profiles())
@@ -102,10 +105,10 @@ class Foreman:
         return self.post_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
 
     def get_domains(self):
-        return self.get_resource(resource_type='domains').get('results')
+        return self.get_resources(resource_type='domains')
 
     def get_domain_by_id(self, id):
-        return self.get_resource(resouce_type='domains/' + id)
+        return self.get_resource(resouce_type='domains', resource_id=id)
 
     def get_domain_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_domains())
@@ -114,10 +117,10 @@ class Foreman:
         return self.post_resource(resource_type='domains', resource='domain', data=data)
 
     def get_environments(self):
-        return self.get_resource(resource_type='environments').get('results')
+        return self.get_resources(resource_type='environments')
 
     def get_environment_by_id(self, id):
-        return self.get_resource(resouce_type='environments/' + id)
+        return self.get_resource(resouce_type='environments', resource_id=id)
 
     def get_environment_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_environments())
@@ -126,10 +129,10 @@ class Foreman:
         return self.post_resource(resource_type='environments', resource='environment', data=data)
 
     def get_hosts(self):
-        return self.get_resource(resource_type='hosts').get('results')
+        return self.get_resources(resource_type='hosts')
 
     def get_host_by_id(self, id):
-        return self.get_resource(resource_type='hosts/' + id)
+        return self.get_resource(resource_type='hosts', resource_id=id)
 
     def get_host_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_hosts())
@@ -141,10 +144,10 @@ class Foreman:
         return self.put_resource(resource_type='hosts', resource_id=host_id, action='power', data={'power_action': 'status', 'host': {}})
 
     def get_hostgroups(self):
-        return self.get_resource(resource_type='hostgroups').get('results')
+        return self.get_resources(resource_type='hostgroups')
 
     def get_hostgroup_by_id(self, id):
-        return self.get_resource(resouce_type='hostgroups/' + id)
+        return self.get_resource(resouce_type='hostgroups', resource_id=id)
 
     def get_hostgroup_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_hostgroups())
@@ -153,10 +156,10 @@ class Foreman:
         return self.post_resource(resource_type='hostgroups', resource='hostgroup', data=data)
 
     def get_locations(self):
-        return self.get_resource(resource_type='locations').get('results')
+        return self.get_resources(resource_type='locations')
 
     def get_location_by_id(self, id):
-        return self.get_resource(resouce_type='locations/' + id)
+        return self.get_resource(resouce_type='locations', resource_id=id)
 
     def get_location_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_locations())
@@ -164,23 +167,23 @@ class Foreman:
     def set_location(self, data):
         return self.post_resource(resource_type='locations', resource='location', data=data)
 
-    def get_medias(self):
-        return self.get_resource(resource_type='media').get('results')
+    def get_media(self):
+        return self.get_resources(resource_type='media')
 
-    def get_media_by_id(self, id):
-        return self.get_resource(resouce_type='media/' + id)
+    def get_medium_by_id(self, id):
+        return self.get_resource(resouce_type='media', resource_id=id)
 
-    def get_media_by_name(self, name):
-        return self.get_resource_by_name(name=name, list=self.get_medias())
+    def get_medium_by_name(self, name):
+        return self.get_resource_by_name(name=name, list=self.get_media())
 
-    def set_media(self, data):
+    def set_medium(self, data):
         return self.post_resource(resource_type='media', resource='medium', data=data)
 
     def get_organizations(self):
-        return self.get_resource(resource_type='organizations').get('results')
+        return self.get_resources(resource_type='organizations')
 
     def get_organization_by_id(self, id):
-        return self.get_resource(resouce_type='organizations/' + id)
+        return self.get_resource(resouce_type='organizations', resource_id=id)
 
     def get_organization_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_organizations())
@@ -189,10 +192,10 @@ class Foreman:
         return self.post_resource(resource_type='organizations', resource='organization', data=data)
 
     def get_operatingsystems(self):
-        return self.get_resource(resource_type='operatingsystems').get('results')
+        return self.get_resources(resource_type='operatingsystems')
 
     def get_operatingsystem_by_id(self, id):
-        return self.get_resource(resouce_type='operatingsystems/' + id)
+        return self.get_resource(resouce_type='operatingsystems', resource_id=id)
 
     def get_operatingsystem_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_operatingsystems())
@@ -201,10 +204,10 @@ class Foreman:
         return self.post_resource(resource_type='operatingsystems', resource='operatingsystem', data=data)
 
     def get_partition_tables(self):
-        return self.get_resource(resource_type='ptables').get('results')
+        return self.get_resources(resource_type='ptables')
 
     def get_partition_table_by_id(self, id):
-        return self.get_resource(resouce_type='ptables/' + id)
+        return self.get_resource(resouce_type='ptables', resource_id=id)
 
     def get_partition_table_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_partition_tables())
@@ -213,10 +216,10 @@ class Foreman:
         return self.post_resource(resource_type='ptables', resource='ptable', data=data)
 
     def get_smart_proxies(self):
-        return self.get_resource(resource_type='smart_proxies').get('results')
+        return self.get_resources(resource_type='smart_proxies')
 
     def get_smart_proxy_by_id(self, id):
-        return self.get_resource(resouce_type='smart_proxies/' + id)
+        return self.get_resource(resouce_type='smart_proxies', resource_id=id)
 
     def get_smart_proxy_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_smart_proxies())
@@ -225,10 +228,10 @@ class Foreman:
         return self.post_resource(resource_type='smart_proxies', resource='smart_proxy', data=data)
 
     def get_subnets(self):
-        return self.get_resource(resource_type='subnets').get('results')
+        return self.get_resources(resource_type='subnets')
 
     def get_subnet_by_id(self, id):
-        return self.get_resource(resouce_type='subnets/' + id)
+        return self.get_resource(resouce_type='subnets', resource_id=id)
 
     def get_subnet_by_name(self, name):
         return self.get_resource_by_name(name=name, list=self.get_subnets())
