@@ -12,6 +12,9 @@ requests.packages.urllib3.disable_warnings()
 FOREMAN_REQUEST_HEADERS = {'content-type': 'application/json', 'accept': 'application/json'}
 FOREMAN_API_VERSION = 'v2'
 
+class ForemanError(Exception):
+    pass
+
 class Foreman:
     def __init__(self, hostname, port, username, password):
         self.hostname = hostname
@@ -20,21 +23,21 @@ class Foreman:
         self.password = password
         self.url = 'https://' + self.hostname + ':' + self.port + '/api/' + FOREMAN_API_VERSION
 
-    def get_resource_url(self, resource_type, resoucre_id=None, action=None):
+    def get_resource_url(self, resource_type, resource_id=None, action=None):
         url = self.url + '/' + resource_type
-        if resoucre_id:
-            url = url + '/' + resoucre_id
+        if resource_id:
+            url = url + '/' + resource_id
         if action:
             url = url + '/' + action
         return url
 
-    def get_resource(self, resource_type, resource_id):
+    def get_resource(self, resource_type, resource_id=None):
         r = requests.get(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id),
                          auth=(self.username, self.password),
                          verify=False)
         if r.status_code == requests.codes.ok:
             return json.loads(r.text)
-        r.raise_for_status()
+        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
 
     def post_resource(self, resource_type, resource, data):
         payload = {}
@@ -47,17 +50,17 @@ class Foreman:
                           verify=False)
         if r.status_code == requests.codes.ok:
             return json.loads(r.text)
-        r.raise_for_status()
+        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
 
     def put_resource(self, resource_type, resource_id, data, action=None):
-        r = requests.put(url=self.get_resource_url(resource_type=resource_type, resoucre_id=resource_id, action=action),
+        r = requests.put(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id, action=action),
                          data=json.dumps(data),
                          headers=FOREMAN_REQUEST_HEADERS,
                          auth=(self.username, self.password),
                          verify=False)
         if r.status_code == requests.codes.ok:
             return json.loads(r.text)
-        r.raise_for_status()
+        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
 
     def get_resources(self, resource_type):
         return self.get_resource(resource_type=resource_type).get('results')
@@ -141,7 +144,10 @@ class Foreman:
         return self.post_resource(resource_type='hosts', resource='host', data=data)
 
     def set_host_power(self, host_id, action):
-        return self.put_resource(resource_type='hosts', resource_id=host_id, action='power', data={'power_action': 'status', 'host': {}})
+        return self.put_resource(resource_type='hosts', resource_id=host_id, action='power', data={'power_action': action, 'host': {}})
+
+    def get_host_power(self, host_id):
+        return self.put_resource(resource_type='hosts', resource_id=host_id, action='power', data={'power_action': 'state', 'host': {}})
 
     def get_hostgroups(self):
         return self.get_resources(resource_type='hostgroups')
