@@ -125,6 +125,9 @@ class Foreman:
     def create_compute_profile(self, name):
         return self.set_compute_profile(data={'name': name})
 
+    def delete_compute_profile(self, name):
+        return self.delete_resource(resource_type='compute_profiles', resource_id=name)
+
     def get_domains(self):
         return self.get_resources(resource_type='domains')
 
