@@ -230,6 +230,28 @@ class Foreman:
     def set_hostgroup(self, data):
         return self.post_resource(resource_type='hostgroups', resource='hostgroup', data=data)
 
+    def create_hostgroup(self, name, architecture=None, domain=None, environment=None, medium=None,
+                         operatingsystem=None, partition_table=None, smart_proxy=None, subnet=None):
+        data = {}
+        data['name'] = name
+        if architecture:
+            data['architecture_id'] = self.get_architecture_by_name(name=architecture).get('id')
+        if domain:
+            data['domain_id'] = self.get_domain_by_name(name=domain).get('id')
+        if environment:
+            data['environment_id'] = self.get_environment_by_name(name=environment).get('id')
+        if medium:
+            data['medium_id'] = self.get_medium_by_name(name=medium)
+        if operatingsystem:
+            data['operatingsystem_id'] = self.get_operatingsystem_by_name(name=operatingsystem).get('id')
+        if partition_table:
+            data['ptable_id'] = self.get_partition_table_by_name(name=partition_table).get('id')
+        if smart_proxy:
+            data['puppet_proxy_id'] = self.get_smart_proxy_by_name(name=smart_proxy).get('id')
+        if subnet:
+            data['subnet_id'] = self.get_subnet_by_name(name=subnet).get('id')
+        return self.set_hostgroup(data=data)
+
     def get_locations(self):
         return self.get_resources(resource_type='locations')
 
