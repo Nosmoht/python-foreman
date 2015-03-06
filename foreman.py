@@ -62,6 +62,15 @@ class Foreman:
             return json.loads(r.text)
         raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
 
+    def delete_resource(self, resource_type, resource_id):
+        r = requests.delete(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id),
+                            headers=FOREMAN_REQUEST_HEADERS,
+                            auth=(self.username, self.password),
+                            verify=False)
+        if r.status_code == requests.codes.ok:
+            return json.loads(r.text)
+        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
+
     def get_resources(self, resource_type):
         return self.get_resource(resource_type=resource_type).get('results')
 
@@ -82,6 +91,12 @@ class Foreman:
 
     def set_architecture(self, data):
         return self.post_resource(resource_type='architectures', resource='architecture', data=data)
+
+    def create_architecture(self, name):
+        return self.set_architecture(data={'name': name})
+
+    def delete_architecture(self, name):
+        return self.delete_resource(resource_type='architectures', resource_id=name)
 
     def get_compute_resources(self):
         return self.get_resources(resource_type='compute_resources')
@@ -106,6 +121,9 @@ class Foreman:
 
     def set_compute_profile(self, data):
         return self.post_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
+
+    def create_compute_profile(self, name):
+        return self.set_compute_profile(data={'name': name})
 
     def get_domains(self):
         return self.get_resources(resource_type='domains')
@@ -142,6 +160,21 @@ class Foreman:
 
     def set_host(self, data):
         return self.post_resource(resource_type='hosts', resource='host', data=data)
+
+    def create_host(self, name, architecture, compute_profile, compute_resource, domain, environment, hostgroup, location, medium, operatingsystem, organization):
+        data = {}
+        data['architecture_id'] = self.get_architecture_by_name(name=architecture).get('id')
+        data['name'] = name
+        data['compute_profile_id'] = self.get_compute_profile_by_name(name=compute_profile).get('id')
+        data['compute_resource_id'] = self.get_compute_resource_by_name(name=compute_resource).get('id')
+        data['domain_id'] = self.get_domain_by_name(name=domain).get('id')
+        data['environment_id'] = self.get_environment_by_name(name=environment).get('id')
+        data['hostgroup_id'] = self.get_hostgroup_by_name(name=hostgroup).get('id')
+        data['location_id'] = self.get_location_by_name(name=location).get('id')
+        data['medium_id'] = self.get_medium_by_name(name=medium).get('id')
+        data['organization_id'] = self.get_organization_by_name(name=organization).get('id')
+        data['operatingsystem_id'] = self.get_operatingsystem_by_name(name=operatingsystem).get('id')
+        return self.set_host(data=data)
 
     def set_host_power(self, host_id, action):
         return self.put_resource(resource_type='hosts', resource_id=host_id, action='power', data={'power_action': action, 'host': {}})
