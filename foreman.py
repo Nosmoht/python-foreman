@@ -170,7 +170,7 @@ class Foreman:
     def get_hosts(self):
         return self.get_resources(resource_type='hosts')
 
-    def get_host_by_id(self, id, component=None):
+    def get_host_by_id(self, id, component=None, component_id=None):
         return self.get_resource(resource_type='hosts', resource_id=id, component=component)
 
     def get_host_by_name(self, name):
@@ -179,8 +179,14 @@ class Foreman:
     def set_host(self, data):
         return self.post_resource(resource_type='hosts', resource='host', data=data)
 
-    def get_host_interfaces(self, name):
-        return self.get_host_by_id(id=name, component='interfaces')
+    def get_host_component(self, id, component, component_id):
+        return self.get_host_by_id(id, component=component, component_id=component_id)
+
+    def get_host_interfaces(self, host_id):
+        return self.get_host_component(id=host_id, component='interfaces')
+
+    def get_host_interface(self, host_id, interface_id):
+        return self.get_host_component(id=host_id, component='interfaces', component_id=interface_id)
 
     def create_host(self, name, architecture, compute_profile, compute_resource, domain, environment, hostgroup, location, medium, operatingsystem, organization):
         data = {}
