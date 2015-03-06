@@ -23,12 +23,12 @@ class Foreman:
         self.password = password
         self.url = 'https://' + self.hostname + ':' + self.port + '/api/' + FOREMAN_API_VERSION
 
-    def get_resource_url(self, resource_type, resource_id=None, action=None):
+    def get_resource_url(self, resource_type, resource_id=None, component=None):
         url = self.url + '/' + resource_type
         if resource_id:
             url = url + '/' + resource_id
         if action:
-            url = url + '/' + action
+            url = url + '/' + component
         return url
 
     def get_resource(self, resource_type, resource_id=None, component=None):
@@ -53,7 +53,7 @@ class Foreman:
         raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
 
     def put_resource(self, resource_type, resource_id, data, action=None):
-        r = requests.put(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id, action=action),
+        r = requests.put(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id, component=action),
                          data=json.dumps(data),
                          headers=FOREMAN_REQUEST_HEADERS,
                          auth=(self.username, self.password),
