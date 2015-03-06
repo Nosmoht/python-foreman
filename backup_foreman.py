@@ -59,7 +59,7 @@ def main(argv):
     backup(backup_root_dir=backup_root, resource='hosts', resource_function=f.get_hosts())
     backup(backup_root_dir=backup_root, resource='hostgroups', resource_function=f.get_hostgroups())
     backup(backup_root_dir=backup_root, resource='locations', resource_function=f.get_locations())
-    backup(backup_root_dir=backup_root, resource='medias', resource_function=f.get_medias())
+    backup(backup_root_dir=backup_root, resource='media', resource_function=f.get_media())
     backup(backup_root_dir=backup_root, resource='organizations', resource_function=f.get_organizations())
     backup(backup_root_dir=backup_root, resource='operatingsystems', resource_function=f.get_operatingsystems())
     backup(backup_root_dir=backup_root, resource='smart_proxies', resource_function=f.get_smart_proxies())
