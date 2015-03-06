@@ -69,7 +69,7 @@ class Foreman:
                             verify=False)
         if r.status_code == requests.codes.ok:
             return json.loads(r.text)
-        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request_data': json.dumps(data), 'request': r.json() })
+        raise ForemanError({'request_url': r.url, 'request_code': r.status_code, 'request': r.json() })
 
     def get_resources(self, resource_type):
         return self.get_resource(resource_type=resource_type).get('results')
