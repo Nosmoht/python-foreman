@@ -32,7 +32,7 @@ class Foreman:
         return url
 
     def get_resource(self, resource_type, resource_id=None, component=None):
-        r = requests.get(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id, action=component),
+        r = requests.get(url=self.get_resource_url(resource_type=resource_type, resource_id=resource_id, component=component),
                          auth=(self.username, self.password),
                          verify=False)
         if r.status_code == requests.codes.ok:
