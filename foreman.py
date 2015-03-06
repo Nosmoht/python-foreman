@@ -110,6 +110,12 @@ class Foreman:
     def set_compute_resource(self, data):
         return self.post_resource(resource_type='compute_resources', resource='compute_resource', data=data)
 
+    def create_compute_resource(self, name, user, password, provider, server, url):
+        return self.set_compute_resource(data={'name': name, 'user': user, 'password': password, 'provider':provider, 'server': server, 'url': url})
+
+    def delete_compute_resource(self, name):
+        return self.delete_resource(resource_type='compute_resources', resource_id=name)
+
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
 
