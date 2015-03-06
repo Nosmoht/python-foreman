@@ -251,6 +251,9 @@ class Foreman:
             data['subnet_id'] = self.get_subnet_by_name(name=subnet).get('id')
         return self.set_hostgroup(data=data)
 
+    def delete_hostgroup(self, name):
+        return self.delete_resource(resource_type='hostgroups', resource_id=name)
+
     def get_locations(self):
         return self.get_resources(resource_type='locations')
 
