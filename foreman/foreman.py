@@ -69,7 +69,7 @@ class Foreman:
                            verify=False)
         if req.status_code == 200:
             return json.loads(req.text)
-        if req.status_code == 404 and component:
+        if req.status_code == 404 and resource_id:
             return {}
         raise ForemanError({'request_url': req.url,
                             'request_code': req.status_code,
