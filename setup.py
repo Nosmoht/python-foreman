@@ -1,11 +1,16 @@
 """ package setup
 """
 
+import os
 from distutils.core import setup
 
 def readme():
     with open('README.md') as f:
         return f.read()
+
+def requirements():
+    with open('requirements.txt', 'r') as f:
+        return f.read().spitlines()
 
 setup(name='python-foreman',
       version='0.3',
@@ -22,5 +27,5 @@ setup(name='python-foreman',
       license='MIT',
       url='https://github.com/Nosmoht/python-foreman',
       packages=['foreman'],
-      install_requires=['python-requests'],
+      install_requires=requirements(),
       )
