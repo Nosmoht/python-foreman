@@ -52,6 +52,15 @@ class Foreman:
         return url
 
     def get_resource(self, resource_type, resource_id=None, component=None, component_id=None):
+        """Execute a GET request agains Foreman API
+
+        Args:
+          resource_type (str): Name of resource to get
+          component (str): Name of resource components to get
+          component_id (str): Name of resource component to get
+        Returns:
+          Dict
+        """
         req = requests.get(url=self.get_resource_url(resource_type=resource_type,
                                                      resource_id=resource_id,
                                                      component=component,
@@ -60,11 +69,22 @@ class Foreman:
                            verify=False)
         if req.status_code == 200:
             return json.loads(req.text)
+        if req.status_code == 404 and component:
+            return {}
         raise ForemanError({'request_url': req.url,
                             'request_code': req.status_code,
                             'request': req.json()})
 
     def post_resource(self, resource_type, resource, data):
+        """Execute a POST request agains Foreman API
+
+        Args:
+          resource_type (str): Name of resource type to post
+          component (str): Name of resource to post
+          data (dict): Dictionary containing component details
+        Returns:
+          Dict
+        """
         req = requests.post(url=self.get_resource_url(resource_type=resource_type),
                             data=json.dumps({resource: data}),
                             headers=FOREMAN_REQUEST_HEADERS,
