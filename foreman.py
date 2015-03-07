@@ -166,6 +166,12 @@ class Foreman:
     def set_environment(self, data):
         return self.post_resource(resource_type='environments', resource='environment', data=data)
 
+    def create_environment(self, name):
+        return self.set_environment(data={'name': name})
+
+    def delete_environment(self, name):
+        return self.delete_resource(resource_type='environments', resource_id=name)
+
     def get_hosts(self):
         return self.get_resources(resource_type='hosts')
 
