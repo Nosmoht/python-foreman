@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Nosmoht/python-foreman.png)](https://travis-ci.org/Nosmoht/python-foreman)
+[![Coverage Status](https://coveralls.io/repos/Nosmoht/python-foreman/badge.svg)](https://coveralls.io/r/Nosmoht/python-foreman)
 # python-foreman
 Python Class to communicate with Foreman via [API] v2.
 
