@@ -2,7 +2,11 @@
 """
 
 import os
-from setuptools import setup
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 def readme():
     with open('README.md') as f:
