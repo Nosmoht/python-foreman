@@ -7,7 +7,7 @@ import json
 from foreman import Foreman
 
 def show_help():
-    print 'foreman.py -f <foreman_host> -p <port> -u <username> -s <secret>'
+    print('foreman.py -f <foreman_host> -p <port> -u <username> -s <secret>')
 
 def backup(backup_root_dir, resource, resource_function):
     # Backup Architectures
