@@ -2,7 +2,7 @@
 """
 
 import os
-from distutils.core import setup
+from setuptools import setup
 
 def readme():
     with open('README.md') as f:
@@ -10,7 +10,7 @@ def readme():
 
 def requirements():
     with open('requirements.txt', 'r') as f:
-        return f.read().spitlines()
+        return f.read().splitlines()
 
 setup(name='python-foreman',
       version='0.3',
