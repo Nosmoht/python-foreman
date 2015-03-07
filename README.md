@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Nosmoht/python-foreman.png)](https://travis-ci.org/Nosmoht/python-foreman)
 # python-foreman
 Python Class to communicate with Foreman via [API] v2.
 
@@ -10,6 +11,8 @@ Python-requests must be installed.
 # Supported Functions
 ## Architectures
 `get_architectures()`: Get a dict of all existing ones
+
+`get_architecutre()`: Get a dict defining a specific architecture
 
 `create_architecture()`: Create a new one
 
@@ -64,11 +67,11 @@ Update of any above listed resources not yet implemented !
 See test.py provides some examples.
 
 ```
-$ test.py -f foreman.example.com -p 443 -u admin -s p4ssw0rd -c test.yaml
+$ bin/test.py -f foreman.example.com -p 443 -u admin -s p4ssw0rd -c test.yaml
 ```
 or
 ```
-$ test.py --foreman foreman.example.com --port 443 --username admin --secret p4ssw0rd --config test.yaml
+$ bintest.py --foreman foreman.example.com --port 443 --username admin --secret p4ssw0rd --config test.yaml
 ```
 # License
 
