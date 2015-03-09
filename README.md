@@ -18,7 +18,7 @@ pip install git+git://github.com/Nosmoht/python-foreman.git#master
 To install with python:
 ```
 git clone git@github.com:Nosmoht/python-foreman.git
-python cd python-foreman
+cd python-foreman
 python setup.py install
 ```
 
