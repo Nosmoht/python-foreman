@@ -10,8 +10,16 @@ so the complete infrastructure can be deployed with Ansible like done in my [Ans
 [Python-requests] is required but will be installed by setup.py.
 
 # Installation
+To install the latest version with pip from Github:
 ```
 pip install git+git://github.com/Nosmoht/python-foreman.git#master
+```
+
+To install with python:
+```
+git clone git@github.com:Nosmoht/python-foreman.git
+python cd python-foreman
+python setup.py install
 ```
 
 # Supported Functions
