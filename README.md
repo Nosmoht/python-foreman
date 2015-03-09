@@ -7,7 +7,12 @@ The use case behind this Class is to configure Foreman with Python. The class ca
 so the complete infrastructure can be deployed with Ansible like done in my [Ansible Library].
 
 # Requirements
-Python-requests must be installed.
+[Python-requests] is required but will be installed by setup.py.
+
+# Installation
+```
+pip install git+git://github.com/Nosmoht/python-foreman.git#master
+```
 
 # Supported Functions
 ## Architectures
@@ -84,3 +89,4 @@ BSD
 [API]: www.theforeman.org/api_v2.html
 [Ansible Library]: https://github.com/Nosmoht/ansible-library-foreman
 [Thomas Krahn]: mailto:ntbc@gmx.net
+[Python-requests]: https://github.com/kennethreitz/requests
