@@ -311,6 +311,9 @@ class Foreman:
     def create_location(self, data):
         return self.set_location(data=data)
 
+    def delete_location(self, data):
+        return self.delete_resource(resource_type='locations', data=data)
+
     def get_media(self):
         return self.get_resources(resource_type='media')
 
