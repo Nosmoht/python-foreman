@@ -17,7 +17,12 @@ class ForemanError(Exception):
 
     Simple class to handle exceptions while communicating to Foreman API
     """
-    pass
+    def __init__(self, url, request, status_code, message):
+        self.url = url
+        self.status_code = status_code
+        self.message = message
+        self.request = request
+        super(ForemanError, self).__init__()
 
 class Foreman:
     """Foreman Class
@@ -73,9 +78,10 @@ class Foreman:
             return json.loads(req.text)
         if req.status_code == 404 and resource_id:
             return {}
-        raise ForemanError({'request_url': req.url,
-                            'request_code': req.status_code,
-                            'request': req.json()})
+        raise ForemanError(url=req.url,
+                           status_code=req.status_code,
+                           message=req.json().get('error').get('message'),
+                           request=req.json())
 
     def post_resource(self, resource_type, resource, data):
         """Execute a POST request agains Foreman API
@@ -94,10 +100,10 @@ class Foreman:
                             verify=False)
         if req.status_code in [200, 201]:
             return json.loads(req.text)
-        raise ForemanError({'request_url': req.url,
-                            'request_code': req.status_code,
-                            'request_data': json.dumps(data),
-                            'request': req.json()})
+        raise ForemanError(url=req.url,
+                           status_code=req.status_code,
+                           message=req.json().get('error').get('message'),
+                           request=req.json())
 
     def put_resource(self, resource_type, resource_id, data, action=None):
         """Execute a PUT request agains Foreman API
@@ -118,10 +124,10 @@ class Foreman:
                            verify=False)
         if req.status_code == 200:
             return json.loads(req.text)
-        raise ForemanError({'request_url': req.url,
-                            'request_code': req.status_code,
-                            'request_data': json.dumps(data),
-                            'request': req.json()})
+        raise ForemanError(url=req.url,
+                           status_code=req.status_code,
+                           message=req.json().get('error').get('message'),
+                           request=req.json())
 
     def delete_resource(self, resource_type, data):
         """Execute a DELETE request agains Foreman API
@@ -139,9 +145,10 @@ class Foreman:
                               verify=False)
         if req.status_code == 200:
             return json.loads(req.text)
-        raise ForemanError({'request_url': req.url,
-                            'request_code': req.status_code,
-                            'request': req.json()})
+        raise ForemanError(url=req.url,
+                           status_code=req.status_code,
+                           message=req.json().get('error').get('message'),
+                           request=req.json())
 
     def get_resources(self, resource_type):
         return self.get_resource(resource_type=resource_type).get('results')
