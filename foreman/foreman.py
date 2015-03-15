@@ -180,6 +180,41 @@ class Foreman:
     def delete_architecture(self, data):
         return self.delete_resource(resource_type='architectures', data=data)
 
+    def get_compute_attributes(self, data):
+        """
+        Get compute attributes of either a compute profile, a compute resource
+        or a combination of both.
+
+        Args:
+           data (dict): Must contain either :compute_profile_id or :compute_resource_id or both.
+
+        Returns:
+           dict
+        """
+        compute_profile_id = data.get('compute_profile_id', None)
+        compute_profile = None
+
+        compute_resource_id = data.get('compute_resource_id', None)
+        compute_resource = None
+
+        if compute_profile_id:
+            compute_profile = self.get_compute_profile(data={'id': compute_profile_id})
+            compute_attributes = compute_profile.get('compute_attributes', None)
+            if compute_attributes and compute_resource_id:
+                for i in compute_attributes:
+                    if i.get('compute_resource_id') == compute_resource_id:
+                        return i
+            return compute_attributes
+        elif compute_resource_id:
+            compute_resource = self.get_compute_resource(data={'id': compute_resource_id})
+            compute_attributes = compute_resource.get('compute_attributes')
+            if compute_attributes and compute_profile_id:
+                for i in compute_attributes:
+                    if i.get('compute_profile_id') == compute_profile_id:
+                        return i
+            return compute_attributes
+        return None
+
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
 
