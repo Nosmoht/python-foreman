@@ -232,38 +232,21 @@ class Foreman:
 
     def get_compute_attributes(self, data):
         """
-        Get compute attributes of either a compute profile, a compute resource
-        or a combination of both.
+        Get compute attributes of a compute profile on a compute resource.
 
         Args:
-           data (dict): Must contain either :compute_profile_id or :compute_resource_id or both.
+           data (dict): Must contain the name of the compute profile in compute_profile
+                        as well as the name of the compute_resource in compute_resource.
 
         Returns:
            dict
         """
-        compute_profile_id = data.get('compute_profile_id', None)
-        compute_profile = None
+        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
+        compute_attributes = compute_resource.get('compute_attributes')
+        compute_profile = self.get_compute_profile(data={'name': data.get('compute_profile')})
 
-        compute_resource_id = data.get('compute_resource_id', None)
-        compute_resource = None
+        return filter(lambda item: item.get('compute_resource_id') == compute_resource.get('id'), compute_attributes)
 
-        if compute_profile_id:
-            compute_profile = self.get_compute_profile(data={'id': compute_profile_id})
-            compute_attributes = compute_profile.get('compute_attributes', None)
-            if compute_attributes and compute_resource_id:
-                for i in compute_attributes:
-                    if i.get('compute_resource_id') == compute_resource_id:
-                        return i
-            return compute_attributes
-        elif compute_resource_id:
-            compute_resource = self.get_compute_resource(data={'id': compute_resource_id})
-            compute_attributes = compute_resource.get('compute_attributes')
-            if compute_attributes and compute_profile_id:
-                for i in compute_attributes:
-                    if i.get('compute_profile_id') == compute_profile_id:
-                        return i
-            return compute_attributes
-        return None
 
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
