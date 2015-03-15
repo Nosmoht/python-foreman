@@ -38,7 +38,7 @@ class Foreman:
         self.port = port
         self.url = 'https://' + self.hostname + ':' + self.port + '/api/' + FOREMAN_API_VERSION
 
-    def get_resource_url(self, resource_type, resource_id=None, component=None, component_id=None):
+    def _get_resource_url(self, resource_type, resource_id=None, component=None, component_id=None):
         """Create API URL path
 
         Args:
@@ -56,7 +56,7 @@ class Foreman:
                     url = url + '/' + str(component_id)
         return url
 
-    def get_resource(self, resource_type, resource_id=None, component=None, component_id=None, data=None):
+    def _get_request(self, url, data=None):
         """Execute a GET request agains Foreman API
 
         Args:
@@ -67,10 +67,7 @@ class Foreman:
         Returns:
           Dict
         """
-        req = requests.get(url=self.get_resource_url(resource_type=resource_type,
-                                                     resource_id=resource_id,
-                                                     component=component,
-                                                     component_id=component_id),
+        req = requests.get(url=url,
                            data=data,
                            auth=self.__auth,
                            verify=False)
@@ -83,7 +80,7 @@ class Foreman:
                            message=req.json().get('error').get('message'),
                            request=req.json())
 
-    def post_resource(self, resource_type, resource, data):
+    def _post_request(self, url, data):
         """Execute a POST request agains Foreman API
 
         Args:
@@ -93,8 +90,8 @@ class Foreman:
         Returns:
           Dict
         """
-        req = requests.post(url=self.get_resource_url(resource_type=resource_type),
-                            data=json.dumps({resource: data}),
+        req = requests.post(url=url,
+                            data=json.dumps(data),
                             headers=FOREMAN_REQUEST_HEADERS,
                             auth=self.__auth,
                             verify=False)
@@ -105,7 +102,7 @@ class Foreman:
                            message=req.json().get('error').get('message'),
                            request=req.json())
 
-    def put_resource(self, resource_type, resource_id, data, action=None):
+    def _put_request(self, url, data):
         """Execute a PUT request agains Foreman API
 
         Args:
@@ -115,9 +112,7 @@ class Foreman:
         Returns:
           Dict
         """
-        req = requests.put(url=self.get_resource_url(resource_type=resource_type,
-                                                     resource_id=resource_id,
-                                                     component=action),
+        req = requests.put(url=url,
                            data=json.dumps(data),
                            headers=FOREMAN_REQUEST_HEADERS,
                            auth=self.__auth,
@@ -129,7 +124,7 @@ class Foreman:
                            message=req.json().get('error').get('message'),
                            request=req.json())
 
-    def delete_resource(self, resource_type, data):
+    def _delete_request(self, url):
         """Execute a DELETE request agains Foreman API
 
         Args:
@@ -138,8 +133,7 @@ class Foreman:
         Returns:
           Dict
         """
-        req = requests.delete(url=self.get_resource_url(resource_type=resource_type,
-                                                        resource_id=str(data.get('id'))),
+        req = requests.delete(url=url,
                               headers=FOREMAN_REQUEST_HEADERS,
                               auth=self.__auth,
                               verify=False)
@@ -151,28 +145,84 @@ class Foreman:
                            request=req.json())
 
     def get_resources(self, resource_type):
-        return self.get_resource(resource_type=resource_type).get('results')
+        """ Return a list of all resources of the defined resource type
+
+        Args:
+           resource_type: Type of reesources to get
+        Returns:
+           list of dict
+        """
+        return self._get_request(url=self._get_resource_url(resource_type=resource_type)).get('results')
+
+    def get_resource(self, resource_type, resource_id=None, component=None, component_id=None, data=None):
+        """ Get information about a resource
+
+        If data contains id the resource will be get directly from the API.
+        If id is not specified but name the resource will be searched within the database.
+        If found the id of the research will be used. If not found None will be returned.
+
+        Args:
+           resource_type (str): Resource type
+           data (dict): Must contain either id or name
+        Returns:
+           dict
+        """
+        resource_id = None
+
+        if data.has_key('id'):
+            resource_id = data.get('id')
+        elif data.has_key('name'):
+            resource = self.search_resource(resource_type=resource_type, search_data=data)
+            resource_id = resource.get('id')
+
+        if resource_id:
+            return self._get_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id))
+        else:
+            return None
+
+    def post_resource(self, resource_type, resource, data):
+        return self._post_request(url=self._get_resource_url(resource_type=resource_type),
+                                  data={resource: data})
+
+    def put_resource(self, resource_type, resource_id, data, component=None):
+        return self._put_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id, component=component), data=data)
+
+    def set_resource(self, resource_type, resource, data):
+        return self._post_request(url=self._get_resource_url(resource_type=resource_type, resource=resource), data=data)
+
+    def delete_resource(self, resource_type, data):
+        return self._delete_request(url=self._get_resource_url(resource_type=resource_type, resource_id=str(data.get('id'))))
 
     def search_resource(self, resource_type, search_data={}):
         data = {}
         data['search'] = ''
+
         for key in search_data:
             if data['search']:
                 data['search'] = data['search'] + ' AND '
-            data['search'] = data['search'] + key + '==' + '"' + search_data[key] + '"'
-        result = self.get_resource(resource_type=resource_type, data=data).get('results')
+            data['search'] = data['search'] + key + ' == '
+
+            if type(search_data[key]) == int:
+                data['search'] = data['search'] + search_data[key]
+            elif type(search_data[key]) == str:
+              data['search'] = data['search'] + '"' + search_data[key] + '"'
+
+        results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=data)
+        result = results.get('results')
+
         if len(result) == 1:
             return result[0]
+
         return result
 
     def get_architectures(self):
         return self.get_resources(resource_type='architectures')
 
     def get_architecture(self, data):
-        return self.search_resource(resource_type='architectures', search_data=data)
+        return self.get_resource(resource_type='architectures', data=data)
 
     def set_architecture(self, data):
-        return self.post_resource(resource_type='architectures', resource='architecture', data=data)
+        return self.set_resource(resource_type='architectures', resource='architecture', data=data)
 
     def create_architecture(self, data):
         return self.set_architecture(data=data)
@@ -180,14 +230,32 @@ class Foreman:
     def delete_architecture(self, data):
         return self.delete_resource(resource_type='architectures', data=data)
 
+    def get_compute_attributes(self, data):
+        """
+        Get compute attributes of a compute profile on a compute resource.
+
+        Args:
+           data (dict): Must contain the name of the compute profile in compute_profile
+                        as well as the name of the compute_resource in compute_resource.
+
+        Returns:
+           dict
+        """
+        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
+        compute_attributes = compute_resource.get('compute_attributes')
+        compute_profile = self.get_compute_profile(data={'name': data.get('compute_profile')})
+
+        return filter(lambda item: item.get('compute_resource_id') == compute_resource.get('id'), compute_attributes)
+
+
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
 
     def get_compute_profile(self, data):
-        return self.search_resource(resource_type='compute_profiles', search_data=data)
+        return self.get_resource(resource_type='compute_profiles', data=data)
 
     def set_compute_profile(self, data):
-        return self.post_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
+        return self.set_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
 
     def create_compute_profile(self, data):
         return self.set_compute_profile(data=data)
@@ -199,10 +267,10 @@ class Foreman:
         return self.get_resources(resource_type='compute_resources')
 
     def get_compute_resource(self, data):
-        return self.search_resource(resource_type='compute_resources', search_data=data)
+        return self.get_resource(resource_type='compute_resources', data=data)
 
     def set_compute_resource(self, data):
-        return self.post_resource(resource_type='compute_resources', resource='compute_resource', data=data)
+        return self.set_resource(resource_type='compute_resources', resource='compute_resource', data=data)
 
     def create_compute_resource(self, data):
         return self.set_compute_resource(data=data)
@@ -220,7 +288,7 @@ class Foreman:
         return self.search_resource(resource_type='domains', search_data=data)
 
     def set_domain(self, data):
-        return self.post_resource(resource_type='domains', resource='domain', data=data)
+        return self.set_resource(resource_type='domains', resource='domain', data=data)
 
     def create_domain(self, data):
         return self.set_domain(data=data)
@@ -235,7 +303,7 @@ class Foreman:
         return self.search_resource(resource_type='environments', search_data=data)
 
     def set_environment(self, data):
-        return self.post_resource(resource_type='environments', resource='environment', data=data)
+        return self.set_resource(resource_type='environments', resource='environment', data=data)
 
     def create_environment(self, data):
         return self.set_environment(data=data)
@@ -250,7 +318,7 @@ class Foreman:
         return self.search_resource(resource_type='hosts', search_data=data)
 
     def set_host(self, data):
-        return self.post_resource(resource_type='hosts', resource='host', data=data)
+        return self.set_resource(resource_type='hosts', resource='host', data=data)
 
     def create_host(self, data):
         return self.set_host(data=data)
@@ -261,7 +329,7 @@ class Foreman:
     def get_host_power(self, host_id):
         return self.put_resource(resource_type='hosts',
                                  resource_id=host_id,
-                                 action='power',
+                                 component='power',
                                  data={'power_action': 'state', 'host': {}})
 
     def poweron_host(self, host_id):
@@ -288,7 +356,7 @@ class Foreman:
     def set_host_power(self, host_id, action):
         return self.put_resource(resource_type='hosts',
                                  resource_id=host_id,
-                                 action='power',
+                                 component='power',
                                  data={'power_action': action, 'host': {}})
 
     def get_hostgroups(self):
@@ -298,7 +366,7 @@ class Foreman:
         return self.search_resource(resource_type='hostgroups', search_data=data)
 
     def set_hostgroup(self, data):
-        return self.post_resource(resource_type='hostgroups', resource='hostgroup', data=data)
+        return self.set_resource(resource_type='hostgroups', resource='hostgroup', data=data)
 
     def create_hostgroup(self, data):
         return self.set_hostgroup(data=data)
@@ -313,7 +381,7 @@ class Foreman:
         return self.search_resource(resource_type='locations', search_data=data)
 
     def set_location(self, data):
-        return self.post_resource(resource_type='locations', resource='location', data=data)
+        return self.set_resource(resource_type='locations', resource='location', data=data)
 
     def create_location(self, data):
         return self.set_location(data=data)
@@ -328,7 +396,7 @@ class Foreman:
         return self.search_resource(resource_type='media', search_data=data)
 
     def set_medium(self, data):
-        return self.post_resource(resource_type='media', resource='medium', data=data)
+        return self.set_resource(resource_type='media', resource='medium', data=data)
 
     def create_medium(self, data):
         return self.set_medium(data=data)
@@ -343,7 +411,7 @@ class Foreman:
         return self.search_resource(resource_type='organizations', search_data=data)
 
     def set_organization(self, data):
-        return self.post_resource(resource_type='organizations', resource='organization', data=data)
+        return self.set_resource(resource_type='organizations', resource='organization', data=data)
 
     def create_organization(self, data):
         return self.set_organization(data=data)
@@ -358,7 +426,7 @@ class Foreman:
         return self.search_resource(resource_type='operatingsystems', search_data=data)
 
     def set_operatingsystem(self, data):
-        return self.post_resource(resource_type='operatingsystems', resource='operatingsystem', data=data)
+        return self.set_resource(resource_type='operatingsystems', resource='operatingsystem', data=data)
 
     def create_operatingsystem(self, data):
         return self.set_operatingsystem(data=data)
@@ -373,7 +441,7 @@ class Foreman:
         return self.search_resource(resource_type='ptables', search_data=data)
 
     def set_partition_table(self, data):
-        return self.post_resource(resource_type='ptables', resource='ptable', data=data)
+        return self.set_resource(resource_type='ptables', resource='ptable', data=data)
 
     def create_partition_table(self, data):
         return self.set_partition_table(data=data)
@@ -388,7 +456,7 @@ class Foreman:
         return self.search_resource(resource_type='smart_proxies', search_data=data)
 
     def set_smart_proxy(self, data):
-        return self.post_resource(resource_type='smart_proxies', resource='smart_proxy', data=data)
+        return self.set_resource(resource_type='smart_proxies', resource='smart_proxy', data=data)
 
     def create_smart_proxy(self, data):
         return self.set_smart_proxy(data=data)
@@ -403,7 +471,7 @@ class Foreman:
         return self.search_resource(resource_type='subnets', search_data=data)
 
     def set_subnet(self, data):
-        return self.post_resource(resource_type='subnets', resource='subnet', data=data)
+        return self.set_resource(resource_type='subnets', resource='subnet', data=data)
 
     def create_subnet(self, data):
         return self.set_subnet(data=data)
