@@ -281,8 +281,8 @@ class Foreman:
     def delete_compute_resource(self, data):
         return self.delete_resource(resource_type='compute_resources', data=data)
 
-    def get_compute_resource_images(self, name):
-        return self.get_compute_resource(name=name, component='images').get('results')
+#    def get_compute_resource_images(self, name):
+#        return self.get_compute_resource(name=name, component='images').get('results')
 
     def get_domains(self):
         return self.get_resources(resource_type='domains')
@@ -344,17 +344,17 @@ class Foreman:
     def reboot_host(self, host_id):
         return self.set_host_power(host_id=host_id, action='reboot')
 
-    def get_host_component(self, name, component, component_id=None):
-        return self.get_host(name=name, component=component, component_id=component_id)
+#    def get_host_component(self, name, component, component_id=None):
+#        return self.get_host(name=name, component=component, component_id=component_id)
 
-    def get_host_interfaces(self, name):
-        return self.get_host_component(name=name,
-                                       component='interfaces')
+#    def get_host_interfaces(self, name):
+#        return self.get_host_component(name=name,
+#                                       component='interfaces')
 
-    def get_host_interface(self, name, interface_id):
-        return self.get_host_component(name=name,
-                                       component='interfaces',
-                                       component_id=interface_id)
+#    def get_host_interface(self, name, interface_id):
+#        return self.get_host_component(name=name,
+#                                       component='interfaces',
+#                                       component_id=interface_id)
 
     def set_host_power(self, host_id, action):
         return self.put_resource(resource_type='hosts',
