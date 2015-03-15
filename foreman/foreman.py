@@ -152,9 +152,10 @@ class Foreman:
         Returns:
            list of dict
         """
-        return self._get_request(url=self._get_resource_url(resource_type=resource_type)).get('results')
+        request_result = self._get_request(url=self._get_resource_url(resource_type=resource_type))
+        return request_result.get('results')
 
-    def get_resource(self, resource_type, resource_id=None, component=None, component_id=None, data=None):
+    def get_resource(self, resource_type, resource_id=None, data=None):
         """ Get information about a resource
 
         If data contains id the resource will be get directly from the API.
@@ -176,7 +177,8 @@ class Foreman:
             resource_id = resource.get('id')
 
         if resource_id:
-            return self._get_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id))
+            return self._get_request(url=self._get_resource_url(resource_type=resource_type,
+                                                                resource_id=resource_id))
         else:
             return None
 
@@ -188,12 +190,13 @@ class Foreman:
         return self._put_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id, component=component), data=data)
 
     def set_resource(self, resource_type, resource, data):
-        return self._post_request(url=self._get_resource_url(resource_type=resource_type, resource=resource), data=data)
+        return self._post_request(url=self._get_resource_url(resource_type=resource_type), data={resource: data})
 
     def delete_resource(self, resource_type, data):
-        return self._delete_request(url=self._get_resource_url(resource_type=resource_type, resource_id=str(data.get('id'))))
+        resource_id = str(data.get('id'))
+        return self._delete_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id))
 
-    def search_resource(self, resource_type, search_data={}):
+    def search_resource(self, resource_type, search_data=None):
         data = {}
         data['search'] = ''
 
@@ -202,10 +205,10 @@ class Foreman:
                 data['search'] = data['search'] + ' AND '
             data['search'] = data['search'] + key + ' == '
 
-            if type(search_data[key]) == int:
+            if isinstance(search_data[key], int):
                 data['search'] = data['search'] + search_data[key]
-            elif type(search_data[key]) == str:
-              data['search'] = data['search'] + '"' + search_data[key] + '"'
+            elif isinstance(search_data[key], str):
+                data['search'] = data['search'] + '"' + search_data[key] + '"'
 
         results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=data)
         result = results.get('results')
