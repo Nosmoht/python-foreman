@@ -73,8 +73,7 @@ class Foreman:
                            verify=False)
         if req.status_code == 200:
             return json.loads(req.text)
-        if req.status_code == 404 and resource_id:
-            return {}
+
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
                            message=req.json().get('error').get('message'),
