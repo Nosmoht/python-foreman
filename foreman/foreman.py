@@ -248,7 +248,7 @@ class Foreman:
         compute_attributes = compute_resource.get('compute_attributes')
         compute_profile = self.get_compute_profile(data={'name': data.get('compute_profile')})
 
-        return filter(lambda item: item.get('compute_resource_id') == compute_resource.get('id'), compute_attributes)
+        return filter(lambda item: item.get('compute_profile_id') == compute_profile.get('id'), compute_attributes)
 
 
     def get_compute_profiles(self):
