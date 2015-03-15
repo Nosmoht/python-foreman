@@ -96,9 +96,17 @@ class Foreman:
                             verify=False)
         if req.status_code in [200, 201]:
             return json.loads(req.text)
+
+        request_error = req.json().get('error')
+
+        if req.status_code == 500:
+            error_message = request_error.get('message')
+        if req.status_code == 422:
+            error_message = ', '.join(request_error.get('full_messages'))
+
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
-                           message=req.json().get('error').get('message'),
+                           message=error_message,
                            request=req.json())
 
     def _put_request(self, url, data):
