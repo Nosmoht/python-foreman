@@ -173,7 +173,8 @@ class Foreman:
             resource_id = data.get('id')
         elif data.has_key('name'):
             resource = self.search_resource(resource_type=resource_type, search_data=data)
-            resource_id = resource.get('id')
+            if resource and resource.has_key('id'):
+                resource_id = resource.get('id')
 
         if resource_id:
             return self._get_request(url=self._get_resource_url(resource_type=resource_type,
