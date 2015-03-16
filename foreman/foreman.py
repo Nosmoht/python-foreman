@@ -190,9 +190,39 @@ class Foreman:
         else:
             return None
 
-    def post_resource(self, resource_type, resource, data):
-        return self._post_request(url=self._get_resource_url(resource_type=resource_type),
-                                  data={resource: data})
+    def post_resource(self, resource_type, resource, data, additional_data=None):
+        """ Execute a post request
+
+        Execute a post request to create one <resource> of a <resource type>.
+        Foreman expects usually the following content:
+
+        {
+          "<resource>": {
+            "param1": "value",
+            "param2": "value",
+            ...
+            "paramN": "value"
+          }
+        }
+
+        <data> has to contain all parameters and values of the resource to be created.
+        They are passed as {<resource>: data}.
+
+        As not all resource types can be handled in this way <additional_data> can be
+        used to pass more data in. All key/values pairs will be passed directly and
+        not passed inside '{<resource>: data}.
+
+        Args:
+           data(dict): Hash containing parameter/value pairs
+        """
+        url = self._get_resource_url(resource_type=resource_type)
+        resource_data = {}
+        if additional_data:
+            for key in additional_data.keys():
+                resource_data[key] = additional_data[key]
+        resource_data[resource] = data
+        return self._post_request(url=url,
+                                  data=resource_data)
 
     def put_resource(self, resource_type, resource_id, data, component=None):
         return self._put_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id, component=component), data=data)
