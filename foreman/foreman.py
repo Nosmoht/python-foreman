@@ -273,7 +273,23 @@ class Foreman:
 
     def get_compute_attributes(self, data):
         """
-        Get compute attributes of a compute profile on a compute resource.
+        Return the compute attributes of all compute profiles assigned to a compute resource
+
+        Args:
+           data(dict): Must contain the name of the compute resource in compute_resource.
+
+        Returns:
+           dict
+        """
+        result = {}
+        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
+        if compute_resource:
+            result = compute_resource.get('compute_attributes')
+        return result
+
+    def get_compute_attribute(self, data):
+        """
+        Return the compute attributes of a compute profile assigned to a compute resource.
 
         Args:
            data (dict): Must contain the name of the compute profile in compute_profile
@@ -282,8 +298,7 @@ class Foreman:
         Returns:
            dict
         """
-        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
-        compute_attributes = compute_resource.get('compute_attributes')
+        compute_attributes = self.get_compute_attributes(data=data)
         compute_profile = self.get_compute_profile(data={'name': data.get('compute_profile')})
 
         return filter(lambda item: item.get('compute_profile_id') == compute_profile.get('id'), compute_attributes)
