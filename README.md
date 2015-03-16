@@ -15,7 +15,7 @@ Will come soon. See the example inside the bin directory.
 # Installation
 To install the latest version with pip from Github:
 ```
-pip install https://github.com/Nosmoht/python-ftoreman.git#master
+pip install https://github.com/Nosmoht/python-foreman.git#master
 ```
 
 To install with python (sudo could be required):
