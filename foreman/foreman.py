@@ -320,24 +320,21 @@ class Foreman:
 
         return filter(lambda item: item.get('compute_profile_id') == compute_profile.get('id'), compute_attributes)
 
-    def create_compute_attribute(self, compute_resource_name, compute_profile_name, data):
+    def create_compute_attribute(self, data):
         """ Create compute attributes for a compute profile in a compute resource
 
         Args:
-           compute_resource (str): Compute resource name
-           compute_profile (str): Compute profile name
-           data(dict): Must of vm_attrs
+           data(dict): Must contain compute_resource_id, compute_profile_id and vm_attrs
         """
         addition_data = {}
+        addition_data['compute_resource_id'] = data.get('compute_resource_id')
+        addition_data['compute_profile_id'] = data.get('compute_profile_id')
 
-        compute_resource = self.get_compute_resource(data={'name': compute_resource_name})
-        addition_data['compute_resource_id'] = compute_resource.get('id')
-
-        compute_profile = self.get_compute_profile(data={'name': compute_profile_name})
-        addition_data['compute_profile_id'] = compute_profile.get('id')
+        resource_data = {}
+        resource_data['vm_attrs'] = data.get('vm_attrs')
 
         return self.post_resource(resource_type='compute_attributes', resource='compute_attribute',
-                           data=data,
+                           data=resource_data,
                            additional_data=addition_data)
 
     def get_compute_profiles(self):
