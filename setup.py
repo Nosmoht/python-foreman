@@ -17,7 +17,7 @@ def requirements():
         return f.read().splitlines()
 
 setup(name='python-foreman',
-      version='0.8.3',
+      version='0.9.0',
       description='Python class to communicate with Foreman via API v2',
       long_description=readme(),
       keywords=['foreman'],
