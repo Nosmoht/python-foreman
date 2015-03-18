@@ -7,7 +7,7 @@ The use case behind this Class is to configure Foreman with Python. The class ca
 so the complete infrastructure can be deployed with Ansible like done in my [Ansible Library].
 
 # Documentation
-Will come soon.
+Will come soon. See the example inside the bin directory.
 
 # Requirements
 [Python-requests] is required but will be installed by setup.py.
@@ -18,7 +18,7 @@ To install the latest version with pip from Github:
 pip install git+git://github.com/Nosmoht/python-foreman.git#master
 ```
 
-To install with python:
+To install with python (sudo could be required):
 ```
 git clone git@github.com:Nosmoht/python-foreman.git
 cd python-foreman
@@ -28,14 +28,11 @@ python setup.py install
 
 # How to use
 
-See test.py for examples.
+See the backup for examples.
 
 ```
-$ bin/test.py -f foreman.example.com -p 443 -u admin -s p4ssw0rd -c test.yaml
-```
-or
-```
-$ bin/test.py --foreman foreman.example.com --port 443 --username admin --secret p4ssw0rd --config test.yaml
+cd bin
+$ ./backup_foreman.py -f foreman.example.com -p 443 -u admin -s p4ssw0rd
 ```
 
 # License
