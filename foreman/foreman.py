@@ -271,6 +271,21 @@ class Foreman:
     def delete_architecture(self, data):
         return self.delete_resource(resource_type='architectures', data=data)
 
+    def get_common_attributes(self):
+        return self.get_resources(resource_type='common_attributes')
+
+    def get_common_attribute(self, data):
+        return self.get_resource(resource_type='common_attributes', data=data)
+
+    def set_common_attribute(self, data):
+        return self.set_resource(resource_type='common_attributes', resource='common_attribute', data=data)
+
+    def create_common_attribute(self, data):
+        return self.set_common_attribute(data=data)
+
+    def delete_common_attribute(self, data):
+        return self.delete_resource(resource_type='common_attributes', data=data)
+
     def get_compute_attributes(self, data):
         """
         Return the compute attributes of all compute profiles assigned to a compute resource
