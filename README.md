@@ -15,12 +15,12 @@ Will come soon. See the example inside the bin directory.
 # Installation
 To install the latest version with pip from Github:
 ```
-pip install git+git://github.com/Nosmoht/python-foreman.git#master
+pip install https://github.com/Nosmoht/python-foreman.git#master
 ```
 
 To install with python (sudo could be required):
 ```
-git clone git@github.com:Nosmoht/python-foreman.git
+git clone https://github.com/Nosmoht/python-foreman.git
 cd python-foreman
 python setup.py install
 ```
