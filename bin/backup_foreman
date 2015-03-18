@@ -73,6 +73,8 @@ def main(argv):
            resource_function=theforeman.get_architectures())
     backup(backup_dir=backup_root, resource='compute_resources',
            resource_function=theforeman.get_compute_resources())
+    backup(backup_dir=backup_root, resource='common_attributes',
+           resource_function=theforeman.get_common_attributes())
     backup(backup_dir=backup_root, resource='compute_profiles',
            resource_function=theforeman.get_compute_profiles())
     backup(backup_dir=backup_root, resource='config_templates',
