@@ -353,6 +353,21 @@ class Foreman:
     def delete_compute_resource(self, data):
         return self.delete_resource(resource_type='compute_resources', data=data)
 
+    def get_config_templates(self):
+        return self.get_resources(resource_type='config_templates')
+
+    def get_config_template(self, data):
+        return self.get_resource(resource_type='config_templates', data=data)
+
+    def set_config_template(self, data):
+        return self.set_resource(resource_type='config_templates', resource='config_template', data=data)
+
+    def create_config_template(self, data):
+        return self.set_config_template(data=data)
+
+    def delete_config_template(self, data):
+        return self.delete_resource(resource_type='config_templates', data=data)
+
 #    def get_compute_resource_images(self, name):
 #        return self.get_compute_resource(name=name, component='images').get('results')
 
