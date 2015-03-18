@@ -75,6 +75,8 @@ def main(argv):
            resource_function=theforeman.get_compute_resources())
     backup(backup_dir=backup_root, resource='compute_profiles',
            resource_function=theforeman.get_compute_profiles())
+    backup(backup_dir=backup_root, resource='config_templates',
+           resource_function=theforeman.get_config_templates())
     backup(backup_dir=backup_root, resource='domains',
            resource_function=theforeman.get_domains())
     backup(backup_dir=backup_root, resource='environments',
