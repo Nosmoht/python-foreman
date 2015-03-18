@@ -244,7 +244,7 @@ class Foreman:
             data['search'] = data['search'] + key + ' == '
 
             if isinstance(search_data[key], int):
-                data['search'] = data['search'] + search_data[key]
+                data['search'] = data['search'] + str(search_data[key])
             elif isinstance(search_data[key], str):
                 data['search'] = data['search'] + '"' + search_data[key] + '"'
 
