@@ -71,6 +71,8 @@ def main(argv):
 
     backup(backup_dir=backup_root, resource='architectures',
            resource_function=theforeman.get_architectures())
+    backup(backup_dir=backup_root, resource='common_parameters',
+           resource_function=theforeman.get_common_parameters())
     backup(backup_dir=backup_root, resource='compute_resources',
            resource_function=theforeman.get_compute_resources())
     backup(backup_dir=backup_root, resource='compute_profiles',
