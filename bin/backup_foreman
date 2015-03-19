@@ -8,39 +8,81 @@ import os
 import yaml
 from foreman import Foreman
 
+class ForemanBackup:
+    def __init__(self, hostname, port, username, password):
+        self.foreman = Foreman(hostname, port, username, password)
+
+    def backup(self, backup_dir, resource, resource_function):
+        """Backup Foreman resource as YAML file into a directory.
+
+        A new directory named <resource> will be created inside <backup_dir>. Each
+        resource fetched by <resource_function> will be saved in an own YAML file
+        called <resource_name>.yaml in <backup_dir>/<resource>.
+
+        Args:
+          backup_dir (str): Directory where to create the backup files
+          resource (str): Name of the resource to backup (e.g. 'architectures')
+          resource_function (def): Name of function to call to get a dict of resources
+        """
+        backup_dir = os.path.join(backup_dir, resource)
+
+        print("Backup: " + resource)
+
+        if not os.path.exists(backup_dir):
+            os.makedirs(backup_dir)
+
+        for resource_item in resource_function:
+            item = self.foreman.get_resource(resource_type= resource,
+                                             data={'id': resource_item.get('id')})
+            if item:
+                backup_file = os.path.join(backup_dir, item.get('name').replace('/', '_') + '.yaml')
+                with open(backup_file, 'w') as backup_file:
+                    yaml.safe_dump(item, backup_file, default_flow_style=False)
+
+    def run(self):
+        backup_root = '.'
+
+        self.backup(backup_dir=backup_root, resource='architectures',
+               resource_function=self.foreman.get_architectures())
+        self.backup(backup_dir=backup_root, resource='common_parameters',
+               resource_function=self.foreman.get_common_parameters())
+        self.backup(backup_dir=backup_root, resource='compute_resources',
+               resource_function=self.foreman.get_compute_resources())
+        self.backup(backup_dir=backup_root, resource='compute_profiles',
+               resource_function=self.foreman.get_compute_profiles())
+        self.backup(backup_dir=backup_root, resource='config_templates',
+               resource_function=self.foreman.get_config_templates())
+        self.backup(backup_dir=backup_root, resource='domains',
+               resource_function=self.foreman.get_domains())
+        self.backup(backup_dir=backup_root, resource='environments',
+               resource_function=self.foreman.get_environments())
+        self.backup(backup_dir=backup_root, resource='hosts',
+               resource_function=self.foreman.get_hosts())
+        self.backup(backup_dir=backup_root, resource='hostgroups',
+               resource_function=self.foreman.get_hostgroups())
+        self.backup(backup_dir=backup_root, resource='locations',
+               resource_function=self.foreman.get_locations())
+        self.backup(backup_dir=backup_root, resource='media',
+               resource_function=self.foreman.get_media())
+#        self.backup(backup_dir=backup_root, resource='organizations',
+#               resource_function=self.foreman.get_organizations())
+        self.backup(backup_dir=backup_root, resource='operatingsystems',
+               resource_function=self.foreman.get_operatingsystems())
+        self.backup(backup_dir=backup_root, resource='smart_proxies',
+               resource_function=self.foreman.get_smart_proxies())
+        self.backup(backup_dir=backup_root, resource='subnets',
+               resource_function=self.foreman.get_subnets())
+
 def show_help():
     """Print on screen how to use this script.
     """
     print('foreman.py -f <foreman_host> -p <port> -u <username> -s <secret>')
-
-def backup(backup_dir, resource, resource_function):
-    """Backup Foreman resource as YAML file into a directory.
-
-    A new directory named <resource> will be created inside <backup_dir>. Each
-    resource fetched by <resource_function> will be saved in an own YAML file
-    called <resource_name>.yaml in <backup_dir>/<resource>.
-
-    Args:
-      backup_dir (str): Directory where to create the backup files
-      resource (str): Name of the resource to backup (e.g. 'architectures')
-      resource_function (def): Name of function to call to get a dict of resources
-    """
-    backup_dir = os.path.join(backup_dir, resource)
-
-    if not os.path.exists(backup_dir):
-        os.makedirs(backup_dir)
-
-    for item in resource_function:
-        backup_file = os.path.join(backup_dir, item.get('name').replace('/', '_') + '.yaml')
-        with open(backup_file, 'w') as backup_file:
-            yaml.safe_dump(item, backup_file, default_flow_style=False)
 
 def main(argv):
     """ Main
 
     Backup Foreman resources
     """
-    theforeman = None
     foreman_host = os.environ.get('FOREMAN_HOST', '127.0.0.1')
     foreman_port = os.environ.get('FOREMAN_PORT', '443')
     foreman_username = os.environ.get('FOREMAN_USERNAME', 'foreman')
@@ -66,39 +108,9 @@ def main(argv):
         elif opt in ('-s', '--secret'):
             foreman_password = arg
 
-    theforeman = Foreman(foreman_host, foreman_port, foreman_username, foreman_password)
-    backup_root = '.'
-
-    backup(backup_dir=backup_root, resource='architectures',
-           resource_function=theforeman.get_architectures())
-    backup(backup_dir=backup_root, resource='common_parameters',
-           resource_function=theforeman.get_common_parameters())
-    backup(backup_dir=backup_root, resource='compute_resources',
-           resource_function=theforeman.get_compute_resources())
-    backup(backup_dir=backup_root, resource='compute_profiles',
-           resource_function=theforeman.get_compute_profiles())
-    backup(backup_dir=backup_root, resource='config_templates',
-           resource_function=theforeman.get_config_templates())
-    backup(backup_dir=backup_root, resource='domains',
-           resource_function=theforeman.get_domains())
-    backup(backup_dir=backup_root, resource='environments',
-           resource_function=theforeman.get_environments())
-    backup(backup_dir=backup_root, resource='hosts',
-           resource_function=theforeman.get_hosts())
-    backup(backup_dir=backup_root, resource='hostgroups',
-           resource_function=theforeman.get_hostgroups())
-    backup(backup_dir=backup_root, resource='locations',
-           resource_function=theforeman.get_locations())
-    backup(backup_dir=backup_root, resource='media',
-           resource_function=theforeman.get_media())
-    backup(backup_dir=backup_root, resource='organizations',
-           resource_function=theforeman.get_organizations())
-    backup(backup_dir=backup_root, resource='operatingsystems',
-           resource_function=theforeman.get_operatingsystems())
-    backup(backup_dir=backup_root, resource='smart_proxies',
-           resource_function=theforeman.get_smart_proxies())
-    backup(backup_dir=backup_root, resource='subnets',
-           resource_function=theforeman.get_subnets())
+    backup = ForemanBackup(foreman_host,foreman_port,
+                                   foreman_username, foreman_password)
+    backup.run()
 
 if __name__ == '__main__':
     main(sys.argv[1:])
