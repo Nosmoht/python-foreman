@@ -175,6 +175,7 @@ class Foreman:
         Returns:
            dict
         """
+
         resource_id = None
 
         if data.has_key('id'):
@@ -225,14 +226,15 @@ class Foreman:
                                   data=resource_data)
 
     def put_resource(self, resource_type, resource_id, data, component=None):
-        return self._put_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id, component=component), data=data)
-
-    def set_resource(self, resource_type, resource, data):
-        return self._post_request(url=self._get_resource_url(resource_type=resource_type), data={resource: data})
+        return self._put_request(url=self._get_resource_url(resource_type=resource_type,
+                                                            resource_id=resource_id,
+                                                            component=component),
+                                 data=data)
 
     def delete_resource(self, resource_type, data):
         resource_id = str(data.get('id'))
-        return self._delete_request(url=self._get_resource_url(resource_type=resource_type, resource_id=resource_id))
+        return self._delete_request(url=self._get_resource_url(resource_type=resource_type,
+                                                               resource_id=resource_id))
 
     def search_resource(self, resource_type, search_data=None):
         data = {}
@@ -263,7 +265,7 @@ class Foreman:
         return self.get_resource(resource_type='architectures', data=data)
 
     def set_architecture(self, data):
-        return self.set_resource(resource_type='architectures', resource='architecture', data=data)
+        return self.post_resource(resource_type='architectures', resource='architecture', data=data)
 
     def create_architecture(self, data):
         return self.set_architecture(data=data)
@@ -278,7 +280,7 @@ class Foreman:
         return self.get_resource(resource_type='common_parameters', data=data)
 
     def set_common_parameter(self, data):
-        return self.set_resource(resource_type='common_parameters', resource='common_parameter', data=data)
+        return self.post_resource(resource_type='common_parameters', resource='common_parameter', data=data)
 
     def create_common_parameter(self, data):
         return self.set_common_parameter(data=data)
@@ -345,7 +347,7 @@ class Foreman:
         return self.get_resource(resource_type='compute_profiles', data=data)
 
     def set_compute_profile(self, data):
-        return self.set_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
+        return self.post_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
 
     def create_compute_profile(self, data):
         return self.set_compute_profile(data=data)
@@ -360,7 +362,7 @@ class Foreman:
         return self.get_resource(resource_type='compute_resources', data=data)
 
     def set_compute_resource(self, data):
-        return self.set_resource(resource_type='compute_resources', resource='compute_resource', data=data)
+        return self.post_resource(resource_type='compute_resources', resource='compute_resource', data=data)
 
     def create_compute_resource(self, data):
         return self.set_compute_resource(data=data)
@@ -375,7 +377,7 @@ class Foreman:
         return self.get_resource(resource_type='config_templates', data=data)
 
     def set_config_template(self, data):
-        return self.set_resource(resource_type='config_templates', resource='config_template', data=data)
+        return self.post_resource(resource_type='config_templates', resource='config_template', data=data)
 
     def create_config_template(self, data):
         return self.set_config_template(data=data)
@@ -393,7 +395,7 @@ class Foreman:
         return self.search_resource(resource_type='domains', search_data=data)
 
     def set_domain(self, data):
-        return self.set_resource(resource_type='domains', resource='domain', data=data)
+        return self.post_resource(resource_type='domains', resource='domain', data=data)
 
     def create_domain(self, data):
         return self.set_domain(data=data)
@@ -408,7 +410,7 @@ class Foreman:
         return self.search_resource(resource_type='environments', search_data=data)
 
     def set_environment(self, data):
-        return self.set_resource(resource_type='environments', resource='environment', data=data)
+        return self.post_resource(resource_type='environments', resource='environment', data=data)
 
     def create_environment(self, data):
         return self.set_environment(data=data)
@@ -423,7 +425,7 @@ class Foreman:
         return self.search_resource(resource_type='hosts', search_data=data)
 
     def set_host(self, data):
-        return self.set_resource(resource_type='hosts', resource='host', data=data)
+        return self.post_resource(resource_type='hosts', resource='host', data=data)
 
     def create_host(self, data):
         return self.set_host(data=data)
@@ -471,7 +473,7 @@ class Foreman:
         return self.search_resource(resource_type='hostgroups', search_data=data)
 
     def set_hostgroup(self, data):
-        return self.set_resource(resource_type='hostgroups', resource='hostgroup', data=data)
+        return self.post_resource(resource_type='hostgroups', resource='hostgroup', data=data)
 
     def create_hostgroup(self, data):
         return self.set_hostgroup(data=data)
@@ -486,7 +488,7 @@ class Foreman:
         return self.search_resource(resource_type='locations', search_data=data)
 
     def set_location(self, data):
-        return self.set_resource(resource_type='locations', resource='location', data=data)
+        return self.post_resource(resource_type='locations', resource='location', data=data)
 
     def create_location(self, data):
         return self.set_location(data=data)
@@ -501,7 +503,7 @@ class Foreman:
         return self.search_resource(resource_type='media', search_data=data)
 
     def set_medium(self, data):
-        return self.set_resource(resource_type='media', resource='medium', data=data)
+        return self.post_resource(resource_type='media', resource='medium', data=data)
 
     def create_medium(self, data):
         return self.set_medium(data=data)
@@ -516,7 +518,7 @@ class Foreman:
         return self.search_resource(resource_type='organizations', search_data=data)
 
     def set_organization(self, data):
-        return self.set_resource(resource_type='organizations', resource='organization', data=data)
+        return self.post_resource(resource_type='organizations', resource='organization', data=data)
 
     def create_organization(self, data):
         return self.set_organization(data=data)
@@ -531,7 +533,7 @@ class Foreman:
         return self.search_resource(resource_type='operatingsystems', search_data=data)
 
     def set_operatingsystem(self, data):
-        return self.set_resource(resource_type='operatingsystems', resource='operatingsystem', data=data)
+        return self.post_resource(resource_type='operatingsystems', resource='operatingsystem', data=data)
 
     def create_operatingsystem(self, data):
         return self.set_operatingsystem(data=data)
@@ -546,7 +548,7 @@ class Foreman:
         return self.search_resource(resource_type='ptables', search_data=data)
 
     def set_partition_table(self, data):
-        return self.set_resource(resource_type='ptables', resource='ptable', data=data)
+        return self.post_resource(resource_type='ptables', resource='ptable', data=data)
 
     def create_partition_table(self, data):
         return self.set_partition_table(data=data)
@@ -561,7 +563,7 @@ class Foreman:
         return self.search_resource(resource_type='smart_proxies', search_data=data)
 
     def set_smart_proxy(self, data):
-        return self.set_resource(resource_type='smart_proxies', resource='smart_proxy', data=data)
+        return self.post_resource(resource_type='smart_proxies', resource='smart_proxy', data=data)
 
     def create_smart_proxy(self, data):
         return self.set_smart_proxy(data=data)
@@ -576,7 +578,7 @@ class Foreman:
         return self.search_resource(resource_type='subnets', search_data=data)
 
     def set_subnet(self, data):
-        return self.set_resource(resource_type='subnets', resource='subnet', data=data)
+        return self.post_resource(resource_type='subnets', resource='subnet', data=data)
 
     def create_subnet(self, data):
         return self.set_subnet(data=data)
