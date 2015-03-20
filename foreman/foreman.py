@@ -99,10 +99,12 @@ class Foreman:
 
         request_error = req.json().get('error')
 
-        if req.status_code == 500:
+        if request_error.has_key('message'):
             error_message = request_error.get('message')
-        if req.status_code == 422:
+        elif request_error.has_key('full_messages'):
             error_message = ', '.join(request_error.get('full_messages'))
+        else:
+            error_message = request_error
 
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
