@@ -300,11 +300,10 @@ class Foreman:
         Returns:
            dict
         """
-        result = {}
         compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
         if compute_resource:
-            result = compute_resource.get('compute_attributes')
-        return result
+            return compute_resource.get('compute_attributes')
+        return None
 
     def get_compute_attribute(self, data):
         """
