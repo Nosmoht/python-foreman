@@ -99,10 +99,12 @@ class Foreman:
 
         request_error = req.json().get('error')
 
-        if req.status_code == 500:
+        if request_error.has_key('message'):
             error_message = request_error.get('message')
-        if req.status_code == 422:
+        elif request_error.has_key('full_messages'):
             error_message = ', '.join(request_error.get('full_messages'))
+        else:
+            error_message = request_error
 
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
@@ -191,9 +193,39 @@ class Foreman:
         else:
             return None
 
-    def post_resource(self, resource_type, resource, data):
-        return self._post_request(url=self._get_resource_url(resource_type=resource_type),
-                                  data={resource: data})
+    def post_resource(self, resource_type, resource, data, additional_data=None):
+        """ Execute a post request
+
+        Execute a post request to create one <resource> of a <resource type>.
+        Foreman expects usually the following content:
+
+        {
+          "<resource>": {
+            "param1": "value",
+            "param2": "value",
+            ...
+            "paramN": "value"
+          }
+        }
+
+        <data> has to contain all parameters and values of the resource to be created.
+        They are passed as {<resource>: data}.
+
+        As not all resource types can be handled in this way <additional_data> can be
+        used to pass more data in. All key/values pairs will be passed directly and
+        not passed inside '{<resource>: data}.
+
+        Args:
+           data(dict): Hash containing parameter/value pairs
+        """
+        url = self._get_resource_url(resource_type=resource_type)
+        resource_data = {}
+        if additional_data:
+            for key in additional_data.keys():
+                resource_data[key] = additional_data[key]
+        resource_data[resource] = data
+        return self._post_request(url=url,
+                                  data=resource_data)
 
     def put_resource(self, resource_type, resource_id, data, component=None):
         return self._put_request(url=self._get_resource_url(resource_type=resource_type,
@@ -260,7 +292,22 @@ class Foreman:
 
     def get_compute_attributes(self, data):
         """
-        Get compute attributes of a compute profile on a compute resource.
+        Return the compute attributes of all compute profiles assigned to a compute resource
+
+        Args:
+           data(dict): Must contain the name of the compute resource in compute_resource.
+
+        Returns:
+           dict
+        """
+        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
+        if compute_resource:
+            return compute_resource.get('compute_attributes')
+        return None
+
+    def get_compute_attribute(self, data):
+        """
+        Return the compute attributes of a compute profile assigned to a compute resource.
 
         Args:
            data (dict): Must contain the name of the compute profile in compute_profile
@@ -269,14 +316,36 @@ class Foreman:
         Returns:
            dict
         """
-        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
-        compute_attributes = compute_resource.get('compute_attributes')
+        compute_attributes = self.get_compute_attributes(data=data)
         compute_profile = self.get_compute_profile(data={'name': data.get('compute_profile')})
 
         return filter(lambda item: item.get('compute_profile_id') == compute_profile.get('id'), compute_attributes)
 
     def create_compute_attribute(self, data):
+<<<<<<< HEAD
+        """ Create compute attributes for a compute profile in a compute resource
+
+        Args:
+           data(dict): Must contain compute_resource_id, compute_profile_id and vm_attrs
+        """
+        addition_data = {}
+        addition_data['compute_resource_id'] = data.get('compute_resource_id')
+        addition_data['compute_profile_id'] = data.get('compute_profile_id')
+
+        resource_data = {}
+        resource_data['vm_attrs'] = data.get('vm_attrs')
+
+        return self.post_resource(resource_type='compute_attributes', resource='compute_attribute',
+                           data=resource_data,
+                           additional_data=addition_data)
+
+    def update_compute_attribute(self,data):
+        return self.put_resource(resource_type='compute_attributes',
+                                 resource_id=data.get('id'),
+                                 data={'vm_attrs': data.get('vm_attrs')})
+=======
         return self.post_resource(resource_type='compute_attributes', resource='compute_attribute', data=data)
+>>>>>>> master
 
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
