@@ -338,6 +338,11 @@ class Foreman:
                            data=resource_data,
                            additional_data=addition_data)
 
+    def update_compute_attribute(self,data):
+        return self.put_resource(resource_type='compute_attributes',
+                                 resource_id=data.get('id'),
+                                 data={'vm_attrs': data.get('vm_attrs')})
+
     def get_compute_profiles(self):
         return self.get_resources(resource_type='compute_profiles')
 
