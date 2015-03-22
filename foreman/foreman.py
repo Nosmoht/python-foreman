@@ -483,6 +483,13 @@ class Foreman:
                                   data=data,
                                   component='parameters')
 
+    def update_host_parameter(self, host_id, parameter_id, data):
+        return self.put_resource(resource_type=HOSTS,
+                                 resource_id=host_id,
+                                 component='parameters',
+                                 component_id=parameter_id,
+                                 data=data)
+
     def get_hostgroups(self):
         return self.get_resources(resource_type=HOSTGROUPS)
 
