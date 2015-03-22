@@ -30,6 +30,8 @@ HOSTS = 'hosts'
 HOST = 'host'
 HOSTGROUPS = 'hostgroups'
 HOSTGROUP = 'hostgroups'
+LOCATIONS = 'locations'
+LOCATION = 'location'
 OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
@@ -531,19 +533,19 @@ class Foreman:
         return self.delete_resource(resource_type=HOSTGROUPS, resource_id=id)
 
     def get_locations(self):
-        return self.get_resources(resource_type='locations')
+        return self.get_resources(resource_type=LOCATIONS)
 
     def get_location(self, data):
-        return self.search_resource(resource_type='locations', search_data=data)
+        return self.search_resource(resource_type=LOCATIONS, search_data=data)
 
     def set_location(self, data):
-        return self.post_resource(resource_type='locations', resource='location', data=data)
+        return self.post_resource(resource_type=LOCATIONS, resource=LOCATION, data=data)
 
     def create_location(self, data):
         return self.set_location(data=data)
 
     def delete_location(self, id):
-        return self.delete_resource(resource_type='locations', resource_id=id)
+        return self.delete_resource(resource_type=LOCATIONS, resource_id=id)
 
     def get_media(self):
         return self.get_resources(resource_type='media')
