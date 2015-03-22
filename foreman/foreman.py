@@ -32,6 +32,8 @@ HOSTGROUPS = 'hostgroups'
 HOSTGROUP = 'hostgroups'
 LOCATIONS = 'locations'
 LOCATION = 'location'
+MEDIA = 'media'
+MEDIUM = 'medium'
 OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
@@ -548,19 +550,19 @@ class Foreman:
         return self.delete_resource(resource_type=LOCATIONS, resource_id=id)
 
     def get_media(self):
-        return self.get_resources(resource_type='media')
+        return self.get_resources(resource_type=MEDIA)
 
     def get_medium(self, data):
-        return self.search_resource(resource_type='media', search_data=data)
+        return self.search_resource(resource_type=MEDIA, search_data=data)
 
     def set_medium(self, data):
-        return self.post_resource(resource_type='media', resource='medium', data=data)
+        return self.post_resource(resource_type=MEDIA, resource=MEDIUM, data=data)
 
     def create_medium(self, data):
         return self.set_medium(data=data)
 
     def delete_medium(self, id):
-        return self.delete_resource(resource_type='media', resource_id=id)
+        return self.delete_resource(resource_type=MEDIA, resource_id=id)
 
     def get_organizations(self):
         return self.get_resources(resource_type=ORGANIZATIONS)
