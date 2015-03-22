@@ -6,6 +6,7 @@ Created on 04.03.2015
 
 import json
 import requests
+from foreman.foreman import COMPUTE_ATTRIBUTES
 # from requests.auth import HTTPBasicAuth
 requests.packages.urllib3.disable_warnings()
 
@@ -327,39 +328,20 @@ class Foreman:
     def delete_common_parameter(self, id):
         return self.delete_resource(resource_type=COMMON_PARAMETERS, resource_id=id)
 
-    def get_compute_attributes(self, data):
-        """
-        Return the compute attributes of all compute profiles assigned to a compute resource
-
-        Args:
-           data(dict): Must contain the name of the compute resource in compute_resource.
-
-        Returns:
-           dict
-        """
-        compute_resource = self.get_compute_resource(data={'name': data.get(COMPUTE_RESOURCE)})
-        if compute_resource:
-            return compute_resource.get(COMPUTE_ATTRIBUTES)
-        return None
-
-    def get_compute_attribute(self, data):
+    def get_compute_attribute(self, compute_resource_id, compute_profile_id):
         """
         Return the compute attributes of a compute profile assigned to a compute resource.
 
         Args:
-           data (dict): Must contain the name of the compute profile in compute_profile
-                        as well as the name of the compute_resource in compute_resource.
-
+           compute_resource_id (int): Compute resource identifier
+           compute_profile_id (int): Compute profile identifier
         Returns:
            dict
         """
-        compute_attributes = self.get_compute_attributes(data=data)
-        compute_profile = self.get_compute_profile(data={'name': data.get(COMPUTE_PROFILE)})
+        compute_resource = self.get_compute_resource(id=compute_resource_id)
+        compute_attributes = compute_resource.get(COMPUTE_ATTRIBUTES)
 
-        return filter(lambda item: item.get('compute_profile_id') == compute_profile.get('id'), compute_attributes)
-
-    def search_compute_attribute(self, data):
-        return self.search_resource(resource_type=COMPUTE_ATTRIBUTES, data=data)
+        return filter(lambda item: item.get('compute_profile_id') == compute_profile_id, compute_attributes)
 
     def create_compute_attribute(self, compute_resource_id, compute_profile_id, data):
         """ Create compute attributes for a compute profile in a compute resource
