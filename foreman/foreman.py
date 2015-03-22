@@ -24,6 +24,8 @@ OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
 ORGANIZATION = 'organization'
+SMART_PROXIES = 'smart_proxies'
+SMART_PROXY = 'smart_proxy'
 SUBNETS = 'subnets'
 SUBNET = 'subnet'
 
@@ -592,19 +594,19 @@ class Foreman:
         return self.delete_resource(resource_type='ptables', resource_id=id)
 
     def get_smart_proxies(self):
-        return self.get_resources(resource_type='smart_proxies')
+        return self.get_resources(resource_type=SMART_PROXIES)
 
     def get_smart_proxy(self, data):
-        return self.search_resource(resource_type='smart_proxies', search_data=data)
+        return self.search_resource(resource_type=SMART_PROXIES, search_data=data)
 
     def set_smart_proxy(self, data):
-        return self.post_resource(resource_type='smart_proxies', resource='smart_proxy', data=data)
+        return self.post_resource(resource_type=SMART_PROXIES, resource=SMART_PROXY, data=data)
 
     def create_smart_proxy(self, data):
         return self.set_smart_proxy(data=data)
 
     def delete_smart_proxy(self, id):
-        return self.delete_resource(resource_type='smart_proxies', resource_id=id)
+        return self.delete_resource(resource_type=SMART_PROXIES, resource_id=id)
 
     def get_subnets(self):
         return self.get_resources(resource_type=SUBNETS)
