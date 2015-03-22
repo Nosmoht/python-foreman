@@ -22,6 +22,8 @@ HOSTS = 'hosts'
 HOST = 'host'
 OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
+ORGANIZATIONS = 'organizations'
+ORGANIZATION = 'organization'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -543,19 +545,19 @@ class Foreman:
         return self.delete_resource(resource_type='media', resource_id=id)
 
     def get_organizations(self):
-        return self.get_resources(resource_type='organizations')
+        return self.get_resources(resource_type=ORGANIZATIONS)
 
     def get_organization(self, data):
-        return self.search_resource(resource_type='organizations', search_data=data)
+        return self.search_resource(resource_type=ORGANIZATIONS, search_data=data)
 
     def set_organization(self, data):
-        return self.post_resource(resource_type='organizations', resource='organization', data=data)
+        return self.post_resource(resource_type=ORGANIZATIONS, resource=ORGANIZATION, data=data)
 
     def create_organization(self, data):
         return self.set_organization(data=data)
 
     def delete_organization(self, id):
-        return self.delete_resource(resource_type='organizations', resource_id=id)
+        return self.delete_resource(resource_type=ORGANIZATIONS, resource_id=id)
 
     def get_operatingsystems(self):
         return self.get_resources(resource_type=OPERATINGSYSTEMS)
