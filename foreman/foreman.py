@@ -20,6 +20,8 @@ COMPUTE_RESOURCES = 'compute_resources'
 COMPUTE_RESOURCE = 'compute_resource'
 DOMAINS = 'domains'
 DOMAIN = 'domain'
+ENVIRONMENTS = 'environments'
+ENVIRONMENT = 'environment'
 HOSTS = 'hosts'
 HOST = 'host'
 OPERATINGSYSTEMS = 'operatingsystems'
@@ -432,19 +434,19 @@ class Foreman:
         return self.delete_resource(resource_type=DOMAINS, resource_id=id)
 
     def get_environments(self):
-        return self.get_resources(resource_type='environments')
+        return self.get_resources(resource_type=ENVIRONMENTS)
 
     def get_environment(self, data):
-        return self.search_resource(resource_type='environments', search_data=data)
+        return self.search_resource(resource_type=ENVIRONMENTS, search_data=data)
 
     def set_environment(self, data):
-        return self.post_resource(resource_type='environments', resource='environment', data=data)
+        return self.post_resource(resource_type=ENVIRONMENTS, resource=ENVIRONMENT, data=data)
 
     def create_environment(self, data):
         return self.set_environment(data=data)
 
     def delete_environment(self, id):
-        return self.delete_resource(resource_type='environments', resource_id=id)
+        return self.delete_resource(resource_type=ENVIRONMENTS, resource_id=id)
 
     def get_hosts(self):
         return self.get_resources(resource_type=HOSTS)
