@@ -12,6 +12,9 @@ requests.packages.urllib3.disable_warnings()
 FOREMAN_REQUEST_HEADERS = {'content-type': 'application/json', 'accept': 'application/json'}
 FOREMAN_API_VERSION = 'v2'
 
+ARCHITECTURES = 'architectures'
+ARCHITECTURE = 'architecture'
+
 class ForemanError(Exception):
     """ForemanError Class
 
@@ -266,19 +269,19 @@ class Foreman:
         return result
 
     def get_architectures(self):
-        return self.get_resources(resource_type='architectures')
+        return self.get_resources(resource_type=ARCHITECTURES)
 
     def get_architecture(self, data):
-        return self.get_resource(resource_type='architectures', data=data)
+        return self.get_resource(resource_type=ARCHITECTURES, data=data)
 
     def set_architecture(self, data):
-        return self.post_resource(resource_type='architectures', resource='architecture', data=data)
+        return self.post_resource(resource_type=ARCHITECTURES, resource=ARCHITECTURE, data=data)
 
     def create_architecture(self, data):
         return self.set_architecture(data=data)
 
     def delete_architecture(self, data):
-        return self.delete_resource(resource_type='architectures', data=data)
+        return self.delete_resource(resource_type=ARCHITECTURES, data=data)
 
     def get_common_parameters(self):
         return self.get_resources(resource_type='common_parameters')
