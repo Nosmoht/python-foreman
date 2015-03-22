@@ -183,11 +183,7 @@ class Foreman:
            dict
         """
 
-        resource_id = None
-
-        if data.has_key('id'):
-            resource_id = data.get('id')
-        elif data.has_key('name'):
+        if not resource_id and data.has_key('name'):
             resource = self.search_resource(resource_type=resource_type, search_data=data)
             if resource and resource.has_key('id'):
                 resource_id = resource.get('id')
