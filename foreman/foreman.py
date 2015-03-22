@@ -18,6 +18,8 @@ COMPUTE_PROFILES = 'compute_profiles'
 COMPUTE_PROFILE = 'compute_profile'
 COMPUTE_RESOURCES = 'compute_resources'
 COMPUTE_RESOURCE = 'compute_resource'
+HOSTS = 'hosts'
+HOST = 'host'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -434,25 +436,25 @@ class Foreman:
         return self.delete_resource(resource_type='environments', data=data)
 
     def get_hosts(self):
-        return self.get_resources(resource_type='hosts')
+        return self.get_resources(resource_type=HOSTS)
 
     def get_host(self, data):
-        return self.search_resource(resource_type='hosts', search_data=data)
+        return self.search_resource(resource_type=HOSTS, search_data=data)
 
     def set_host(self, data):
-        return self.post_resource(resource_type='hosts', resource='host', data=data)
+        return self.post_resource(resource_type=HOSTS, resource=HOST, data=data)
 
     def create_host(self, data):
         return self.set_host(data=data)
 
     def delete_host(self, data):
-        return self.delete_resource(resource_type='hosts', data=data)
+        return self.delete_resource(resource_type=HOSTS, data=data)
 
     def get_host_power(self, host_id):
-        return self.put_resource(resource_type='hosts',
+        return self.put_resource(resource_type=HOSTS,
                                  resource_id=host_id,
                                  component='power',
-                                 data={'power_action': 'state', 'host': {}})
+                                 data={'power_action': 'state', HOST: {}})
 
     def poweron_host(self, host_id):
         return self.set_host_power(host_id=host_id, action='start')
@@ -476,19 +478,19 @@ class Foreman:
 #                                       component_id=interface_id)
 
     def set_host_power(self, host_id, action):
-        return self.put_resource(resource_type='hosts',
+        return self.put_resource(resource_type=HOSTS,
                                  resource_id=host_id,
                                  component='power',
-                                 data={'power_action': action, 'host': {}})
+                                 data={'power_action': action, HOST: {}})
 
     def get_host_parameters(self, host_id):
-        parameters = self.get_resource(resource_type='hosts', resource_id=host_id, component='parameters')
+        parameters = self.get_resource(resource_type=HOSTS, resource_id=host_id, component='parameters')
         if parameters:
             return parameters.get('results')
         return None
 
     def create_host_parameter(self, host_id, data):
-        return self.post_resource(resource_type='hosts',
+        return self.post_resource(resource_type=HOSTS,
                                   resource_id=host_id,
                                   resource='parameter',
                                   data=data,
