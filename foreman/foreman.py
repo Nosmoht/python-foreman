@@ -356,7 +356,7 @@ class Foreman:
            dict
         """
         compute_attributes = self.get_compute_attributes(data=data)
-        compute_profile = self.get_compute_profile(data={'name': data.get('compute_profile')})
+        compute_profile = self.get_compute_profile(data={'name': data.get(COMPUTE_PROFILE)})
 
         return filter(lambda item: item.get('compute_profile_id') == compute_profile.get('id'), compute_attributes)
 
