@@ -14,6 +14,8 @@ FOREMAN_API_VERSION = 'v2'
 
 ARCHITECTURES = 'architectures'
 ARCHITECTURE = 'architecture'
+COMPUTE_PROFILES = 'compute_profiles'
+COMPUTE_PROFILE = 'compute_profile'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -352,19 +354,19 @@ class Foreman:
                                  data={'vm_attrs': data.get('vm_attrs')})
 
     def get_compute_profiles(self):
-        return self.get_resources(resource_type='compute_profiles')
+        return self.get_resources(resource_type=COMPUTE_PROFILES)
 
     def get_compute_profile(self, data):
-        return self.get_resource(resource_type='compute_profiles', data=data)
+        return self.get_resource(resource_type=COMPUTE_PROFILES, data=data)
 
     def set_compute_profile(self, data):
-        return self.post_resource(resource_type='compute_profiles', resource='compute_profile', data=data)
+        return self.post_resource(resource_type=COMPUTE_PROFILES, resource=COMPUTE_PROFILE, data=data)
 
     def create_compute_profile(self, data):
         return self.set_compute_profile(data=data)
 
     def delete_compute_profile(self, data):
-        return self.delete_resource(resource_type='compute_profiles', data=data)
+        return self.delete_resource(resource_type=COMPUTE_PROFILES, data=data)
 
     def get_compute_resources(self):
         return self.get_resources(resource_type='compute_resources')
