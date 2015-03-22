@@ -195,7 +195,8 @@ class Foreman:
         else:
             return None
 
-    def post_resource(self, resource_type, resource, data, additional_data=None):
+    def post_resource(self, resource_type, resource, data,
+                      resource_id=None, component=None, additional_data=None):
         """ Execute a post request
 
         Execute a post request to create one <resource> of a <resource type>.
@@ -220,7 +221,9 @@ class Foreman:
         Args:
            data(dict): Hash containing parameter/value pairs
         """
-        url = self._get_resource_url(resource_type=resource_type)
+        url = self._get_resource_url(resource_type=resource_type,
+                                     resource_id=resource_id,
+                                     component=component)
         resource_data = {}
         if additional_data:
             for key in additional_data.keys():
