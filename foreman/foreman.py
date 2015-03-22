@@ -222,10 +222,11 @@ class Foreman:
         return self._post_request(url=url,
                                   data=resource_data)
 
-    def put_resource(self, resource_type, resource_id, data, component=None):
+    def put_resource(self, resource_type, resource_id, data, component=None, component_id=None):
         return self._put_request(url=self._get_resource_url(resource_type=resource_type,
                                                             resource_id=resource_id,
-                                                            component=component),
+                                                            component=component,
+                                                            component_id=component_id),
                                  data=data)
 
     def delete_resource(self, resource_type, resource_id):
