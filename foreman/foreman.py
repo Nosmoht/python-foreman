@@ -474,6 +474,19 @@ class Foreman:
                                  component='power',
                                  data={'power_action': action, 'host': {}})
 
+    def get_host_parameters(self, host_id):
+        parameters = self.get_resource(resource_type='hosts', resource_id=host_id, component='parameters')
+        if parameters:
+            return parameters.get('results')
+        return None
+
+    def create_host_parameter(self, host_id, data):
+        return self.post_resource(resource_type='hosts',
+                                  resource_id=host_id,
+                                  resource='parameter',
+                                  data=data,
+                                  component='parameters')
+
     def get_hostgroups(self):
         return self.get_resources(resource_type='hostgroups')
 
