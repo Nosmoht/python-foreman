@@ -14,6 +14,8 @@ FOREMAN_API_VERSION = 'v2'
 
 ARCHITECTURES = 'architectures'
 ARCHITECTURE = 'architecture'
+COMMON_PARAMETERS = 'common_parameters'
+COMMON_PARAMETER = 'common_parameter'
 COMPUTE_PROFILES = 'compute_profiles'
 COMPUTE_PROFILE = 'compute_profile'
 COMPUTE_RESOURCES = 'compute_resources'
@@ -303,19 +305,19 @@ class Foreman:
         return self.delete_resource(resource_type=ARCHITECTURES, resource_id=id)
 
     def get_common_parameters(self):
-        return self.get_resources(resource_type='common_parameters')
+        return self.get_resources(resource_type=COMMON_PARAMETERS)
 
     def get_common_parameter(self, data):
-        return self.get_resource(resource_type='common_parameters', data=data)
+        return self.get_resource(resource_type=COMMON_PARAMETERS, data=data)
 
     def set_common_parameter(self, data):
-        return self.post_resource(resource_type='common_parameters', resource='common_parameter', data=data)
+        return self.post_resource(resource_type=COMMON_PARAMETERS, resource=COMMON_PARAMETER, data=data)
 
     def create_common_parameter(self, data):
         return self.set_common_parameter(data=data)
 
     def delete_common_parameter(self, id):
-        return self.delete_resource(resource_type='common_parameters', resource_id=id)
+        return self.delete_resource(resource_type=COMMON_PARAMETERS, resource_id=id)
 
     def get_compute_attributes(self, data):
         """
