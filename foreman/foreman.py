@@ -16,6 +16,8 @@ ARCHITECTURES = 'architectures'
 ARCHITECTURE = 'architecture'
 COMPUTE_PROFILES = 'compute_profiles'
 COMPUTE_PROFILE = 'compute_profile'
+COMPUTE_RESOURCES = 'compute_resources'
+COMPUTE_RESOURCE = 'compute_resource'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -310,7 +312,7 @@ class Foreman:
         Returns:
            dict
         """
-        compute_resource = self.get_compute_resource(data={'name': data.get('compute_resource')})
+        compute_resource = self.get_compute_resource(data={'name': data.get(COMPUTE_RESOURCE)})
         if compute_resource:
             return compute_resource.get('compute_attributes')
         return None
@@ -369,19 +371,19 @@ class Foreman:
         return self.delete_resource(resource_type=COMPUTE_PROFILES, data=data)
 
     def get_compute_resources(self):
-        return self.get_resources(resource_type='compute_resources')
+        return self.get_resources(resource_type=COMPUTE_RESOURCES)
 
     def get_compute_resource(self, data):
-        return self.get_resource(resource_type='compute_resources', data=data)
+        return self.get_resource(resource_type=COMPUTE_RESOURCES, data=data)
 
     def set_compute_resource(self, data):
-        return self.post_resource(resource_type='compute_resources', resource='compute_resource', data=data)
+        return self.post_resource(resource_type=COMPUTE_RESOURCES, resource=COMPUTE_RESOURCE, data=data)
 
     def create_compute_resource(self, data):
         return self.set_compute_resource(data=data)
 
     def delete_compute_resource(self, data):
-        return self.delete_resource(resource_type='compute_resources', data=data)
+        return self.delete_resource(resource_type=COMPUTE_RESOURCES, data=data)
 
     def get_config_templates(self):
         return self.get_resources(resource_type='config_templates')
