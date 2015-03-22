@@ -74,7 +74,11 @@ class Foreman:
         self.__auth = (username, password)
         self.hostname = hostname
         self.port = port
-        self.url = 'https://' + self.hostname + ':' + self.port + '/api/' + FOREMAN_API_VERSION
+        self.url = "https://{0}:{1}/api/{2}".format(
+                                                    self.hostname,
+                                                    self.port,
+                                                    FOREMAN_API_VERSION,
+                                                    )
 
     def _get_resource_url(self, resource_type, resource_id=None, component=None, component_id=None):
         """Create API URL path
@@ -82,8 +86,10 @@ class Foreman:
         Args:
           resource_type (str): Name of resource to request
           resource_id (str): Resource identifier
-          component (str): Component of a resource (e.g. images in /host/host01.example.com/images)
-          component_id (str): Component identifier (e.g. nic01 in /host/host01.example.com/interfaces/nic1)
+          component (str): Component of a resource (e.g. images in 
+              /host/host01.example.com/images)
+          component_id (str): Component identifier (e.g. nic01 in 
+              /host/host01.example.com/interfaces/nic1)
         """
         url = self.url + '/' + resource_type
         if resource_id:
@@ -112,13 +118,13 @@ class Foreman:
         if req.status_code == 200:
             return json.loads(req.text)
 
-        raise ForemanError(url=req.url,
+        raise ForemanError (url=req.url,
                            status_code=req.status_code,
                            message=req.json().get('error').get('message'),
                            request=req.json())
 
     def _post_request(self, url, data):
-        """Execute a POST request agains Foreman API
+        """Execute a POST request against Foreman API
 
         Args:
           resource_type (str): Name of resource type to post
@@ -136,11 +142,11 @@ class Foreman:
             return json.loads(req.text)
 
         request_json = req.json()
-        if request_json.has_key('error'):
+        if 'error' in request_json:
             request_error = req.json().get('error')
-            if request_error.has_key('message'):
+            if 'message' in request_error:
                 error_message = request_error.get('message')
-            elif request_error.has_key('full_messages'):
+            elif 'full_message' in request_error:
                 error_message = ', '.join(request_error.get('full_messages'))
             else:
                 error_message = request_error
@@ -153,7 +159,7 @@ class Foreman:
                            request=req.json())
 
     def _put_request(self, url, data):
-        """Execute a PUT request agains Foreman API
+        """Execute a PUT request against Foreman API
 
         Args:
           resource_type (str): Name of resource type to post
@@ -175,7 +181,7 @@ class Foreman:
                            request=req.json())
 
     def _delete_request(self, url):
-        """Execute a DELETE request agains Foreman API
+        """Execute a DELETE request against Foreman API
 
         Args:
           resource_type (str): Name of resource type to post
@@ -198,7 +204,7 @@ class Foreman:
         """ Return a list of all resources of the defined resource type
 
         Args:
-           resource_type: Type of reesources to get
+           resource_type: Type of resources to get
         Returns:
            list of dict
         """
@@ -209,8 +215,10 @@ class Foreman:
         """ Get information about a resource
 
         If data contains id the resource will be get directly from the API.
-        If id is not specified but name the resource will be searched within the database.
-        If found the id of the research will be used. If not found None will be returned.
+        If id is not specified but name the resource will be searched within
+        the database.
+        If found the id of the research will be used. If not found None will
+        be returned.
 
         Args:
            resource_type (str): Resource type
@@ -241,12 +249,12 @@ class Foreman:
           }
         }
 
-        <data> has to contain all parameters and values of the resource to be created.
-        They are passed as {<resource>: data}.
+        <data> has to contain all parameters and values of the resource to be
+        created. They are passed as {<resource>: data}.
 
-        As not all resource types can be handled in this way <additional_data> can be
-        used to pass more data in. All key/values pairs will be passed directly and
-        not passed inside '{<resource>: data}.
+        As not all resource types can be handled in this way <additional_data>
+        can be used to pass more data in. All key/values pairs will be passed
+        directly and not passed inside '{<resource>: data}.
 
         Args:
            data(dict): Hash containing parameter/value pairs
@@ -279,13 +287,13 @@ class Foreman:
 
         for key in data:
             if search_data['search']:
-                search_data['search'] = search_data['search'] + ' AND '
-            search_data['search'] = search_data['search'] + key + ' == '
+                search_data['search'] += ' AND '
+            search_data['search'] += (key + ' == ')
 
             if isinstance(data[key], int):
-                search_data['search'] = search_data['search'] + str(data[key])
+                search_data['search'] += str(data[key])
             elif isinstance(data[key], str):
-                search_data['search'] = search_data['search'] + '"' + data[key] + '"'
+                search_data['search'] += ('"' + data[key] + '"')
 
         results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=search_data)
         result = results.get('results')
