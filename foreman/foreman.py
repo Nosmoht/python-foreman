@@ -16,6 +16,8 @@ ARCHITECTURES = 'architectures'
 ARCHITECTURE = 'architecture'
 COMMON_PARAMETERS = 'common_parameters'
 COMMON_PARAMETER = 'common_parameter'
+COMPUTE_ATTRIBUTES = 'compute_attributes'
+COMPUTE_ATTRIBUTE = 'compute_attribute'
 COMPUTE_PROFILES = 'compute_profiles'
 COMPUTE_PROFILE = 'compute_profile'
 COMPUTE_RESOURCES = 'compute_resources'
@@ -339,7 +341,7 @@ class Foreman:
         """
         compute_resource = self.get_compute_resource(data={'name': data.get(COMPUTE_RESOURCE)})
         if compute_resource:
-            return compute_resource.get('compute_attributes')
+            return compute_resource.get(COMPUTE_ATTRIBUTES)
         return None
 
     def get_compute_attribute(self, data):
@@ -371,12 +373,12 @@ class Foreman:
         resource_data = {}
         resource_data['vm_attrs'] = data.get('vm_attrs')
 
-        return self.post_resource(resource_type='compute_attributes', resource='compute_attribute',
+        return self.post_resource(resource_type=COMPUTE_ATTRIBUTES, resource=COMPUTE_ATTRIBUTE,
                            data=resource_data,
                            additional_data=addition_data)
 
-    def update_compute_attribute(self,data):
-        return self.put_resource(resource_type='compute_attributes',
+    def update_compute_attribute(self, data):
+        return self.put_resource(resource_type=COMPUTE_ATTRIBUTES,
                                  resource_id=data.get('id'),
                                  data={'vm_attrs': data.get('vm_attrs')})
 
