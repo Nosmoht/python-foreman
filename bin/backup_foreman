@@ -26,14 +26,15 @@ class ForemanBackup:
         """
         backup_dir = os.path.join(backup_dir, resource)
 
-        print("Backup: " + resource)
+        resources = resource_function()
+        print('Backing up %s %s' % (str(len(resources)), resource))
 
         if not os.path.exists(backup_dir):
             os.makedirs(backup_dir)
 
-        for resource_item in resource_function:
+        for resource_item in resources:
             item = self.foreman.get_resource(resource_type= resource,
-                                             data={'id': resource_item.get('id')})
+                                             resource_id=resource_item.get('id'))
             if item:
                 backup_file = os.path.join(backup_dir, item.get('name').replace('/', '_') + '.yaml')
                 with open(backup_file, 'w') as backup_file:
@@ -43,35 +44,35 @@ class ForemanBackup:
         backup_root = '.'
 
         self.backup(backup_dir=backup_root, resource='architectures',
-               resource_function=self.foreman.get_architectures())
+               resource_function=self.foreman.get_architectures)
         self.backup(backup_dir=backup_root, resource='common_parameters',
-               resource_function=self.foreman.get_common_parameters())
+               resource_function=self.foreman.get_common_parameters)
         self.backup(backup_dir=backup_root, resource='compute_resources',
-               resource_function=self.foreman.get_compute_resources())
+               resource_function=self.foreman.get_compute_resources)
         self.backup(backup_dir=backup_root, resource='compute_profiles',
-               resource_function=self.foreman.get_compute_profiles())
+               resource_function=self.foreman.get_compute_profiles)
         self.backup(backup_dir=backup_root, resource='config_templates',
-               resource_function=self.foreman.get_config_templates())
+               resource_function=self.foreman.get_config_templates)
         self.backup(backup_dir=backup_root, resource='domains',
-               resource_function=self.foreman.get_domains())
+               resource_function=self.foreman.get_domains)
         self.backup(backup_dir=backup_root, resource='environments',
-               resource_function=self.foreman.get_environments())
+               resource_function=self.foreman.get_environments)
         self.backup(backup_dir=backup_root, resource='hosts',
-               resource_function=self.foreman.get_hosts())
+               resource_function=self.foreman.get_hosts)
         self.backup(backup_dir=backup_root, resource='hostgroups',
-               resource_function=self.foreman.get_hostgroups())
+               resource_function=self.foreman.get_hostgroups)
         self.backup(backup_dir=backup_root, resource='locations',
-               resource_function=self.foreman.get_locations())
+               resource_function=self.foreman.get_locations)
         self.backup(backup_dir=backup_root, resource='media',
-               resource_function=self.foreman.get_media())
+               resource_function=self.foreman.get_media)
 #        self.backup(backup_dir=backup_root, resource='organizations',
-#               resource_function=self.foreman.get_organizations())
+#               resource_function=self.foreman.get_organizations)
         self.backup(backup_dir=backup_root, resource='operatingsystems',
-               resource_function=self.foreman.get_operatingsystems())
+               resource_function=self.foreman.get_operatingsystems)
         self.backup(backup_dir=backup_root, resource='smart_proxies',
-               resource_function=self.foreman.get_smart_proxies())
+               resource_function=self.foreman.get_smart_proxies)
         self.backup(backup_dir=backup_root, resource='subnets',
-               resource_function=self.foreman.get_subnets())
+               resource_function=self.foreman.get_subnets)
 
 def show_help():
     """Print on screen how to use this script.
