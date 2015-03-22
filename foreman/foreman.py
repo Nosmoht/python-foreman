@@ -24,6 +24,8 @@ OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
 ORGANIZATION = 'organization'
+PARTITION_TABLES = 'ptables'
+PARTITION_TABLE = 'ptable'
 SMART_PROXIES = 'smart_proxies'
 SMART_PROXY = 'smart_proxy'
 SUBNETS = 'subnets'
@@ -579,19 +581,19 @@ class Foreman:
         return self.delete_resource(resource_type=OPERATINGSYSTEMS, resource_id=id)
 
     def get_partition_tables(self):
-        return self.get_resources(resource_type='ptables')
+        return self.get_resources(resource_type=PARTITION_TABLES)
 
     def get_partition_table(self, data):
-        return self.search_resource(resource_type='ptables', search_data=data)
+        return self.search_resource(resource_type=PARTITION_TABLES, search_data=data)
 
     def set_partition_table(self, data):
-        return self.post_resource(resource_type='ptables', resource='ptable', data=data)
+        return self.post_resource(resource_type=PARTITION_TABLES, resource=PARTITION_TABLE, data=data)
 
     def create_partition_table(self, data):
         return self.set_partition_table(data=data)
 
     def delete_partition_table(self, id):
-        return self.delete_resource(resource_type='ptables', resource_id=id)
+        return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
 
     def get_smart_proxies(self):
         return self.get_resources(resource_type=SMART_PROXIES)
