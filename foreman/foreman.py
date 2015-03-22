@@ -97,14 +97,17 @@ class Foreman:
         if req.status_code in [200, 201]:
             return json.loads(req.text)
 
-        request_error = req.json().get('error')
-
-        if request_error.has_key('message'):
-            error_message = request_error.get('message')
-        elif request_error.has_key('full_messages'):
-            error_message = ', '.join(request_error.get('full_messages'))
+        request_json = req.json()
+        if request_json.has_key('error'):
+            request_error = req.json().get('error')
+            if request_error.has_key('message'):
+                error_message = request_error.get('message')
+            elif request_error.has_key('full_messages'):
+                error_message = ', '.join(request_error.get('full_messages'))
+            else:
+                error_message = request_error
         else:
-            error_message = request_error
+            error_message = str(request_json)
 
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
