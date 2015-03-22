@@ -269,21 +269,21 @@ class Foreman:
         return self._delete_request(url=self._get_resource_url(resource_type=resource_type,
                                                                resource_id=resource_id))
 
-    def search_resource(self, resource_type, data=None):
-        data = {}
-        data['search'] = ''
+    def search_resource(self, resource_type, data):
+        search_data = {}
+        search_data['search'] = ''
 
         for key in data:
-            if data['search']:
-                data['search'] = data['search'] + ' AND '
-            data['search'] = data['search'] + key + ' == '
+            if search_data['search']:
+                search_data['search'] = search_data['search'] + ' AND '
+            search_data['search'] = search_data['search'] + key + ' == '
 
             if isinstance(data[key], int):
-                data['search'] = data['search'] + str(data[key])
+                search_data['search'] = search_data['search'] + str(data[key])
             elif isinstance(data[key], str):
-                data['search'] = data['search'] + '"' + data[key] + '"'
+                search_data['search'] = search_data['search'] + '"' + data[key] + '"'
 
-        results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=data)
+        results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=search_data)
         result = results.get('results')
 
         if len(result) == 1:
