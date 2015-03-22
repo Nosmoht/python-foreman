@@ -20,6 +20,8 @@ COMPUTE_PROFILES = 'compute_profiles'
 COMPUTE_PROFILE = 'compute_profile'
 COMPUTE_RESOURCES = 'compute_resources'
 COMPUTE_RESOURCE = 'compute_resource'
+CONFIG_TEMPLATES = 'config_templates'
+CONFIG_TEMPLATE = 'config_template'
 DOMAINS = 'domains'
 DOMAIN = 'domain'
 ENVIRONMENTS = 'environments'
@@ -405,19 +407,19 @@ class Foreman:
         return self.delete_resource(resource_type=COMPUTE_RESOURCES, resource_id=id)
 
     def get_config_templates(self):
-        return self.get_resources(resource_type='config_templates')
+        return self.get_resources(resource_type=CONFIG_TEMPLATES)
 
     def get_config_template(self, data):
-        return self.get_resource(resource_type='config_templates', data=data)
+        return self.get_resource(resource_type=CONFIG_TEMPLATES, data=data)
 
     def set_config_template(self, data):
-        return self.post_resource(resource_type='config_templates', resource='config_template', data=data)
+        return self.post_resource(resource_type=CONFIG_TEMPLATES, resource=CONFIG_TEMPLATE, data=data)
 
     def create_config_template(self, data):
         return self.set_config_template(data=data)
 
     def delete_config_template(self, id):
-        return self.delete_resource(resource_type='config_templates', resource_id=id)
+        return self.delete_resource(resource_type=CONFIG_TEMPLATES, resource_id=id)
 
 #    def get_compute_resource_images(self, name):
 #        return self.get_compute_resource(name=name, component='images').get('results')
