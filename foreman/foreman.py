@@ -24,6 +24,8 @@ OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
 ORGANIZATION = 'organization'
+SUBNETS = 'subnets'
+SUBNET = 'subnet'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -605,16 +607,16 @@ class Foreman:
         return self.delete_resource(resource_type='smart_proxies', resource_id=id)
 
     def get_subnets(self):
-        return self.get_resources(resource_type='subnets')
+        return self.get_resources(resource_type=SUBNETS)
 
     def get_subnet(self, data):
-        return self.search_resource(resource_type='subnets', search_data=data)
+        return self.search_resource(resource_type=SUBNETS, search_data=data)
 
     def set_subnet(self, data):
-        return self.post_resource(resource_type='subnets', resource='subnet', data=data)
+        return self.post_resource(resource_type=SUBNETS, resource=SUBNET, data=data)
 
     def create_subnet(self, data):
         return self.set_subnet(data=data)
 
     def delete_subnet(self, id):
-        return self.delete_resource(resource_type='subnets', resource_id=id)
+        return self.delete_resource(resource_type=SUBNETS, resource_id=id)
