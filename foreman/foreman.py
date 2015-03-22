@@ -144,14 +144,15 @@ class Foreman:
         request_json = req.json()
         if 'error' in request_json:
             request_error = req.json().get('error')
-            if 'message' in request_error:
-                error_message = request_error.get('message')
-            elif 'full_message' in request_error:
-                error_message = ', '.join(request_error.get('full_messages'))
-            else:
-                error_message = request_error
+        elif 'errors' in request_json:
+            request_error = req.json().get('errors')
+
+        if 'message' in request_error:
+            error_message = request_error.get('message')
+        elif 'full_messages' in request_error:
+            error_message = ', '.join(request_error.get('full_messages'))
         else:
-            error_message = str(request_json)
+            error_message = str(request_error)
 
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
