@@ -167,7 +167,7 @@ class Foreman:
         request_result = self._get_request(url=self._get_resource_url(resource_type=resource_type))
         return request_result.get('results')
 
-    def get_resource(self, resource_type, resource_id=None, data=None):
+    def get_resource(self, resource_type, resource_id=None, data=None, component=None):
         """ Get information about a resource
 
         If data contains id the resource will be get directly from the API.
@@ -176,7 +176,9 @@ class Foreman:
 
         Args:
            resource_type (str): Resource type
+           resource_id (str): Resource identified
            data (dict): Must contain either id or name
+           component: Component name to get
         Returns:
            dict
         """
@@ -192,7 +194,8 @@ class Foreman:
 
         if resource_id:
             return self._get_request(url=self._get_resource_url(resource_type=resource_type,
-                                                                resource_id=resource_id))
+                                                                resource_id=resource_id,
+                                                                component=component))
         else:
             return None
 
