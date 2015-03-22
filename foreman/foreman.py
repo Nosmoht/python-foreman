@@ -18,6 +18,8 @@ COMPUTE_PROFILES = 'compute_profiles'
 COMPUTE_PROFILE = 'compute_profile'
 COMPUTE_RESOURCES = 'compute_resources'
 COMPUTE_RESOURCE = 'compute_resource'
+DOMAINS = 'domains'
+DOMAIN = 'domain'
 HOSTS = 'hosts'
 HOST = 'host'
 OPERATINGSYSTEMS = 'operatingsystems'
@@ -415,19 +417,19 @@ class Foreman:
 #        return self.get_compute_resource(name=name, component='images').get('results')
 
     def get_domains(self):
-        return self.get_resources(resource_type='domains')
+        return self.get_resources(resource_type=DOMAINS)
 
     def get_domain(self, data):
-        return self.search_resource(resource_type='domains', search_data=data)
+        return self.search_resource(resource_type=DOMAINS, search_data=data)
 
     def set_domain(self, data):
-        return self.post_resource(resource_type='domains', resource='domain', data=data)
+        return self.post_resource(resource_type=DOMAINS, resource=DOMAIN, data=data)
 
     def create_domain(self, data):
         return self.set_domain(data=data)
 
     def delete_domain(self, id):
-        return self.delete_resource(resource_type='domains', resource_id=id)
+        return self.delete_resource(resource_type=DOMAINS, resource_id=id)
 
     def get_environments(self):
         return self.get_resources(resource_type='environments')
