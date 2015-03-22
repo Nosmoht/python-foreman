@@ -26,6 +26,8 @@ ENVIRONMENTS = 'environments'
 ENVIRONMENT = 'environment'
 HOSTS = 'hosts'
 HOST = 'host'
+HOSTGROUPS = 'hostgroups'
+HOSTGROUP = 'hostgroups'
 OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
@@ -512,19 +514,19 @@ class Foreman:
                                   component='parameters')
 
     def get_hostgroups(self):
-        return self.get_resources(resource_type='hostgroups')
+        return self.get_resources(resource_type=HOSTGROUPS)
 
     def get_hostgroup(self, data):
-        return self.search_resource(resource_type='hostgroups', search_data=data)
+        return self.search_resource(resource_type=HOSTGROUPS, search_data=data)
 
     def set_hostgroup(self, data):
-        return self.post_resource(resource_type='hostgroups', resource='hostgroup', data=data)
+        return self.post_resource(resource_type=HOSTGROUPS, resource=HOSTGROUP, data=data)
 
     def create_hostgroup(self, data):
         return self.set_hostgroup(data=data)
 
     def delete_hostgroup(self, id):
-        return self.delete_resource(resource_type='hostgroups', resource_id=id)
+        return self.delete_resource(resource_type=HOSTGROUPS, resource_id=id)
 
     def get_locations(self):
         return self.get_resources(resource_type='locations')
