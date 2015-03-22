@@ -219,7 +219,7 @@ class Foreman:
         """
 
         if not resource_id and data.has_key('name'):
-            resource = self.search_resource(resource_type=resource_type, search_data=data)
+            resource = self.search_resource(resource_type=resource_type, data=data)
             if resource and resource.has_key('id'):
                 resource_id = resource.get('id')
 
@@ -277,19 +277,19 @@ class Foreman:
         return self._delete_request(url=self._get_resource_url(resource_type=resource_type,
                                                                resource_id=resource_id))
 
-    def search_resource(self, resource_type, search_data=None):
+    def search_resource(self, resource_type, data=None):
         data = {}
         data['search'] = ''
 
-        for key in search_data:
+        for key in data:
             if data['search']:
                 data['search'] = data['search'] + ' AND '
             data['search'] = data['search'] + key + ' == '
 
-            if isinstance(search_data[key], int):
-                data['search'] = data['search'] + str(search_data[key])
-            elif isinstance(search_data[key], str):
-                data['search'] = data['search'] + '"' + search_data[key] + '"'
+            if isinstance(data[key], int):
+                data['search'] = data['search'] + str(data[key])
+            elif isinstance(data[key], str):
+                data['search'] = data['search'] + '"' + data[key] + '"'
 
         results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=data)
         result = results.get('results')
@@ -434,7 +434,7 @@ class Foreman:
         return self.get_resources(resource_type=DOMAINS)
 
     def get_domain(self, data):
-        return self.search_resource(resource_type=DOMAINS, search_data=data)
+        return self.search_resource(resource_type=DOMAINS, data=data)
 
     def set_domain(self, data):
         return self.post_resource(resource_type=DOMAINS, resource=DOMAIN, data=data)
@@ -449,7 +449,7 @@ class Foreman:
         return self.get_resources(resource_type=ENVIRONMENTS)
 
     def get_environment(self, data):
-        return self.search_resource(resource_type=ENVIRONMENTS, search_data=data)
+        return self.search_resource(resource_type=ENVIRONMENTS, data=data)
 
     def set_environment(self, data):
         return self.post_resource(resource_type=ENVIRONMENTS, resource=ENVIRONMENT, data=data)
@@ -464,7 +464,7 @@ class Foreman:
         return self.get_resources(resource_type=HOSTS)
 
     def get_host(self, data):
-        return self.search_resource(resource_type=HOSTS, search_data=data)
+        return self.search_resource(resource_type=HOSTS, data=data)
 
     def set_host(self, data):
         return self.post_resource(resource_type=HOSTS, resource=HOST, data=data)
@@ -525,7 +525,7 @@ class Foreman:
         return self.get_resources(resource_type=HOSTGROUPS)
 
     def get_hostgroup(self, data):
-        return self.search_resource(resource_type=HOSTGROUPS, search_data=data)
+        return self.search_resource(resource_type=HOSTGROUPS, data=data)
 
     def set_hostgroup(self, data):
         return self.post_resource(resource_type=HOSTGROUPS, resource=HOSTGROUP, data=data)
@@ -540,7 +540,7 @@ class Foreman:
         return self.get_resources(resource_type=LOCATIONS)
 
     def get_location(self, data):
-        return self.search_resource(resource_type=LOCATIONS, search_data=data)
+        return self.search_resource(resource_type=LOCATIONS, data=data)
 
     def set_location(self, data):
         return self.post_resource(resource_type=LOCATIONS, resource=LOCATION, data=data)
@@ -555,7 +555,7 @@ class Foreman:
         return self.get_resources(resource_type=MEDIA)
 
     def get_medium(self, data):
-        return self.search_resource(resource_type=MEDIA, search_data=data)
+        return self.search_resource(resource_type=MEDIA, data=data)
 
     def set_medium(self, data):
         return self.post_resource(resource_type=MEDIA, resource=MEDIUM, data=data)
@@ -570,7 +570,7 @@ class Foreman:
         return self.get_resources(resource_type=ORGANIZATIONS)
 
     def get_organization(self, data):
-        return self.search_resource(resource_type=ORGANIZATIONS, search_data=data)
+        return self.search_resource(resource_type=ORGANIZATIONS, data=data)
 
     def set_organization(self, data):
         return self.post_resource(resource_type=ORGANIZATIONS, resource=ORGANIZATION, data=data)
@@ -585,7 +585,7 @@ class Foreman:
         return self.get_resources(resource_type=OPERATINGSYSTEMS)
 
     def get_operatingsystem(self, data):
-        return self.search_resource(resource_type=OPERATINGSYSTEMS, search_data=data)
+        return self.search_resource(resource_type=OPERATINGSYSTEMS, data=data)
 
     def set_operatingsystem(self, data):
         return self.post_resource(resource_type=OPERATINGSYSTEMS, resource=OPERATINGSYSTEM, data=data)
@@ -600,7 +600,7 @@ class Foreman:
         return self.get_resources(resource_type=PARTITION_TABLES)
 
     def get_partition_table(self, data):
-        return self.search_resource(resource_type=PARTITION_TABLES, search_data=data)
+        return self.search_resource(resource_type=PARTITION_TABLES, data=data)
 
     def set_partition_table(self, data):
         return self.post_resource(resource_type=PARTITION_TABLES, resource=PARTITION_TABLE, data=data)
@@ -615,7 +615,7 @@ class Foreman:
         return self.get_resources(resource_type=SMART_PROXIES)
 
     def get_smart_proxy(self, data):
-        return self.search_resource(resource_type=SMART_PROXIES, search_data=data)
+        return self.search_resource(resource_type=SMART_PROXIES, data=data)
 
     def set_smart_proxy(self, data):
         return self.post_resource(resource_type=SMART_PROXIES, resource=SMART_PROXY, data=data)
@@ -630,7 +630,7 @@ class Foreman:
         return self.get_resources(resource_type=SUBNETS)
 
     def get_subnet(self, data):
-        return self.search_resource(resource_type=SUBNETS, search_data=data)
+        return self.search_resource(resource_type=SUBNETS, data=data)
 
     def set_subnet(self, data):
         return self.post_resource(resource_type=SUBNETS, resource=SUBNET, data=data)
