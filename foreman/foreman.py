@@ -361,22 +361,20 @@ class Foreman:
     def search_compute_attribute(self, data):
         return self.search_resource(resource_type=COMPUTE_ATTRIBUTES, data=data)
 
-    def create_compute_attribute(self, data):
+    def create_compute_attribute(self, compute_resource_id, compute_profile_id, data):
         """ Create compute attributes for a compute profile in a compute resource
 
         Args:
-           data(dict): Must contain compute_resource_id, compute_profile_id and vm_attrs
+           data(dict): Dict containing attributes
         """
         addition_data = {}
-        addition_data['compute_resource_id'] = data.get('compute_resource_id')
-        addition_data['compute_profile_id'] = data.get('compute_profile_id')
+        addition_data['compute_resource_id'] = compute_resource_id
+        addition_data['compute_profile_id'] = compute_profile_id
 
-        resource_data = {}
-        resource_data['vm_attrs'] = data.get('vm_attrs')
-
-        return self.post_resource(resource_type=COMPUTE_ATTRIBUTES, resource=COMPUTE_ATTRIBUTE,
-                           data=resource_data,
-                           additional_data=addition_data)
+        return self.post_resource(resource_type=COMPUTE_ATTRIBUTES,
+                                  resource=COMPUTE_ATTRIBUTE,
+                                  data=data,
+                                  additional_data=addition_data)
 
     def update_compute_attribute(self, data):
         return self.put_resource(resource_type=COMPUTE_ATTRIBUTES,
