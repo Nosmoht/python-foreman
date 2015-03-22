@@ -20,6 +20,8 @@ COMPUTE_RESOURCES = 'compute_resources'
 COMPUTE_RESOURCE = 'compute_resource'
 HOSTS = 'hosts'
 HOST = 'host'
+OPERATINGSYSTEMS = 'operatingsystems'
+OPERATINGSYSTEM = 'operatingsystem'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -556,19 +558,19 @@ class Foreman:
         return self.delete_resource(resource_type='organizations', resource_id=id)
 
     def get_operatingsystems(self):
-        return self.get_resources(resource_type='operatingsystems')
+        return self.get_resources(resource_type=OPERATINGSYSTEMS)
 
     def get_operatingsystem(self, data):
-        return self.search_resource(resource_type='operatingsystems', search_data=data)
+        return self.search_resource(resource_type=OPERATINGSYSTEMS, search_data=data)
 
     def set_operatingsystem(self, data):
-        return self.post_resource(resource_type='operatingsystems', resource='operatingsystem', data=data)
+        return self.post_resource(resource_type=OPERATINGSYSTEMS, resource=OPERATINGSYSTEM, data=data)
 
     def create_operatingsystem(self, data):
         return self.set_operatingsystem(data=data)
 
     def delete_operatingsystem(self, id):
-        return self.delete_resource(resource_type='operatingsystems', resource_id=id)
+        return self.delete_resource(resource_type=OPERATINGSYSTEMS, resource_id=id)
 
     def get_partition_tables(self):
         return self.get_resources(resource_type='ptables')
