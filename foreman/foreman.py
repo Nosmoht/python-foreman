@@ -516,7 +516,7 @@ class Foreman:
 
     def get_host_parameters(self, host_id):
         parameters = self.get_resource(resource_type=HOSTS, resource_id=host_id, component='parameters')
-        if parameters:
+        if parameters and parameters.has_key('results'):
             return parameters.get('results')
         return None
 
