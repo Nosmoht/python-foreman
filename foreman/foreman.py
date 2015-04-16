@@ -286,6 +286,10 @@ class Foreman:
                                                             component_id=component_id),
                                  data=data)
 
+    def update_resource(self, resource_type, resource_id, data):
+        url = self._get_resource_url(resource_type=resource_type, resource_id=resource_id)
+        return self._put_request(url=url, data=data)
+
     def delete_resource(self, resource_type, resource_id):
         return self._delete_request(url=self._get_resource_url(resource_type=resource_type,
                                                                resource_id=resource_id))
@@ -602,6 +606,9 @@ class Foreman:
 
     def delete_medium(self, id):
         return self.delete_resource(resource_type=MEDIA, resource_id=id)
+
+    def update_medium(self, id, data):
+        return self.update_resource(resource_type=MEDIA, resource_id=id, data=data)
 
     def get_organizations(self):
         return self.get_resources(resource_type=ORGANIZATIONS)
