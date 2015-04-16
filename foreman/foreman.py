@@ -51,6 +51,8 @@ SMART_PROXIES = 'smart_proxies'
 SMART_PROXY = 'smart_proxy'
 SUBNETS = 'subnets'
 SUBNET = 'subnet'
+USERS = 'users'
+USER = 'user'
 
 class ForemanError(Exception):
     """ForemanError Class
@@ -659,3 +661,21 @@ class Foreman:
 
     def delete_subnet(self, id):
         return self.delete_resource(resource_type=SUBNETS, resource_id=id)
+
+    def get_users(self):
+        return self.get_resources(resource_type=USERS)
+
+    def get_user(self, id):
+        return self.get_resource(resource_type=USERS, resource_id=id)
+
+    def search_user(self, data):
+        return self.search_resource(resource_type=USERS, data=data)
+
+    def create_user(self, data):
+        return self.post_resource(resource_type=USERS, resource=USER, data=data)
+
+    def update_user(self, id, data):
+        return self.update_resource(resource_type=USERS, resource_id=id, data=data)
+
+    def delete_user(self, id):
+        return self.delete_resource(resource_type=USERS, resource_id=id)
