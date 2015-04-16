@@ -249,7 +249,7 @@ class Foreman:
         return self._get_request(url=url)
 
     def create_resource(self, resource_type, resource, data,
-                      resource_id=None, component=None, additional_data=None):
+                        resource_id=None, component=None, additional_data=None):
         """ Create a resource by executing a post request to Foreman
 
         Execute a post request to create one <resource> of a <resource type>.
@@ -282,16 +282,16 @@ class Foreman:
             for key in additional_data.keys():
                 resource_data[key] = additional_data[key]
         resource_data[resource] = data
-        return self._post_request(url=url,
-                                  data=resource_data)
+        return self._post_request(url=url, data=resource_data)
 
     def update_resource(self, resource_type, resource_id, data):
         url = self._get_resource_url(resource_type=resource_type, resource_id=resource_id)
         return self._put_request(url=url, data=data)
 
     def delete_resource(self, resource_type, resource_id):
-        return self._delete_request(url=self._get_resource_url(resource_type=resource_type,
-                                                               resource_id=resource_id))
+        url = self._get_resource_url(resource_type=resource_type,
+                                     resource_id=resource_id)
+        return self._delete_request(url=url)
 
     def search_resource(self, resource_type, data):
         search_data = {}
@@ -379,8 +379,8 @@ class Foreman:
 
     def update_compute_attribute(self, id, data):
         return self.update_resource(resource_type=COMPUTE_ATTRIBUTES,
-                                 resource_id=id,
-                                 data={'vm_attrs': data})
+                                    resource_id=id,
+                                    data={'vm_attrs': data})
 
     def get_compute_profiles(self):
         return self.get_resources(resource_type=COMPUTE_PROFILES)
