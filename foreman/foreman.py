@@ -35,6 +35,8 @@ HOSTS = 'hosts'
 HOST = 'host'
 HOSTGROUPS = 'hostgroups'
 HOSTGROUP = 'hostgroup'
+IMAGES = 'images'
+IMAGE = 'image'
 LOCATIONS = 'locations'
 LOCATION = 'location'
 MEDIA = 'media'
@@ -411,6 +413,11 @@ class Foreman:
     def delete_compute_resource(self, id):
         return self.delete_resource(resource_type=COMPUTE_RESOURCES, resource_id=id)
 
+    def get_compute_resource_images(self, compute_resource_id):
+        return self.get_resources(resource_type=COMPUTE_RESOURCES,
+                                  resource_id=compute_resource_id,
+                                  component=IMAGES);
+
     def get_config_templates(self):
         return self.get_resources(resource_type=CONFIG_TEMPLATES)
 
@@ -428,9 +435,6 @@ class Foreman:
 
     def delete_config_template(self, id):
         return self.delete_resource(resource_type=CONFIG_TEMPLATES, resource_id=id)
-
-#    def get_compute_resource_images(self, name):
-#        return self.get_compute_resource(name=name, component='images').get('results')
 
     def get_domains(self):
         return self.get_resources(resource_type=DOMAINS)
