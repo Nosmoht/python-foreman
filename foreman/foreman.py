@@ -203,15 +203,21 @@ class Foreman:
                            message=req.json().get('error').get('message'),
                            request=req.json())
 
-    def get_resources(self, resource_type):
+    def get_resources(self, resource_type, resource_id=None, component=None):
         """ Return a list of all resources of the defined resource type
 
         Args:
            resource_type: Type of resources to get
+           resource_id (str): Resource identified
+           component (str): Component name to request
+           component_id (int): Component id to request
         Returns:
            list of dict
         """
-        request_result = self._get_request(url=self._get_resource_url(resource_type=resource_type))
+        request_result = self._get_request(url=self._get_resource_url(resource_type=resource_type,
+                                                                      resource_id=resource_id,
+                                                                      component=component),
+                                           data={'page': '1', 'per_page': 99999})
         return request_result.get('results')
 
     def get_resource(self, resource_type, resource_id, component=None, component_id=None):
