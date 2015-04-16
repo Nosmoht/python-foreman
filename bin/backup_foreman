@@ -41,7 +41,11 @@ class ForemanBackup:
                 item = None
 
             if item:
-                backup_file = os.path.join(backup_dir, item.get('name').replace('/', '_') + '.yaml')
+                if item.has_key('title'):
+                    file_name = item.get('title')
+                else:
+                    file_name = item.get('name')
+                backup_file = os.path.join(backup_dir, file_name.replace('/', '_') + '.yaml')
                 with open(backup_file, 'w') as backup_file:
                     yaml.safe_dump(item, backup_file, default_flow_style=False)
 
