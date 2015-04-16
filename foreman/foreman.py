@@ -45,6 +45,8 @@ OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
 ORGANIZATION = 'organization'
+PARAMETERS = 'parameters'
+PARAMETER = 'parameter'
 PARTITION_TABLES = 'ptables'
 PARTITION_TABLE = 'ptable'
 SMART_PROXIES = 'smart_proxies'
@@ -517,24 +519,24 @@ class Foreman:
 #                                       component_id=interface_id)
 
     def get_host_parameters(self, host_id):
-        parameters = self.get_resource(resource_type=HOSTS, resource_id=host_id, component='parameters')
+        parameters = self.get_resource(resource_type=HOSTS, resource_id=host_id, component=PARAMETERS)
         if parameters and parameters.has_key('results'):
             return parameters.get('results')
         return None
 
     def create_host_parameter(self, host_id, data):
         return self.create_resource(resource_type=HOSTS,
-                                  resource_id=host_id,
-                                  resource='parameter',
-                                  data=data,
-                                  component='parameters')
+                                    resource_id=host_id,
+                                    resource=PARAMETERS,
+                                    data=data,
+                                    component=PARAMETERS)
 
     def update_host_parameter(self, host_id, parameter_id, data):
-        return self.put_resource(resource_type=HOSTS,
-                                 resource_id=host_id,
-                                 component='parameters',
-                                 component_id=parameter_id,
-                                 data=data)
+        return self.update_resource(resource_type=HOSTS,
+                                    resource_id=host_id,
+                                    component=PARAMETERS,
+                                    component_id=parameter_id,
+                                    data=data)
 
     def get_hostgroups(self):
         return self.get_resources(resource_type=HOSTGROUPS)
