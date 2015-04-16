@@ -637,11 +637,11 @@ class Foreman:
     def search_operatingsystem(self, data):
         return self.search_resource(resource_type=OPERATINGSYSTEMS, data=data)
 
-    def set_operatingsystem(self, data):
+    def create_operatingsystem(self, data):
         return self.post_resource(resource_type=OPERATINGSYSTEMS, resource=OPERATINGSYSTEM, data=data)
 
-    def create_operatingsystem(self, data):
-        return self.set_operatingsystem(data=data)
+    def update_operatingsystem(self, id, data):
+        return self.update_resource(resource_type=OPERATINGSYSTEMS, resource_id=id, data=data)
 
     def delete_operatingsystem(self, id):
         return self.delete_resource(resource_type=OPERATINGSYSTEMS, resource_id=id)
