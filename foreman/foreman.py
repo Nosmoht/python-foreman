@@ -285,13 +285,6 @@ class Foreman:
         return self._post_request(url=url,
                                   data=resource_data)
 
-    def put_resource(self, resource_type, resource_id, data, component=None, component_id=None):
-        return self._put_request(url=self._get_resource_url(resource_type=resource_type,
-                                                            resource_id=resource_id,
-                                                            component=component,
-                                                            component_id=component_id),
-                                 data=data)
-
     def update_resource(self, resource_type, resource_id, data):
         url = self._get_resource_url(resource_type=resource_type, resource_id=resource_id)
         return self._put_request(url=url, data=data)
@@ -348,8 +341,8 @@ class Foreman:
 
     def create_common_parameter(self, data):
         return self.create_resource(resource_type=COMMON_PARAMETERS,
-                                  resource=COMMON_PARAMETER,
-                                  data=data)
+                                    resource=COMMON_PARAMETER,
+                                    data=data)
 
     def delete_common_parameter(self, id):
         return self.delete_resource(resource_type=COMMON_PARAMETERS, resource_id=id)
@@ -380,12 +373,12 @@ class Foreman:
         addition_data['compute_profile_id'] = compute_profile_id
 
         return self.create_resource(resource_type=COMPUTE_ATTRIBUTES,
-                                  resource=COMPUTE_ATTRIBUTE,
-                                  data=data,
-                                  additional_data=addition_data)
+                                    resource=COMPUTE_ATTRIBUTE,
+                                    data=data,
+                                    additional_data=addition_data)
 
     def update_compute_attribute(self, id, data):
-        return self.put_resource(resource_type=COMPUTE_ATTRIBUTES,
+        return self.update_resource(resource_type=COMPUTE_ATTRIBUTES,
                                  resource_id=id,
                                  data={'vm_attrs': data})
 
@@ -400,8 +393,8 @@ class Foreman:
 
     def create_compute_profile(self, data):
         return self.create_resource(resource_type=COMPUTE_PROFILES,
-                                  resource=COMPUTE_PROFILE,
-                                  data=data)
+                                    resource=COMPUTE_PROFILE,
+                                    data=data)
 
     def delete_compute_profile(self, id):
         return self.delete_resource(resource_type=COMPUTE_PROFILES, resource_id=id)
@@ -417,8 +410,8 @@ class Foreman:
 
     def create_compute_resource(self, data):
         return self.create_resource(resource_type=COMPUTE_RESOURCES,
-                                  resource=COMPUTE_RESOURCE,
-                                  data=data)
+                                    resource=COMPUTE_RESOURCE,
+                                    data=data)
 
     def delete_compute_resource(self, id):
         return self.delete_resource(resource_type=COMPUTE_RESOURCES, resource_id=id)
@@ -439,8 +432,8 @@ class Foreman:
 
     def create_config_template(self, data):
         return self.create_resource(resource_type=CONFIG_TEMPLATES,
-                                  resource=CONFIG_TEMPLATE,
-                                  data=data)
+                                    resource=CONFIG_TEMPLATE,
+                                    data=data)
 
     def delete_config_template(self, id):
         return self.delete_resource(resource_type=CONFIG_TEMPLATES, resource_id=id)
@@ -491,10 +484,10 @@ class Foreman:
         return self.delete_resource(resource_type=HOSTS, resource_id=id)
 
     def set_host_power(self, host_id, action):
-        return self.put_resource(resource_type=HOSTS,
-                                 resource_id=host_id,
-                                 component='power',
-                                 data={'power_action': action, HOST: {}})
+        return self.update_resource(resource_type=HOSTS,
+                                    resource_id=host_id,
+                                    component='power',
+                                    data={'power_action': action, HOST: {}})
 
     def get_host_power(self, host_id):
         return self.set_host_power(host_id=host_id, action='state')
