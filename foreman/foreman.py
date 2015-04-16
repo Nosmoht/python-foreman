@@ -218,9 +218,10 @@ class Foreman:
         Returns:
            list of dict
         """
-        request_result = self._get_request(url=self._get_resource_url(resource_type=resource_type,
-                                                                      resource_id=resource_id,
-                                                                      component=component),
+        url = self._get_resource_url(resource_type=resource_type,
+                                     resource_id=resource_id,
+                                     component=component)
+        request_result = self._get_request(url=url,
                                            data={'page': '1', 'per_page': 99999})
         return request_result.get('results')
 
@@ -241,10 +242,11 @@ class Foreman:
         Returns:
            dict
         """
-        return self._get_request(url=self._get_resource_url(resource_type=resource_type,
-                                                            resource_id=resource_id,
-                                                            component=component,
-                                                            component_id=component_id))
+        url = self._get_resource_url(resource_type=resource_type,
+                                     resource_id=resource_id,
+                                     component=component,
+                                     component_id=component_id)
+        return self._get_request(url=url)
 
     def create_resource(self, resource_type, resource, data,
                       resource_id=None, component=None, additional_data=None):
