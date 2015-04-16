@@ -325,11 +325,8 @@ class Foreman:
     def search_architecture(self, data):
         return self.search_resource(resource_type=ARCHITECTURES, data=data)
 
-    def set_architecture(self, data):
-        return self.post_resource(resource_type=ARCHITECTURES, resource=ARCHITECTURE, data=data)
-
     def create_architecture(self, data):
-        return self.set_architecture(data=data)
+        return self.post_resource(resource_type=ARCHITECTURES, resource=ARCHITECTURE, data=data)
 
     def delete_architecture(self, id):
         return self.delete_resource(resource_type=ARCHITECTURES, resource_id=id)
@@ -343,11 +340,10 @@ class Foreman:
     def search_common_parameter(self, data):
         return self.search_resource(resource_type=COMMON_PARAMETERS, data=data)
 
-    def set_common_parameter(self, data):
-        return self.post_resource(resource_type=COMMON_PARAMETERS, resource=COMMON_PARAMETER, data=data)
-
     def create_common_parameter(self, data):
-        return self.set_common_parameter(data=data)
+        return self.post_resource(resource_type=COMMON_PARAMETERS,
+                                  resource=COMMON_PARAMETER,
+                                  data=data)
 
     def delete_common_parameter(self, id):
         return self.delete_resource(resource_type=COMMON_PARAMETERS, resource_id=id)
@@ -396,11 +392,10 @@ class Foreman:
     def search_compute_profile(self, data):
         return self.search_resource(resource_type=COMPUTE_PROFILES, data=data)
 
-    def set_compute_profile(self, data):
-        return self.post_resource(resource_type=COMPUTE_PROFILES, resource=COMPUTE_PROFILE, data=data)
-
     def create_compute_profile(self, data):
-        return self.set_compute_profile(data=data)
+        return self.post_resource(resource_type=COMPUTE_PROFILES,
+                                  resource=COMPUTE_PROFILE,
+                                  data=data)
 
     def delete_compute_profile(self, id):
         return self.delete_resource(resource_type=COMPUTE_PROFILES, resource_id=id)
@@ -414,11 +409,10 @@ class Foreman:
     def search_compute_resource(self, data):
         return self.search_resource(resource_type=COMPUTE_RESOURCES, data=data)
 
-    def set_compute_resource(self, data):
-        return self.post_resource(resource_type=COMPUTE_RESOURCES, resource=COMPUTE_RESOURCE, data=data)
-
     def create_compute_resource(self, data):
-        return self.set_compute_resource(data=data)
+        return self.post_resource(resource_type=COMPUTE_RESOURCES,
+                                  resource=COMPUTE_RESOURCE,
+                                  data=data)
 
     def delete_compute_resource(self, id):
         return self.delete_resource(resource_type=COMPUTE_RESOURCES, resource_id=id)
@@ -437,11 +431,10 @@ class Foreman:
     def search_config_template(self, data):
         return self.search_resource(resource_type=CONFIG_TEMPLATES, data=data)
 
-    def set_config_template(self, data):
-        return self.post_resource(resource_type=CONFIG_TEMPLATES, resource=CONFIG_TEMPLATE, data=data)
-
     def create_config_template(self, data):
-        return self.set_config_template(data=data)
+        return self.post_resource(resource_type=CONFIG_TEMPLATES,
+                                  resource=CONFIG_TEMPLATE,
+                                  data=data)
 
     def delete_config_template(self, id):
         return self.delete_resource(resource_type=CONFIG_TEMPLATES, resource_id=id)
@@ -455,11 +448,8 @@ class Foreman:
     def search_domain(self, data):
         return self.search_resource(resource_type=DOMAINS, data=data)
 
-    def set_domain(self, data):
-        return self.post_resource(resource_type=DOMAINS, resource=DOMAIN, data=data)
-
     def create_domain(self, data):
-        return self.set_domain(data=data)
+        return self.post_resource(resource_type=DOMAINS, resource=DOMAIN, data=data)
 
     def delete_domain(self, id):
         return self.delete_resource(resource_type=DOMAINS, resource_id=id)
@@ -473,11 +463,8 @@ class Foreman:
     def search_environment(self, data):
         return self.search_resource(resource_type=ENVIRONMENTS, data=data)
 
-    def set_environment(self, data):
-        return self.post_resource(resource_type=ENVIRONMENTS, resource=ENVIRONMENT, data=data)
-
     def create_environment(self, data):
-        return self.set_environment(data=data)
+        return self.post_resource(resource_type=ENVIRONMENTS, resource=ENVIRONMENT, data=data)
 
     def delete_environment(self, id):
         return self.delete_resource(resource_type=ENVIRONMENTS, resource_id=id)
@@ -491,11 +478,8 @@ class Foreman:
     def search_host(self, data):
         return self.search_resource(resource_type=HOSTS, data=data)
 
-    def set_host(self, data):
-        return self.post_resource(resource_type=HOSTS, resource=HOST, data=data)
-
     def create_host(self, data):
-        return self.set_host(data=data)
+        return self.post_resource(resource_type=HOSTS, resource=HOST, data=data)
 
     def delete_host(self, id):
         return self.delete_resource(resource_type=HOSTS, resource_id=id)
@@ -562,11 +546,8 @@ class Foreman:
     def search_hostgroup(self, data):
         return self.search_resource(resource_type=HOSTGROUPS, data=data)
 
-    def set_hostgroup(self, data):
-        return self.post_resource(resource_type=HOSTGROUPS, resource=HOSTGROUP, data=data)
-
     def create_hostgroup(self, data):
-        return self.set_hostgroup(data=data)
+        return self.post_resource(resource_type=HOSTGROUPS, resource=HOSTGROUP, data=data)
 
     def delete_hostgroup(self, id):
         return self.delete_resource(resource_type=HOSTGROUPS, resource_id=id)
@@ -580,11 +561,8 @@ class Foreman:
     def search_location(self, data):
         return self.search_resource(resource_type=LOCATIONS, data=data)
 
-    def set_location(self, data):
-        return self.post_resource(resource_type=LOCATIONS, resource=LOCATION, data=data)
-
     def create_location(self, data):
-        return self.set_location(data=data)
+        return self.post_resource(resource_type=LOCATIONS, resource=LOCATION, data=data)
 
     def delete_location(self, id):
         return self.delete_resource(resource_type=LOCATIONS, resource_id=id)
@@ -598,11 +576,8 @@ class Foreman:
     def search_medium(self, data):
         return self.search_resource(resource_type=MEDIA, data=data)
 
-    def set_medium(self, data):
-        return self.post_resource(resource_type=MEDIA, resource=MEDIUM, data=data)
-
     def create_medium(self, data):
-        return self.set_medium(data=data)
+        return self.post_resource(resource_type=MEDIA, resource=MEDIUM, data=data)
 
     def delete_medium(self, id):
         return self.delete_resource(resource_type=MEDIA, resource_id=id)
@@ -619,11 +594,8 @@ class Foreman:
     def search_organization(self, data):
         return self.search_resource(resource_type=ORGANIZATIONS, data=data)
 
-    def set_organization(self, data):
-        return self.post_resource(resource_type=ORGANIZATIONS, resource=ORGANIZATION, data=data)
-
     def create_organization(self, data):
-        return self.set_organization(data=data)
+        return self.post_resource(resource_type=ORGANIZATIONS, resource=ORGANIZATION, data=data)
 
     def delete_organization(self, id):
         return self.delete_resource(resource_type=ORGANIZATIONS, resource_id=id)
@@ -655,11 +627,8 @@ class Foreman:
     def search_partition_table(self, data):
         return self.search_resource(resource_type=PARTITION_TABLES, data=data)
 
-    def set_partition_table(self, data):
-        return self.post_resource(resource_type=PARTITION_TABLES, resource=PARTITION_TABLE, data=data)
-
     def create_partition_table(self, data):
-        return self.set_partition_table(data=data)
+        return self.post_resource(resource_type=PARTITION_TABLES, resource=PARTITION_TABLE, data=data)
 
     def delete_partition_table(self, id):
         return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
@@ -673,11 +642,8 @@ class Foreman:
     def search_smart_proxy(self, data):
         return self.search_resource(resource_type=SMART_PROXIES, data=data)
 
-    def set_smart_proxy(self, data):
-        return self.post_resource(resource_type=SMART_PROXIES, resource=SMART_PROXY, data=data)
-
     def create_smart_proxy(self, data):
-        return self.set_smart_proxy(data=data)
+        return self.post_resource(resource_type=SMART_PROXIES, resource=SMART_PROXY, data=data)
 
     def delete_smart_proxy(self, id):
         return self.delete_resource(resource_type=SMART_PROXIES, resource_id=id)
@@ -691,11 +657,8 @@ class Foreman:
     def search_subnet(self, data):
         return self.search_resource(resource_type=SUBNETS, data=data)
 
-    def set_subnet(self, data):
-        return self.post_resource(resource_type=SUBNETS, resource=SUBNET, data=data)
-
     def create_subnet(self, data):
-        return self.set_subnet(data=data)
+        return self.post_resource(resource_type=SUBNETS, resource=SUBNET, data=data)
 
     def delete_subnet(self, id):
         return self.delete_resource(resource_type=SUBNETS, resource_id=id)
