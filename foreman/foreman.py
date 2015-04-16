@@ -484,11 +484,14 @@ class Foreman:
     def delete_host(self, id):
         return self.delete_resource(resource_type=HOSTS, resource_id=id)
 
-    def get_host_power(self, host_id):
+    def set_host_power(self, host_id, action):
         return self.put_resource(resource_type=HOSTS,
                                  resource_id=host_id,
                                  component='power',
-                                 data={'power_action': 'state', HOST: {}})
+                                 data={'power_action': action, HOST: {}})
+
+    def get_host_power(self, host_id):
+        return self.set_host_power(host_id=host_id, action='state')
 
     def poweron_host(self, host_id):
         return self.set_host_power(host_id=host_id, action='start')
@@ -510,12 +513,6 @@ class Foreman:
 #        return self.get_host_component(name=name,
 #                                       component='interfaces',
 #                                       component_id=interface_id)
-
-    def set_host_power(self, host_id, action):
-        return self.put_resource(resource_type=HOSTS,
-                                 resource_id=host_id,
-                                 component='power',
-                                 data={'power_action': action, HOST: {}})
 
     def get_host_parameters(self, host_id):
         parameters = self.get_resource(resource_type=HOSTS, resource_id=host_id, component='parameters')
