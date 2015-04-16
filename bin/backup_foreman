@@ -6,7 +6,7 @@
 import sys, getopt
 import os
 import yaml
-from foreman import Foreman
+from foreman import *
 
 class ForemanBackup:
     def __init__(self, hostname, port, username, password):
@@ -25,6 +25,7 @@ class ForemanBackup:
           resource_function (def): Name of function to call to get a dict of resources
         """
         backup_dir = os.path.join(backup_dir, resource)
+        file_name = None
 
         resources = resource_function()
         print('Backing up %s %s' % (str(len(resources)), resource))
@@ -33,8 +34,12 @@ class ForemanBackup:
             os.makedirs(backup_dir)
 
         for resource_item in resources:
-            item = self.foreman.get_resource(resource_type= resource,
-                                             resource_id=resource_item.get('id'))
+            if resource_item.has_key('id'):
+                item = self.foreman.get_resource(resource_type= resource,
+                                                 resource_id=resource_item.get('id'))
+            else:
+                item = None
+
             if item:
                 backup_file = os.path.join(backup_dir, item.get('name').replace('/', '_') + '.yaml')
                 with open(backup_file, 'w') as backup_file:
