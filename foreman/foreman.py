@@ -659,6 +659,9 @@ class Foreman:
     def create_subnet(self, data):
         return self.post_resource(resource_type=SUBNETS, resource=SUBNET, data=data)
 
+    def update_subnet(self, id, data):
+        return self.update_resource(resource_type=SUBNETS, resource_id=id, data=data)
+
     def delete_subnet(self, id):
         return self.delete_resource(resource_type=SUBNETS, resource_id=id)
 
