@@ -296,8 +296,9 @@ class Foreman:
         resource_data[resource] = data
         return self._post_request(url=url, data=resource_data)
 
-    def update_resource(self, resource_type, resource_id, data):
-        url = self._get_resource_url(resource_type=resource_type, resource_id=resource_id)
+    def update_resource(self, resource_type, resource_id, data, component=None, component_id=None):
+        url = self._get_resource_url(resource_type=resource_type, resource_id=resource_id,
+                                     component=component, component_id=component_id)
         return self._put_request(url=url, data=data)
 
     def delete_resource(self, resource_type, resource_id):
