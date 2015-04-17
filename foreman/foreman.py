@@ -106,6 +106,24 @@ class Foreman:
                     url = url + '/' + str(component_id)
         return url
 
+    @staticmethod
+    def _get_request_error_message(data):
+        request_json = data.json()
+        if 'error' in request_json:
+            request_error = data.json().get('error')
+        elif 'errors' in request_json:
+            request_error = data.json().get('errors')
+
+        if 'message' in request_error:
+            error_message = request_error.get('message')
+        elif 'full_messages' in request_error:
+            error_message = ', '.join(request_error.get('full_messages'))
+        else:
+            error_message = str(request_error)
+
+        return error_message
+
+
     def _get_request(self, url, data=None):
         """Execute a GET request agains Foreman API
 
@@ -124,9 +142,11 @@ class Foreman:
         if req.status_code == 200:
             return json.loads(req.text)
 
-        raise ForemanError (url=req.url,
+        error_message = self._get_request_error_message(data=req)
+
+        raise ForemanError(url=req.url,
                            status_code=req.status_code,
-                           message=req.json().get('error').get('message'),
+                           message=error_message,
                            request=req.json())
 
     def _post_request(self, url, data):
@@ -147,18 +167,7 @@ class Foreman:
         if req.status_code in [200, 201]:
             return json.loads(req.text)
 
-        request_json = req.json()
-        if 'error' in request_json:
-            request_error = req.json().get('error')
-        elif 'errors' in request_json:
-            request_error = req.json().get('errors')
-
-        if 'message' in request_error:
-            error_message = request_error.get('message')
-        elif 'full_messages' in request_error:
-            error_message = ', '.join(request_error.get('full_messages'))
-        else:
-            error_message = str(request_error)
+        error_message = self._get_request_error_message(data=req)
 
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
@@ -182,9 +191,12 @@ class Foreman:
                            verify=False)
         if req.status_code == 200:
             return json.loads(req.text)
+
+        error_message = self._get_request_error_message(data=req)
+
         raise ForemanError(url=req.url,
                            status_code=req.status_code,
-                           message=req.json().get('error').get('message'),
+                           message=error_message,
                            request=req.json())
 
     def _delete_request(self, url):
