@@ -462,7 +462,7 @@ class Foreman:
         return self.get_resources(resource_type=DOMAINS)
 
     def get_domain(self, id):
-        return self.search_resource(resource_type=DOMAINS, resource_id=id)
+        return self.get_resource(resource_type=DOMAINS, resource_id=id)
 
     def search_domain(self, data):
         return self.search_resource(resource_type=DOMAINS, data=data)
@@ -477,7 +477,7 @@ class Foreman:
         return self.get_resources(resource_type=ENVIRONMENTS)
 
     def get_environment(self, id):
-        return self.search_resource(resource_type=ENVIRONMENTS, resource_id=id)
+        return self.get_resource(resource_type=ENVIRONMENTS, resource_id=id)
 
     def search_environment(self, data):
         return self.search_resource(resource_type=ENVIRONMENTS, data=data)
@@ -492,7 +492,7 @@ class Foreman:
         return self.get_resources(resource_type=HOSTS)
 
     def get_host(self, id):
-        return self.search_resource(resource_type=HOSTS, resource_id=id)
+        return self.get_resource(resource_type=HOSTS, resource_id=id)
 
     def search_host(self, data):
         return self.search_resource(resource_type=HOSTS, data=data)
@@ -554,7 +554,7 @@ class Foreman:
         return self.get_resources(resource_type=HOSTGROUPS)
 
     def get_hostgroup(self, id):
-        return self.search_resource(resource_type=HOSTGROUPS, resource_id=id)
+        return self.get_resource(resource_type=HOSTGROUPS, resource_id=id)
 
     def search_hostgroup(self, data):
         return self.search_resource(resource_type=HOSTGROUPS, data=data)
@@ -569,7 +569,7 @@ class Foreman:
         return self.get_resources(resource_type=LOCATIONS)
 
     def get_location(self, id):
-        return self.search_resource(resource_type=LOCATIONS, resource_id=id)
+        return self.get_resource(resource_type=LOCATIONS, resource_id=id)
 
     def search_location(self, data):
         return self.search_resource(resource_type=LOCATIONS, data=data)
@@ -584,7 +584,7 @@ class Foreman:
         return self.get_resources(resource_type=MEDIA)
 
     def get_medium(self, id):
-        return self.search_resource(resource_type=MEDIA, resource_id=id)
+        return self.get_resource(resource_type=MEDIA, resource_id=id)
 
     def search_medium(self, data):
         return self.search_resource(resource_type=MEDIA, data=data)
@@ -602,7 +602,7 @@ class Foreman:
         return self.get_resources(resource_type=ORGANIZATIONS)
 
     def get_organization(self, id):
-        return self.search_resource(resource_type=ORGANIZATIONS, resource_id=id)
+        return self.get_resource(resource_type=ORGANIZATIONS, resource_id=id)
 
     def search_organization(self, data):
         return self.search_resource(resource_type=ORGANIZATIONS, data=data)
@@ -617,7 +617,7 @@ class Foreman:
         return self.get_resources(resource_type=OPERATINGSYSTEMS)
 
     def get_operatingsystem(self, id):
-        return self.search_resource(resource_type=OPERATINGSYSTEMS, resource_id=id)
+        return self.get_resource(resource_type=OPERATINGSYSTEMS, resource_id=id)
 
     def search_operatingsystem(self, data):
         return self.search_resource(resource_type=OPERATINGSYSTEMS, data=data)
@@ -635,7 +635,7 @@ class Foreman:
         return self.get_resources(resource_type=PARTITION_TABLES)
 
     def get_partition_table(self, id):
-        return self.search_resource(resource_type=PARTITION_TABLES, resource_id=id)
+        return self.get_resource(resource_type=PARTITION_TABLES, resource_id=id)
 
     def search_partition_table(self, data):
         return self.search_resource(resource_type=PARTITION_TABLES, data=data)
@@ -665,7 +665,7 @@ class Foreman:
         return self.get_resources(resource_type=SMART_PROXIES)
 
     def get_smart_proxy(self, id):
-        return self.search_resource(resource_type=SMART_PROXIES, resource_id=id)
+        return self.get_resource(resource_type=SMART_PROXIES, resource_id=id)
 
     def search_smart_proxy(self, data):
         return self.search_resource(resource_type=SMART_PROXIES, data=data)
@@ -680,7 +680,7 @@ class Foreman:
         return self.get_resources(resource_type=SUBNETS)
 
     def get_subnet(self, id):
-        return self.search_resource(resource_type=SUBNETS, resource_id=id)
+        return self.get_resource(resource_type=SUBNETS, resource_id=id)
 
     def search_subnet(self, data):
         return self.search_resource(resource_type=SUBNETS, data=data)
