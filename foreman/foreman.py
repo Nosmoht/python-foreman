@@ -51,6 +51,8 @@ PARAMETERS = 'parameters'
 PARAMETER = 'parameter'
 PARTITION_TABLES = 'ptables'
 PARTITION_TABLE = 'ptable'
+ROLES = 'roles'
+ROLE = 'role'
 SMART_PROXIES = 'smart_proxies'
 SMART_PROXY = 'smart_proxy'
 SUBNETS = 'subnets'
@@ -643,6 +645,21 @@ class Foreman:
 
     def delete_partition_table(self, id):
         return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
+
+    def get_roles(self):
+        return self.get_resources(resource_type=ROLES)
+
+    def get_role(self, id):
+        return self.get_resource(resource_type=ROLES, resource_id=id)
+
+    def search_role(self, data):
+        return self.search_resource(resource_type=ROLES, data=data)
+
+    def create_role(self, data):
+        return self.create_resource(resource_type=ROLES, resource=ROLE, data=data)
+
+    def delete_role(self, id):
+        return self.delete_resource(resource_type=ROLES, resource_id=id)
 
     def get_smart_proxies(self):
         return self.get_resources(resource_type=SMART_PROXIES)
