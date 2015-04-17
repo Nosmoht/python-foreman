@@ -1,11 +1,13 @@
-'''
+"""
 Created on 04.03.2015
 
 @author: tkrah
-'''
+"""
 
 import json
+
 import requests
+
 # from requests.auth import HTTPBasicAuth
 requests.packages.urllib3.disable_warnings()
 
@@ -56,11 +58,13 @@ SUBNET = 'subnet'
 USERS = 'users'
 USER = 'user'
 
+
 class ForemanError(Exception):
     """ForemanError Class
 
     Simple class to handle exceptions while communicating to Foreman API
     """
+
     def __init__(self, url, request, status_code, message):
         self.url = url
         self.status_code = status_code
@@ -68,12 +72,14 @@ class ForemanError(Exception):
         self.request = request
         super(ForemanError, self).__init__()
 
+
 class Foreman:
     """Foreman Class
 
     Communicate with Foreman via API v2
 
     """
+
     def __init__(self, hostname, port, username, password):
         """Init
         """
@@ -81,10 +87,10 @@ class Foreman:
         self.hostname = hostname
         self.port = port
         self.url = "https://{0}:{1}/api/{2}".format(
-                                                    self.hostname,
-                                                    self.port,
-                                                    FOREMAN_API_VERSION,
-                                                    )
+            self.hostname,
+            self.port,
+            FOREMAN_API_VERSION,
+        )
 
     def _get_resource_url(self, resource_type, resource_id=None, component=None, component_id=None):
         """Create API URL path
@@ -92,9 +98,9 @@ class Foreman:
         Args:
           resource_type (str): Name of resource to request
           resource_id (str): Resource identifier
-          component (str): Component of a resource (e.g. images in 
+          component (str): Component of a resource (e.g. images in
               /host/host01.example.com/images)
-          component_id (str): Component identifier (e.g. nic01 in 
+          component_id (str): Component identifier (e.g. nic01 in
               /host/host01.example.com/interfaces/nic1)
         """
         url = self.url + '/' + resource_type
@@ -246,6 +252,7 @@ class Foreman:
         If found the id of the research will be used. If not found None will
         be returned.
 
+        :rtype : object
         Args:
            resource_type (str): Resource type
            resource_id (str): Resource identified
@@ -307,8 +314,7 @@ class Foreman:
         return self._delete_request(url=url)
 
     def search_resource(self, resource_type, data):
-        search_data = {}
-        search_data['search'] = ''
+        search_data = {'search': ''}
 
         for key in data:
             if search_data['search']:
@@ -320,7 +326,8 @@ class Foreman:
             elif isinstance(data[key], str):
                 search_data['search'] += ('"' + data[key] + '"')
 
-        results = self._get_request(url=self._get_resource_url(resource_type=resource_type), data=search_data)
+        url = self._get_resource_url(resource_type=resource_type)
+        results = self._get_request(url=url, data=search_data)
         result = results.get('results')
 
         if len(result) == 1:
@@ -381,9 +388,7 @@ class Foreman:
         Args:
            data(dict): Dict containing attributes
         """
-        addition_data = {}
-        addition_data['compute_resource_id'] = compute_resource_id
-        addition_data['compute_profile_id'] = compute_profile_id
+        addition_data = {'compute_resource_id': compute_resource_id, 'compute_profile_id': compute_profile_id}
 
         return self.create_resource(resource_type=COMPUTE_ATTRIBUTES,
                                     resource=COMPUTE_ATTRIBUTE,
@@ -432,7 +437,7 @@ class Foreman:
     def get_compute_resource_images(self, compute_resource_id):
         return self.get_resources(resource_type=COMPUTE_RESOURCES,
                                   resource_id=compute_resource_id,
-                                  component=IMAGES);
+                                  component=IMAGES)
 
     def get_config_templates(self):
         return self.get_resources(resource_type=CONFIG_TEMPLATES)
@@ -514,21 +519,18 @@ class Foreman:
     def reboot_host(self, host_id):
         return self.set_host_power(host_id=host_id, action='reboot')
 
-#    def get_host_component(self, name, component, component_id=None):
-#        return self.get_host(name=name, component=component, component_id=component_id)
+    # def get_host_component(self, name, component, component_id=None):
+    # return self.get_host(name=name, component=component, component_id=component_id)
 
-#    def get_host_interfaces(self, name):
-#        return self.get_host_component(name=name,
-#                                       component='interfaces')
+    # def get_host_interfaces(self, name):
+    # return self.get_host_component(name=name, component='interfaces')
 
-#    def get_host_interface(self, name, interface_id):
-#        return self.get_host_component(name=name,
-#                                       component='interfaces',
-#                                       component_id=interface_id)
+    # def get_host_interface(self, name, interface_id):
+    # return self.get_host_component(name=name, component='interfaces', component_id=interface_id)
 
     def get_host_parameters(self, host_id):
         parameters = self.get_resource(resource_type=HOSTS, resource_id=host_id, component=PARAMETERS)
-        if parameters and parameters.has_key('results'):
+        if parameters and 'results' in parameters:
             return parameters.get('results')
         return None
 
