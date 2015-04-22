@@ -539,7 +539,7 @@ class Foreman:
     def create_host_parameter(self, host_id, data):
         return self.create_resource(resource_type=HOSTS,
                                     resource_id=host_id,
-                                    resource=PARAMETERS,
+                                    resource=PARAMETER,
                                     data=data,
                                     component=PARAMETERS)
 
