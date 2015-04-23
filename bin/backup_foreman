@@ -3,10 +3,13 @@
 """Backup Foreman configuration to YAML files
 
 """
-import sys, getopt
+import sys
+import getopt
 import os
+
 import yaml
 from foreman import *
+
 
 class ForemanBackup:
     def __init__(self, hostname, port, username, password):
@@ -25,7 +28,6 @@ class ForemanBackup:
           resource_function (def): Name of function to call to get a dict of resources
         """
         backup_dir = os.path.join(backup_dir, resource)
-        file_name = None
 
         resources = resource_function()
         print('Backing up %s %s' % (str(len(resources)), resource))
@@ -34,17 +36,20 @@ class ForemanBackup:
             os.makedirs(backup_dir)
 
         for resource_item in resources:
-            if resource_item.has_key('id'):
-                item = self.foreman.get_resource(resource_type= resource,
-                                                 resource_id=resource_item.get('id'))
+            if 'id' in resource_item:
+                item = self.foreman.get_resource(resource_type=resource, resource_id=resource_item.get('id'))
             else:
                 item = None
 
             if item:
-                if item.has_key('title'):
+                if 'title' in item:
                     file_name = item.get('title')
-                else:
+                elif 'login' in item:
+                    file_name = item.get('login')
+                elif 'name' in item:
                     file_name = item.get('name')
+                else:
+                    print('Can\'t backup {0}'.format(item))
                 backup_file = os.path.join(backup_dir, file_name.replace('/', '_') + '.yaml')
                 with open(backup_file, 'w') as backup_file:
                     yaml.safe_dump(item, backup_file, default_flow_style=False)
@@ -53,40 +58,44 @@ class ForemanBackup:
         backup_root = '.'
 
         self.backup(backup_dir=backup_root, resource='architectures',
-               resource_function=self.foreman.get_architectures)
+                    resource_function=self.foreman.get_architectures)
         self.backup(backup_dir=backup_root, resource='common_parameters',
-               resource_function=self.foreman.get_common_parameters)
+                    resource_function=self.foreman.get_common_parameters)
         self.backup(backup_dir=backup_root, resource='compute_resources',
-               resource_function=self.foreman.get_compute_resources)
+                    resource_function=self.foreman.get_compute_resources)
         self.backup(backup_dir=backup_root, resource='compute_profiles',
-               resource_function=self.foreman.get_compute_profiles)
+                    resource_function=self.foreman.get_compute_profiles)
         self.backup(backup_dir=backup_root, resource='config_templates',
-               resource_function=self.foreman.get_config_templates)
+                    resource_function=self.foreman.get_config_templates)
         self.backup(backup_dir=backup_root, resource='domains',
-               resource_function=self.foreman.get_domains)
+                    resource_function=self.foreman.get_domains)
         self.backup(backup_dir=backup_root, resource='environments',
-               resource_function=self.foreman.get_environments)
+                    resource_function=self.foreman.get_environments)
         self.backup(backup_dir=backup_root, resource='hosts',
-               resource_function=self.foreman.get_hosts)
+                    resource_function=self.foreman.get_hosts)
         self.backup(backup_dir=backup_root, resource='hostgroups',
-               resource_function=self.foreman.get_hostgroups)
+                    resource_function=self.foreman.get_hostgroups)
         self.backup(backup_dir=backup_root, resource='locations',
-               resource_function=self.foreman.get_locations)
+                    resource_function=self.foreman.get_locations)
         self.backup(backup_dir=backup_root, resource='media',
-               resource_function=self.foreman.get_media)
+                    resource_function=self.foreman.get_media)
 #        self.backup(backup_dir=backup_root, resource='organizations',
-#               resource_function=self.foreman.get_organizations)
+#                    resource_function=self.foreman.get_organizations)
         self.backup(backup_dir=backup_root, resource='operatingsystems',
-               resource_function=self.foreman.get_operatingsystems)
+                    resource_function=self.foreman.get_operatingsystems)
         self.backup(backup_dir=backup_root, resource='smart_proxies',
-               resource_function=self.foreman.get_smart_proxies)
+                    resource_function=self.foreman.get_smart_proxies)
         self.backup(backup_dir=backup_root, resource='subnets',
-               resource_function=self.foreman.get_subnets)
+                    resource_function=self.foreman.get_subnets)
+        self.backup(backup_dir=backup_root, resource='users',
+                    resource_function=self.foreman.get_users)
+
 
 def show_help():
     """Print on screen how to use this script.
     """
     print('foreman.py -f <foreman_host> -p <port> -u <username> -s <secret>')
+
 
 def main(argv):
     """ Main
@@ -95,8 +104,8 @@ def main(argv):
     """
     foreman_host = os.environ.get('FOREMAN_HOST', '127.0.0.1')
     foreman_port = os.environ.get('FOREMAN_PORT', '443')
-    foreman_username = os.environ.get('FOREMAN_USERNAME', 'foreman')
-    foreman_password = os.environ.get('FOREMAN_PASSWORD', 'changme')
+    foreman_username = os.environ.get('FOREMAN_USER', 'foreman')
+    foreman_password = os.environ.get('FOREMAN_PASS', 'changme')
 
     try:
         opts, args = getopt.getopt(argv,
@@ -118,9 +127,10 @@ def main(argv):
         elif opt in ('-s', '--secret'):
             foreman_password = arg
 
-    backup = ForemanBackup(foreman_host,foreman_port,
-                                   foreman_username, foreman_password)
+    backup = ForemanBackup(foreman_host, foreman_port,
+                           foreman_username, foreman_password)
     backup.run()
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
