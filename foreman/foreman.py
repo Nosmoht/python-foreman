@@ -67,11 +67,10 @@ class ForemanError(Exception):
     Simple class to handle exceptions while communicating to Foreman API
     """
 
-    def __init__(self, url, request, status_code, message):
+    def __init__(self, url, status_code, message):
         self.url = url
         self.status_code = status_code
         self.message = message
-        self.request = request
         super(ForemanError, self).__init__()
 
 
@@ -114,8 +113,7 @@ class Foreman:
                     url = url + '/' + str(component_id)
         return url
 
-    @staticmethod
-    def _get_request_error_message(data):
+    def _get_request_error_message(self, data):
         request_json = data.json()
         if 'error' in request_json:
             request_error = data.json().get('error')
@@ -131,6 +129,17 @@ class Foreman:
 
         return error_message
 
+    def _handle_request(self, req):
+        if req.status_code in [200, 201]:
+            return json.loads(req.text)
+        elif req.status_code == 404:
+            error_message = 'Not found'
+        else:
+            error_message = self._get_request_error_message(data=req)
+
+        raise ForemanError(url=req.url,
+                           status_code=req.status_code,
+                           message=error_message)
 
     def _get_request(self, url, data=None):
         """Execute a GET request agains Foreman API
@@ -147,15 +156,7 @@ class Foreman:
                            data=data,
                            auth=self.__auth,
                            verify=False)
-        if req.status_code == 200:
-            return json.loads(req.text)
-
-        error_message = self._get_request_error_message(data=req)
-
-        raise ForemanError(url=req.url,
-                           status_code=req.status_code,
-                           message=error_message,
-                           request=req.json())
+        return self._handle_request(req)
 
     def _post_request(self, url, data):
         """Execute a POST request against Foreman API
@@ -172,15 +173,7 @@ class Foreman:
                             headers=FOREMAN_REQUEST_HEADERS,
                             auth=self.__auth,
                             verify=False)
-        if req.status_code in [200, 201]:
-            return json.loads(req.text)
-
-        error_message = self._get_request_error_message(data=req)
-
-        raise ForemanError(url=req.url,
-                           status_code=req.status_code,
-                           message=error_message,
-                           request=req.json())
+        return self._handle_request(req)
 
     def _put_request(self, url, data):
         """Execute a PUT request against Foreman API
@@ -197,15 +190,7 @@ class Foreman:
                            headers=FOREMAN_REQUEST_HEADERS,
                            auth=self.__auth,
                            verify=False)
-        if req.status_code == 200:
-            return json.loads(req.text)
-
-        error_message = self._get_request_error_message(data=req)
-
-        raise ForemanError(url=req.url,
-                           status_code=req.status_code,
-                           message=error_message,
-                           request=req.json())
+        return self._handle_request(req)
 
     def _delete_request(self, url):
         """Execute a DELETE request against Foreman API
@@ -220,12 +205,7 @@ class Foreman:
                               headers=FOREMAN_REQUEST_HEADERS,
                               auth=self.__auth,
                               verify=False)
-        if req.status_code == 200:
-            return json.loads(req.text)
-        raise ForemanError(url=req.url,
-                           status_code=req.status_code,
-                           message=req.json().get('error').get('message'),
-                           request=req.json())
+        return self._handle_request(req)
 
     def get_resources(self, resource_type, resource_id=None, component=None):
         """ Return a list of all resources of the defined resource type
