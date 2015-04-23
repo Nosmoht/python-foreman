@@ -8,14 +8,16 @@ import getopt
 import os
 
 import yaml
-from foreman import *
+from foreman.foreman import *
 
 
 class ForemanBackup:
-    def __init__(self, hostname, port, username, password):
+    def __init__(self, hostname, port, username, password, katello_support=False, backup_dir='.'):
         self.foreman = Foreman(hostname, port, username, password)
+        self.backup_dir = backup_dir
+        self.katello_support = katello_support
 
-    def backup(self, backup_dir, resource, resource_function):
+    def backup(self, resource, resource_function):
         """Backup Foreman resource as YAML file into a directory.
 
         A new directory named <resource> will be created inside <backup_dir>. Each
@@ -27,19 +29,26 @@ class ForemanBackup:
           resource (str): Name of the resource to backup (e.g. 'architectures')
           resource_function (def): Name of function to call to get a dict of resources
         """
-        backup_dir = os.path.join(backup_dir, resource)
+        backup_dir = os.path.join(self.backup_dir, resource)
 
         resources = resource_function()
-        print('Backing up %s %s' % (str(len(resources)), resource))
+        print('Backing up {0} {1}'.format(str(len(resources)), resource))
 
         if not os.path.exists(backup_dir):
             os.makedirs(backup_dir)
 
         for resource_item in resources:
+            item = None
             if 'id' in resource_item:
-                item = self.foreman.get_resource(resource_type=resource, resource_id=resource_item.get('id'))
-            else:
-                item = None
+                resource_id = resource_item.get('id')
+                try:
+                    item = self.foreman.get_resource(resource_type=resource, resource_id=resource_id)
+                except ForemanError as e:
+                    # There seems to be a bug in Foreman 1.7.3 whereas the API reports 404
+                    # while executing a get request on organizations/:id
+                    # API: http://theforeman.org/api/apidoc/v2/organizations/show.html
+                    if e.status_code == 404:
+                        item = resource_item
 
             if item:
                 if 'title' in item:
@@ -50,51 +59,67 @@ class ForemanBackup:
                     file_name = item.get('name')
                 else:
                     print('Can\'t backup {0}'.format(item))
+                    continue
                 backup_file = os.path.join(backup_dir, file_name.replace('/', '_') + '.yaml')
                 with open(backup_file, 'w') as backup_file:
                     yaml.safe_dump(item, backup_file, default_flow_style=False)
 
     def run(self):
-        backup_root = '.'
+        self.backup_foreman()
+        if self.katello_support:
+            self.backup_katello()
 
-        self.backup(backup_dir=backup_root, resource='architectures',
+    def backup_foreman(self):
+
+        self.backup(resource='architectures',
                     resource_function=self.foreman.get_architectures)
-        self.backup(backup_dir=backup_root, resource='common_parameters',
+        self.backup(resource='common_parameters',
                     resource_function=self.foreman.get_common_parameters)
-        self.backup(backup_dir=backup_root, resource='compute_resources',
+        self.backup(resource='compute_resources',
                     resource_function=self.foreman.get_compute_resources)
-        self.backup(backup_dir=backup_root, resource='compute_profiles',
+        self.backup(resource='compute_profiles',
                     resource_function=self.foreman.get_compute_profiles)
-        self.backup(backup_dir=backup_root, resource='config_templates',
+        self.backup(resource='config_templates',
                     resource_function=self.foreman.get_config_templates)
-        self.backup(backup_dir=backup_root, resource='domains',
+        self.backup(resource='domains',
                     resource_function=self.foreman.get_domains)
-        self.backup(backup_dir=backup_root, resource='environments',
+        self.backup(resource='environments',
                     resource_function=self.foreman.get_environments)
-        self.backup(backup_dir=backup_root, resource='hosts',
+        self.backup(resource='hosts',
                     resource_function=self.foreman.get_hosts)
-        self.backup(backup_dir=backup_root, resource='hostgroups',
+        self.backup(resource='hostgroups',
                     resource_function=self.foreman.get_hostgroups)
-        self.backup(backup_dir=backup_root, resource='locations',
-                    resource_function=self.foreman.get_locations)
-        self.backup(backup_dir=backup_root, resource='media',
+        self.backup(resource='media',
                     resource_function=self.foreman.get_media)
-#        self.backup(backup_dir=backup_root, resource='organizations',
-#                    resource_function=self.foreman.get_organizations)
-        self.backup(backup_dir=backup_root, resource='operatingsystems',
+        self.backup(resource='operatingsystems',
                     resource_function=self.foreman.get_operatingsystems)
-        self.backup(backup_dir=backup_root, resource='smart_proxies',
+        self.backup(resource='smart_proxies',
                     resource_function=self.foreman.get_smart_proxies)
-        self.backup(backup_dir=backup_root, resource='subnets',
+        self.backup(resource='subnets',
                     resource_function=self.foreman.get_subnets)
-        self.backup(backup_dir=backup_root, resource='users',
+        self.backup(resource='users',
                     resource_function=self.foreman.get_users)
+
+
+    def backup_katello(self):
+        self.backup(resource='locations',
+                    resource_function=self.foreman.get_locations)
+        self.backup(resource='organizations',
+                    resource_function=self.foreman.get_organizations)
 
 
 def show_help():
     """Print on screen how to use this script.
     """
     print('foreman.py -f <foreman_host> -p <port> -u <username> -s <secret>')
+
+
+def string2bool(s):
+    """
+
+    :rtype : bool
+    """
+    return str(s).lower() in ['true', 'yes', '1', 'enable']
 
 
 def main(argv):
@@ -104,12 +129,13 @@ def main(argv):
     """
     foreman_host = os.environ.get('FOREMAN_HOST', '127.0.0.1')
     foreman_port = os.environ.get('FOREMAN_PORT', '443')
-    foreman_username = os.environ.get('FOREMAN_USER', 'foreman')
-    foreman_password = os.environ.get('FOREMAN_PASS', 'changme')
+    foreman_user = os.environ.get('FOREMAN_USER', 'foreman')
+    foreman_pass = os.environ.get('FOREMAN_PASS', 'changme')
+    katello_support = string2bool(os.environ.get('FOREMAN_KATELLO_SUPPORT', 'False'))
 
     try:
         opts, args = getopt.getopt(argv,
-                                   "f:hu:p:s:",
+                                   "f:hu:p:s:k",
                                    ["foreman=", "username=", "port=", "secret="])
     except getopt.GetoptError:
         show_help()
@@ -120,6 +146,8 @@ def main(argv):
         elif opt == '-h':
             show_help()
             sys.exit()
+        elif opt == '-k':
+            katello_support = True
         elif opt in ('-u', '--username'):
             foreman_username = arg
         elif opt in ('-p', '--port'):
@@ -128,7 +156,8 @@ def main(argv):
             foreman_password = arg
 
     backup = ForemanBackup(foreman_host, foreman_port,
-                           foreman_username, foreman_password)
+                           foreman_user, foreman_pass,
+                           katello_support)
     backup.run()
 
 
