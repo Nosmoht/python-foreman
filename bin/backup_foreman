@@ -93,6 +93,8 @@ class ForemanBackup:
                     resource_function=self.foreman.get_media)
         self.backup(resource='operatingsystems',
                     resource_function=self.foreman.get_operatingsystems)
+        self.backup(resource='roles',
+                    resource_function=self.foreman.get_roles)
         self.backup(resource='smart_proxies',
                     resource_function=self.foreman.get_smart_proxies)
         self.backup(resource='subnets',
