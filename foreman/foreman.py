@@ -450,6 +450,9 @@ class Foreman:
     def create_domain(self, data):
         return self.create_resource(resource_type=DOMAINS, resource=DOMAIN, data=data)
 
+    def update_domain(self, id, data):
+        return self.update_resource(resource_type=DOMAINS, resource_id=id, data=data)
+
     def delete_domain(self, id):
         return self.delete_resource(resource_type=DOMAINS, resource_id=id)
 
@@ -541,6 +544,9 @@ class Foreman:
 
     def create_hostgroup(self, data):
         return self.create_resource(resource_type=HOSTGROUPS, resource=HOSTGROUP, data=data)
+
+    def update_hostgroup(self, id, data):
+        return self.update_resource(resource_type=HOSTGROUPS, resource_id=id, data=data)
 
     def delete_hostgroup(self, id):
         return self.delete_resource(resource_type=HOSTGROUPS, resource_id=id)
