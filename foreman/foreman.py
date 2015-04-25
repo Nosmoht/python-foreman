@@ -659,6 +659,9 @@ class Foreman:
     def create_smart_proxy(self, data):
         return self.create_resource(resource_type=SMART_PROXIES, resource=SMART_PROXY, data=data)
 
+    def update_smart_proxy(self, id, data):
+        return self.update_resource(resource_type=SMART_PROXIES, resource_id=id, data=data)
+
     def delete_smart_proxy(self, id):
         return self.delete_resource(resource_type=SMART_PROXIES, resource_id=id)
 
