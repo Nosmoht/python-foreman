@@ -435,6 +435,9 @@ class Foreman:
                                     resource=CONFIG_TEMPLATE,
                                     data=data)
 
+    def update_config_template(self, id, data):
+        return self.update_resource(resource_type=CONFIG_TEMPLATES, resource_id=id, data=data)
+
     def delete_config_template(self, id):
         return self.delete_resource(resource_type=CONFIG_TEMPLATES, resource_id=id)
 
