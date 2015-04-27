@@ -57,6 +57,7 @@ SMART_PROXIES = 'smart_proxies'
 SMART_PROXY = 'smart_proxy'
 SUBNETS = 'subnets'
 SUBNET = 'subnet'
+TEMPLATE_KINDS = 'template_kinds'
 USERS = 'users'
 USER = 'user'
 
@@ -685,6 +686,9 @@ class Foreman:
 
     def delete_subnet(self, id):
         return self.delete_resource(resource_type=SUBNETS, resource_id=id)
+
+    def get_template_kinds(self):
+        return self.get_resources(resource_type=TEMPLATE_KINDS)
 
     def get_users(self):
         return self.get_resources(resource_type=USERS)
