@@ -47,6 +47,8 @@ OPERATINGSYSTEMS = 'operatingsystems'
 OPERATINGSYSTEM = 'operatingsystem'
 ORGANIZATIONS = 'organizations'
 ORGANIZATION = 'organization'
+OS_DEFAULT_TEMPLATES = 'os_default_templates'
+OS_DEFAULT_TEMPLATE = 'os_default_template'
 PARAMETERS = 'parameters'
 PARAMETER = 'parameter'
 PARTITION_TABLES = 'ptables'
@@ -620,6 +622,26 @@ class Foreman:
 
     def delete_operatingsystem(self, id):
         return self.delete_resource(resource_type=OPERATINGSYSTEMS, resource_id=id)
+
+    def get_operatingsystem_default_templates(self, id):
+        return self.get_resources(resource_type=OPERATINGSYSTEMS, resource_id=id, component=OS_DEFAULT_TEMPLATES)
+
+    def get_operatingsystem_default_template(self, id, template_id):
+        return self.get_resource(resource_type=OPERATINGSYSTEMS, resource_id=id,
+                                 component=OS_DEFAULT_TEMPLATES, component_id=template_id)
+
+    def create_operatingsystem_default_template(self, id, data):
+        return self.create_resource(resource_type=OPERATINGSYSTEMS, resource=OS_DEFAULT_TEMPLATE, data=data,
+                                    resource_id=id, component=OS_DEFAULT_TEMPLATES)
+
+    def update_operatingsystem_default_template(self, id, template_id, data):
+        return self.update_resource(resource_type=OPERATINGSYSTEMS, resource_id=id,
+                                    component=OS_DEFAULT_TEMPLATES, component_id=template_id,
+                                    resource=OS_DEFAULT_TEMPLATE, data=data)
+
+    def delete_operatingsystem_default_template(self, id, template_id):
+        return self.delete_resource(resource_type=OPERATINGSYSTEMS, resource_id=id,
+                                    component_name=OS_DEFAULT_TEMPLATES, component_id=template_id)
 
     def get_partition_tables(self):
         return self.get_resources(resource_type=PARTITION_TABLES)
