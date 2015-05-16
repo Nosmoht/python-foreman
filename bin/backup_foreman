@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Backup Foreman configuration to YAML files
+"""Backup Foreman configuration
 
 """
 import sys
@@ -108,8 +108,6 @@ class ForemanBackup:
     def run(self):
         ensure_dir(self.backup_dir)
         self.backup_resources()
-        if self.katello_support:
-            self.backup_katello()
 
     def backup_resources(self):
 
@@ -135,6 +133,8 @@ class ForemanBackup:
                     resource_function=self.foreman.get_media)
         self.backup(resource_type='operatingsystems',
                     resource_function=self.foreman.get_operatingsystems)
+        self.backup(resource_type='ptables',
+                    resource_function=self.foreman.get_partition_tables)
         self.backup(resource_type='roles',
                     resource_function=self.foreman.get_roles)
         self.backup(resource_type='smart_proxies',
@@ -143,13 +143,11 @@ class ForemanBackup:
                     resource_function=self.foreman.get_subnets)
         self.backup(resource_type='users',
                     resource_function=self.foreman.get_users)
-
-
-    def backup_katello(self):
-        self.backup(resource_type='locations',
-                    resource_function=self.foreman.get_locations)
-        self.backup(resource_type='organizations',
-                    resource_function=self.foreman.get_organizations)
+        if self.katello_support:
+            self.backup(resource_type='locations',
+                        resource_function=self.foreman.get_locations)
+            self.backup(resource_type='organizations',
+                        resource_function=self.foreman.get_organizations)
 
 
 class AnsibleBackup(ForemanBackup):
