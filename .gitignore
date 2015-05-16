@@ -1,3 +1,5 @@
+MANIFEST
+Makefile
 *.pyc
 /build/
 /dist/
