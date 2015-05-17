@@ -97,7 +97,7 @@ class ForemanBackup:
                 continue
             backup_file_name = os.path.join(backup_dir, '{name}'.format(name=file_name.replace('/', '_') + '.yaml'))
             with open(backup_file_name, 'w') as backup_file:
-                yaml.safe_dump(resource, backup_file, default_flow_style=False)
+                yaml.safe_dump(resource, backup_file, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
 
     def backup(self, resource_type, resource_function):
@@ -174,7 +174,7 @@ class AnsibleBackup(ForemanBackup):
             else:
                 f.write(' ')
         with open(backup_file_name, 'a') as f:
-            yaml.safe_dump(resources, f, default_flow_style=False)
+            yaml.safe_dump(resources, f, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
 
 def show_help():
