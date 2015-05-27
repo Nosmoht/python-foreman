@@ -293,9 +293,9 @@ class Foreman:
                                      component=component, component_id=component_id)
         return self._put_request(url=url, data=data)
 
-    def delete_resource(self, resource_type, resource_id, component_name=None, component_id=None):
+    def delete_resource(self, resource_type, resource_id, component=None, component_id=None):
         url = self._get_resource_url(resource_type=resource_type, resource_id=resource_id,
-                                     component=component_name, component_id=component_id)
+                                     component=component, component_id=component_id)
         return self._delete_request(url=url)
 
     def search_resource(self, resource_type, data):
@@ -539,6 +539,12 @@ class Foreman:
                                     component_id=parameter_id,
                                     data=data)
 
+    def delete_host_parameter(self, host_id, parameter_id):
+        return self.delete_resource(resource_type=HOSTS,
+                                    resource_id=host_id,
+                                    component=PARAMETERS,
+                                    component_id=parameter_id)
+
     def get_hostgroups(self):
         return self.get_resources(resource_type=HOSTGROUPS)
 
@@ -641,7 +647,7 @@ class Foreman:
 
     def delete_operatingsystem_default_template(self, id, template_id):
         return self.delete_resource(resource_type=OPERATINGSYSTEMS, resource_id=id,
-                                    component_name=OS_DEFAULT_TEMPLATES, component_id=template_id)
+                                    component=OS_DEFAULT_TEMPLATES, component_id=template_id)
 
     def get_partition_tables(self):
         return self.get_resources(resource_type=PARTITION_TABLES)
