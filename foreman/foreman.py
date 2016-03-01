@@ -563,6 +563,32 @@ class Foreman:
     def delete_hostgroup(self, id):
         return self.delete_resource(resource_type=HOSTGROUPS, resource_id=id)
 
+    def get_hostgroup_parameters(self, hostgroup_id):
+        parameters = self.get_resource(resource_type=HOSTGROUPS, resource_id=hostgroup_id, component=PARAMETERS)
+        if parameters and 'results' in parameters:
+            return parameters.get('results')
+        return None
+
+    def create_hostgroup_parameter(self, hostgroup_id, data):
+        return self.create_resource(resource_type=HOSTGROUPS,
+                                    resource_id=hostgroup_id,
+                                    resource=PARAMETER,
+                                    data=data,
+                                    component=PARAMETERS)
+
+    def update_hostgroup_parameter(self, hostgroup_id, parameter_id, data):
+        return self.update_resource(resource_type=HOSTGROUPS,
+                                    resource_id=hostgroup_id,
+                                    component=PARAMETERS,
+                                    component_id=parameter_id,
+                                    data=data)
+
+    def delete_hostgroup_parameter(self, hostgroup_id, parameter_id):
+        return self.delete_resource(resource_type=HOSTGROUPS,
+                                    resource_id=hostgroup_id,
+                                    component=PARAMETERS,
+                                    component_id=parameter_id)
+
     def get_locations(self):
         return self.get_resources(resource_type=LOCATIONS)
 
