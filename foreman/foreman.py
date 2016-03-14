@@ -41,6 +41,8 @@ IMAGES = 'images'
 IMAGE = 'image'
 LOCATIONS = 'locations'
 LOCATION = 'location'
+AUTH_SOURCE_LDAPS = 'auth_source_ldaps'
+AUTH_SOURCE_LDAP = 'auth_source_ldap'
 MEDIA = 'media'
 MEDIUM = 'medium'
 OPERATINGSYSTEMS = 'operatingsystems'
@@ -334,6 +336,24 @@ class Foreman:
 
     def delete_architecture(self, id):
         return self.delete_resource(resource_type=ARCHITECTURES, resource_id=id)
+
+    def get_auth_source_ldaps(self):
+        return self.get_resources(resource_type=AUTH_SOURCE_LDAPS)
+
+    def get_auth_source_ldap(self, id):
+        return self.get_resource(resource_type=AUTH_SOURCE_LDAPS, resource_id=id)
+
+    def search_auth_source_ldap(self, data):
+        return self.search_resource(resource_type=AUTH_SOURCE_LDAPS, data=data)
+
+    def create_auth_source_ldap(self, data):
+        return self.create_resource(resource_type=AUTH_SOURCE_LDAPS, resource=AUTH_SOURCE_LDAP, data=data)
+
+    def delete_auth_source_ldap(self, id):
+        return self.delete_resource(resource_type=AUTH_SOURCE_LDAPS, resource_id=id)
+
+    def update_auth_source_ldap(self, id, data):
+        return self.update_resource(resource_type=AUTH_SOURCE_LDAPS, resource_id=id, data=data)
 
     def get_common_parameters(self):
         return self.get_resources(resource_type=COMMON_PARAMETERS)
