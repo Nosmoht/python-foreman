@@ -784,3 +784,6 @@ class Foreman:
 
     def delete_user(self, id):
         return self.delete_resource(resource_type=USERS, resource_id=id)
+
+    def search_template_kind(self, data):
+        return self.search_resource(resource_type=TEMPLATE_KINDS, data=data)
