@@ -86,13 +86,15 @@ class Foreman:
 
     """
 
-    def __init__(self, hostname, port, username, password):
+    def __init__(self, hostname, port, username, password, ssl=True):
         """Init
         """
         self.__auth = (username, password)
         self.hostname = hostname
         self.port = port
-        self.url = "https://{0}:{1}/api/{2}".format(
+        self.url_scheme = ("http", "https")[ssl]
+        self.url = "{0}://{1}:{2}/api/{3}".format(
+            self.url_scheme,
             self.hostname,
             self.port,
             FOREMAN_API_VERSION,
