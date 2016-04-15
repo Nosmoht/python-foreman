@@ -708,7 +708,7 @@ class Foreman:
         return self.create_resource(resource_type=PARTITION_TABLES, resource=PARTITION_TABLE, data=data)
 
     def update_partition_table(self, id, data):
-        return self.update_resource(self, resource_type=PARTITION_TABLES, resource_id=id, data=data)
+        return self.update_resource(resource_type=PARTITION_TABLES, resource_id=id, data=data)
 
     def delete_partition_table(self, id):
         return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
