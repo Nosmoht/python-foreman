@@ -440,9 +440,33 @@ class Foreman:
         return self.delete_resource(resource_type=COMPUTE_RESOURCES, resource_id=id)
 
     def get_compute_resource_images(self, compute_resource_id):
+        """Get images registered on a given compute resource"""
         return self.get_resources(resource_type=COMPUTE_RESOURCES,
                                   resource_id=compute_resource_id,
                                   component=IMAGES)
+
+    def create_compute_resource_image(self, compute_resource_id, data):
+        """Add an image to a compute resource"""
+        return self.create_resource(resource_type=COMPUTE_RESOURCES,
+                                    data=data,
+                                    resource_id=compute_resource_id,
+                                    resource=IMAGE,
+                                    component=IMAGES)
+
+    def delete_compute_resource_image(self, compute_resource_id, image_id):
+        """Delete an image on a given compute resource"""
+        return self.delete_resource(resource_type=COMPUTE_RESOURCES,
+                                    resource_id=compute_resource_id,
+                                    component=IMAGES,
+                                    component_id=image_id)
+
+    def update_compute_resource_image(self, compute_resource_id, data):
+        """Update the parameters of an image on a given compute resource"""
+        return self.update_resource(resource_type=COMPUTE_RESOURCES,
+                                    data=data,
+                                    resource_id=compute_resource_id,
+                                    component=IMAGES,
+                                    component_id=data['id'])
 
     def get_config_templates(self):
         return self.get_resources(resource_type=CONFIG_TEMPLATES)
