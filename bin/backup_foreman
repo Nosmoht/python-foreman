@@ -224,11 +224,11 @@ def main(argv):
         elif opt == '-b':
             backup_dir = arg
         elif opt in ('-u', '--username'):
-            foreman_username = arg
+            foreman_user = arg
         elif opt in ('-p', '--port'):
             foreman_port = arg
         elif opt in ('-s', '--secret'):
-            foreman_password = arg
+            foreman_pass = arg
 
     if ansible_format:
         backup_class = AnsibleBackup
