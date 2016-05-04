@@ -40,7 +40,8 @@ class ForemanBackup:
         self.foreman = Foreman(kwargs.get('hostname'),
                                kwargs.get('port'),
                                kwargs.get('username'),
-                               kwargs.get('password'))
+                               kwargs.get('password'),
+                               string2bool(kwargs.get('ssl')))
         self.backup_dir = kwargs.get('backup_dir', '.')
         self.katello_support = kwargs.get('katello_support', False)
 
@@ -180,7 +181,7 @@ class AnsibleBackup(ForemanBackup):
 def show_help():
     """Print on screen how to use this script.
     """
-    print('foreman.py -f <foreman_host> -p <port> -u <username> -s <secret>')
+    print('foreman.py -f <foreman_host> -p <port> -u <username> -s <secret> -S <ssl>')
 
 
 def string2bool(s):
@@ -200,14 +201,15 @@ def main(argv):
     foreman_port = os.environ.get('FOREMAN_PORT', '443')
     foreman_user = os.environ.get('FOREMAN_USER', 'foreman')
     foreman_pass = os.environ.get('FOREMAN_PASS', 'changme')
+    foreman_ssl = string2bool(os.environ.get('FOREMAN_SSL', True))
     ansible_format = os.environ.get('FOREMAN_BACKUP_ANSIBLE_FORMAT', False)
     backup_dir = os.environ.get('FOREMAN_BACKUP_DIR', '.')
     katello_support = string2bool(os.environ.get('FOREMAN_KATELLO_SUPPORT', False))
 
     try:
         opts, args = getopt.getopt(argv,
-                                   "ab:f:hu:p:s:k",
-                                   ["foreman=", "username=", "port=", "secret="])
+                                   "ab:f:hu:p:s:S:k",
+                                   ["foreman=", "username=", "port=", "secret=", "ssl="])
     except getopt.GetoptError:
         show_help()
         sys.exit(2)
@@ -229,6 +231,8 @@ def main(argv):
             foreman_port = arg
         elif opt in ('-s', '--secret'):
             foreman_pass = arg
+        elif opt in ('-S', '--ssl'):
+            foreman_ssl = arg
 
     if ansible_format:
         backup_class = AnsibleBackup
@@ -239,6 +243,7 @@ def main(argv):
                           port=foreman_port,
                           username=foreman_user,
                           password=foreman_pass,
+                          ssl=foreman_ssl,
                           katello_support=katello_support,
                           backup_dir=backup_dir)
     backup.run()
