@@ -1,2 +1,2 @@
-requests==2.5.3
-pyyaml==3.11
+requests >= 2.5.3
+pyyaml >= 3.11
