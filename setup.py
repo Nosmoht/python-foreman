@@ -22,7 +22,7 @@ setup(name='python-foreman',
       long_description=readme(),
       keywords=['foreman'],
       classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2.7',
       ],
