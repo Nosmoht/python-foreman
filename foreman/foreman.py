@@ -55,6 +55,8 @@ PARAMETERS = 'parameters'
 PARAMETER = 'parameter'
 PARTITION_TABLES = 'ptables'
 PARTITION_TABLE = 'ptable'
+REALMS = 'realms'
+REALM = 'realm'
 ROLES = 'roles'
 ROLE = 'role'
 SMART_PROXIES = 'smart_proxies'
@@ -738,6 +740,24 @@ class Foreman:
 
     def delete_partition_table(self, id):
         return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
+
+    def get_realms(self):
+        return self.get_resources(resource_type=REALMS)
+
+    def get_realm(self, id):
+        return self.get_resource(resource_type=REALMS, resource_id=id)
+
+    def search_realm(self, data):
+        return self.search_resource(resource_type=REALMS, data=data)
+
+    def create_realm(self, data):
+        return self.create_resource(resource_type=REALMS, resource=REALM, data=data)
+
+    def delete_realm(self, id):
+        return self.delete_resource(resource_type=REALMS, resource_id=id)
+
+    def update_realm(self, id, data):
+        return self.update_resource(resource_type=REALMS, resource_id=id, data=data)
 
     def get_roles(self):
         return self.get_resources(resource_type=ROLES)
