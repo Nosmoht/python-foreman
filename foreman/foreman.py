@@ -59,6 +59,8 @@ REALMS = 'realms'
 REALM = 'realm'
 ROLES = 'roles'
 ROLE = 'role'
+SETTING = 'setting'
+SETTINGS = 'settings'
 SMART_PROXIES = 'smart_proxies'
 SMART_PROXY = 'smart_proxy'
 SUBNETS = 'subnets'
@@ -779,6 +781,15 @@ class Foreman:
 
     def delete_role(self, id):
         return self.delete_resource(resource_type=ROLES, resource_id=id)
+
+    def get_setting(self, id):
+        return self.get_resource(resource_type=SETTINGS, resource_id=id)
+
+    def search_setting(self, data):
+        return self.search_resource(resource_type=SETTINGS, data=data)
+
+    def update_setting(self, id, data):
+        return self.update_resource(resource_type=SETTINGS, resource_id=id, data=data)
 
     def get_smart_proxies(self):
         return self.get_resources(resource_type=SMART_PROXIES)
