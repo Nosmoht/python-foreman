@@ -440,6 +440,12 @@ class Foreman:
                                     resource=COMPUTE_RESOURCE,
                                     data=data)
 
+    def update_compute_resource(self, id, data):
+        """Update the parameters of a compute resources"""
+        return self.update_resource(resource_type=COMPUTE_RESOURCES,
+                                    data=data,
+                                    resource_id=id)
+
     def delete_compute_resource(self, id):
         return self.delete_resource(resource_type=COMPUTE_RESOURCES, resource_id=id)
 
