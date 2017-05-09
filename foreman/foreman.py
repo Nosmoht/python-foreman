@@ -309,15 +309,17 @@ class Foreman:
     def search_resource(self, resource_type, data):
         search_data = {'search': '', 'per_page': 1000 }
 
-        for key in data:
+        for key, value in data.items():
             if search_data['search']:
                 search_data['search'] += ' AND '
             search_data['search'] += (key + ' == ')
 
-            if isinstance(data[key], int):
-                search_data['search'] += str(data[key])
-            elif isinstance(data[key], str):
-                search_data['search'] += ('"' + data[key] + '"')
+            if isinstance(value, int):
+                search_data['search'] += str(value)
+            elif isinstance(value, str):
+                search_data['search'] += ('"' + value + '"')
+            else:
+                TypeError("Type {0} of search key {1} not supported".format(type(value), key))
 
         url = self._get_resource_url(resource_type=resource_type)
         results = self._get_request(url=url, data=search_data)
