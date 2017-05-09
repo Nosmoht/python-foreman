@@ -33,6 +33,8 @@ DOMAINS = 'domains'
 DOMAIN = 'domain'
 ENVIRONMENTS = 'environments'
 ENVIRONMENT = 'environment'
+FILTERS = 'filters'
+FILTER = 'filter'
 HOSTS = 'hosts'
 HOST = 'host'
 HOSTGROUPS = 'hostgroups'
@@ -534,6 +536,24 @@ class Foreman:
 
     def delete_environment(self, id):
         return self.delete_resource(resource_type=ENVIRONMENTS, resource_id=id)
+
+    def get_filters(self):
+        return self.get_resources(resource_type=FILTERS)
+
+    def get_filter(self, id):
+        return self.get_resource(resource_type=FILTERS, resource_id=id)
+
+    def get_filters(self):
+        return self.get_resources(resource_type=FILTERS)
+
+    def search_filter(self, data):
+        return self.search_resource(resource_type=FILTERS, data=data)
+
+    def create_filter(self, data):
+        return self.create_resource(resource_type=FILTERS, resource=FILTER, data=data)
+
+    def delete_filter(self, id):
+        return self.delete_resource(resource_type=FILTERS, resource_id=id)
 
     def get_hosts(self):
         return self.get_resources(resource_type=HOSTS)
