@@ -57,6 +57,8 @@ PARAMETERS = 'parameters'
 PARAMETER = 'parameter'
 PARTITION_TABLES = 'ptables'
 PARTITION_TABLE = 'ptable'
+PERMISSIONS = 'permissions'
+PERMISSION = 'permission'
 REALMS = 'realms'
 REALM = 'realm'
 ROLES = 'roles'
@@ -770,6 +772,15 @@ class Foreman:
 
     def delete_partition_table(self, id):
         return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
+
+    def get_permissions(self):
+        return self.get_resources(resource_type=PERMISSIONS)
+
+    def get_permission(self, id):
+        return self.get_resource(resource_type=PERMISSIONS, resource_id=id)
+
+    def search_permission(self, data):
+        return self.search_resource(resource_type=PERMISSIONS, data=data)
 
     def get_realms(self):
         return self.get_resources(resource_type=REALMS)
