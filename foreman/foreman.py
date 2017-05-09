@@ -307,7 +307,7 @@ class Foreman:
         return self._delete_request(url=url)
 
     def search_resource(self, resource_type, data):
-        search_data = {'search': ''}
+        search_data = {'search': '', 'per_page': 1000 }
 
         for key in data:
             if search_data['search']:
