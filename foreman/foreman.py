@@ -33,6 +33,8 @@ DOMAINS = 'domains'
 DOMAIN = 'domain'
 ENVIRONMENTS = 'environments'
 ENVIRONMENT = 'environment'
+FILTERS = 'filters'
+FILTER = 'filter'
 HOSTS = 'hosts'
 HOST = 'host'
 HOSTGROUPS = 'hostgroups'
@@ -55,6 +57,8 @@ PARAMETERS = 'parameters'
 PARAMETER = 'parameter'
 PARTITION_TABLES = 'ptables'
 PARTITION_TABLE = 'ptable'
+PERMISSIONS = 'permissions'
+PERMISSION = 'permission'
 REALMS = 'realms'
 REALM = 'realm'
 ROLES = 'roles'
@@ -307,17 +311,19 @@ class Foreman:
         return self._delete_request(url=url)
 
     def search_resource(self, resource_type, data):
-        search_data = {'search': ''}
+        search_data = {'search': '', 'per_page': 1000 }
 
-        for key in data:
+        for key, value in data.items():
             if search_data['search']:
                 search_data['search'] += ' AND '
             search_data['search'] += (key + ' == ')
 
-            if isinstance(data[key], int):
-                search_data['search'] += str(data[key])
-            elif isinstance(data[key], str):
-                search_data['search'] += ('"' + data[key] + '"')
+            if isinstance(value, int):
+                search_data['search'] += str(value)
+            elif isinstance(value, str):
+                search_data['search'] += ('"' + value + '"')
+            else:
+                TypeError("Type {0} of search key {1} not supported".format(type(value), key))
 
         url = self._get_resource_url(resource_type=resource_type)
         results = self._get_request(url=url, data=search_data)
@@ -532,6 +538,24 @@ class Foreman:
 
     def delete_environment(self, id):
         return self.delete_resource(resource_type=ENVIRONMENTS, resource_id=id)
+
+    def get_filters(self):
+        return self.get_resources(resource_type=FILTERS)
+
+    def get_filter(self, id):
+        return self.get_resource(resource_type=FILTERS, resource_id=id)
+
+    def get_filters(self):
+        return self.get_resources(resource_type=FILTERS)
+
+    def search_filter(self, data):
+        return self.search_resource(resource_type=FILTERS, data=data)
+
+    def create_filter(self, data):
+        return self.create_resource(resource_type=FILTERS, resource=FILTER, data=data)
+
+    def delete_filter(self, id):
+        return self.delete_resource(resource_type=FILTERS, resource_id=id)
 
     def get_hosts(self):
         return self.get_resources(resource_type=HOSTS)
@@ -748,6 +772,15 @@ class Foreman:
 
     def delete_partition_table(self, id):
         return self.delete_resource(resource_type=PARTITION_TABLES, resource_id=id)
+
+    def get_permissions(self):
+        return self.get_resources(resource_type=PERMISSIONS)
+
+    def get_permission(self, id):
+        return self.get_resource(resource_type=PERMISSIONS, resource_id=id)
+
+    def search_permission(self, data):
+        return self.search_resource(resource_type=PERMISSIONS, data=data)
 
     def get_realms(self):
         return self.get_resources(resource_type=REALMS)
