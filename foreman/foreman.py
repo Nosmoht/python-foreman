@@ -9,7 +9,10 @@ import json
 import requests
 
 # from requests.auth import HTTPBasicAuth
-requests.urllib3.disable_warnings()
+try:
+    requests.urllib3.disable_warnings()
+except AttributeError:
+    requests.packages.urllib3.disable_warnings()
 
 FOREMAN_REQUEST_HEADERS = {
     'content-type': 'application/json',
