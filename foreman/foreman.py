@@ -75,6 +75,8 @@ SUBNET = 'subnet'
 TEMPLATE_KINDS = 'template_kinds'
 USERS = 'users'
 USER = 'user'
+USERGROUPS = 'usergroups'
+USERGROUP = 'usergroup'
 
 
 class ForemanError(Exception):
@@ -883,6 +885,24 @@ class Foreman:
 
     def delete_user(self, id):
         return self.delete_resource(resource_type=USERS, resource_id=id)
+
+    def get_usergroups(self):
+        return self.get_resources(resource_type=USERGROUPS)
+
+    def get_usergroup(self, id):
+        return self.get_resource(resource_type=USERGROUPS, resource_id=id)
+
+    def search_usergroup(self, data):
+        return self.search_resource(resource_type=USERGROUPS, data=data)
+
+    def create_usergroup(self, data):
+        return self.create_resource(resource_type=USERGROUPS, resource=USERGROUP, data=data)
+
+    def update_usergroup(self, id, data):
+        return self.update_resource(resource_type=USERGROUPS, resource_id=id, data=data)
+
+    def delete_usergroup(self, id):
+        return self.delete_resource(resource_type=USERGROUPS, resource_id=id)
 
     def search_template_kind(self, data):
         return self.search_resource(resource_type=TEMPLATE_KINDS, data=data)
