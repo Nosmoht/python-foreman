@@ -36,6 +36,8 @@ DOMAINS = 'domains'
 DOMAIN = 'domain'
 ENVIRONMENTS = 'environments'
 ENVIRONMENT = 'environment'
+EXTERNAL_USERGROUPS = 'external_usergroups'
+EXTERNAL_USERGROUP = 'external_usergroup'
 FILTERS = 'filters'
 FILTER = 'filter'
 HOSTS = 'hosts'
@@ -543,6 +545,22 @@ class Foreman:
 
     def delete_environment(self, id):
         return self.delete_resource(resource_type=ENVIRONMENTS, resource_id=id)
+
+    def get_external_usergroups(self, id):
+        return self.get_resources(resource_type=USERGROUPS, resource_id=id, component=EXTERNAL_USERGROUPS)
+
+    def create_external_usergroup(self, usergroup_id, data):
+        return self.create_resource(resource_type=USERGROUPS,
+                                    resource=EXTERNAL_USERGROUP,
+                                    resource_id=usergroup_id,
+                                    component=EXTERNAL_USERGROUPS,
+                                    data=data)
+
+    def delete_external_usergroup(self, group_id, ext_group_id):
+        return self.delete_resource(resource_type=USERGROUPS,
+                                    resource_id=group_id,
+                                    component=EXTERNAL_USERGROUPS,
+                                    component_id=ext_group_id)
 
     def get_filters(self):
         return self.get_resources(resource_type=FILTERS)
