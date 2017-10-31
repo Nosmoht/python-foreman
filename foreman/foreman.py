@@ -592,6 +592,9 @@ class Foreman:
     def create_host(self, data):
         return self.create_resource(resource_type=HOSTS, resource=HOST, data=data)
 
+    def update_host(self, id, data):
+        return self.update_resource(resource_type=HOSTS, resource_id=id, data=data)
+
     def delete_host(self, id):
         return self.delete_resource(resource_type=HOSTS, resource_id=id)
 
